@@ -1,0 +1,83 @@
+# build
+
+**From brief to product — concept documents as the source of truth, code as their derivative.**
+
+Version 0.1 · September 2026 · DMBG · https://github.com/ditomax/build
+
+_Deutsch: Für Anwender genügt `START.md` — drei Schritte, keine Installation. Die Skills antworten in der Sprache, in der man sie anspricht._
+
+## What is build?
+
+build is the third and last skillset of the suite **idea → maquette → build**. Where maquette produces a clickable model, build produces the product — and it does so AI-first: the concept documents in `planning/build/` are the specification an agent synthesizes the code from, not a description written afterwards. If a concept document is incomplete, the code will be incomplete. There is no developer who "knows what was meant". That standard, and the process that reaches it, is the Concept Document Authoring Manifest (`MANIFEST.md`, version 8), which build turns into a guided, stage-by-stage skillset.
+
+## How it works
+
+The user types **start** and afterwards only **next**, **redo** or **stop**. A Director skill reads the work folder, says where things stand, calls the next stage, and asks the three gate questions at which a human decides:
+
+| Stage | "Team member" | MANIFEST | Result | Typical duration |
+| --- | --- | --- | --- | --- |
+| 1 intake | intake analyst | Path B, Phase 1 | `10-intake.md` — what the prototype already answers, what had to be asked, the draft | 1 h with a brief |
+| 2 concept | concept author | Phases 2–6 | `20-concept.md` — numbered requirements, ADRs, interactions, architecture in slices, consistency matrix; `CONTEXT.md`, `decisions/` | 2 sessions |
+| — gate | sponsor | Phase 4 | PM review: requirements approved before any architecture | — |
+| — gate | sponsor | Phase 6 | consistency review: findings accepted, fixed or deferred | — |
+| 3 synthesis | build team | Phases 7–9 | `30-synthesis.md` + product code — test concept, red-green-refactor per slice, registers, gap analysis | per slice |
+| — gate | sponsor | Phase 9 | gap analysis: implemented vs. specified, before release | — |
+| 4 rescue | maintenance crew | Phase 10 | `40-rescue.md` — entropy removed, drift reported; on demand, repeatable | 1 h |
+
+One feature = one concept document. The first feature is the scope of the brief; later features are added one at a time, each checked against the existing ones (interactions and interferences, cross-feature table in `00-build.md`). Requirement IDs carry the feature code (`F-PRC-12`) so two features never collide.
+
+## Structure
+
+```
+build/
+  START.md             three steps for the human
+  AGENTS.md            entry point for Codex — turns the agent into the Director
+  CLAUDE.md            the same for Claude
+  VERSION
+  README.md            this file
+  RULES.md             shared rules — frontmatter, write rules, conversation rules, git, contracts, working principles, definition of done
+  MANIFEST.md          the Concept Document Authoring Manifest v8 — normative process reference
+  ATTRIBUTION.md       where the method comes from
+  checklists/          requirements.md (Phase 1, by field of application) · architecture-consistency.md (Phase 6)
+  profile/             optional customer-specific constraints (empty = core defaults)
+  builds/              the users' work in the standalone form, one subfolder per project (not in the repo)
+  templates/           one template per result file and per shared register (binding content definition)
+  skills/
+    build/             Director
+    build-intake/
+    build-concept/
+    build-synthesis/
+    build-rescue/
+```
+
+## Contracts
+
+- **In — H2.** `60-brief.md` (contract `H2/1`) written by maquette ≥ 0.4.0, Part 3 "Handover to build", plus the frozen `vcode/` next to it. Intake extracts first (Path B), grills the rest (Path A). Neither file is ever written by build.
+- **Without a brief** build starts from a problem statement and runs the manifest's Path A in full.
+- **Out.** None — the product and its concept documents are the result.
+
+## Inside a project
+
+The workspace above is the standalone form. Inside a project folder the same suite is copied to `planning/suite/build/` (read-only), the work lives in `planning/build/`, the profile in `planning/profile/`, briefs wait in `planning/maquette/<x>/60-brief.md`, and the product code lives in the project root outside `planning/`. The Director recognises the layout by the `planning/` folder. A coding agent working on the product reads `planning/build/` as its specification and treats `planning/idea/` and `planning/maquette/` as history.
+
+Git is optional. Skills never create a repository; if one exists, a commit marks a frozen state — a stage done, a green slice, an accepted concept version, a kept refactor — and every commit that changes behaviour cites the requirement IDs it touches (`RULES.md` §6).
+
+## Profiles
+
+Customer-specific variants (allowed stacks, IT rules, mandatory standards, coding conventions, the customer's review process) do not fork this repo. They live in a `profile/` folder the Director reads at start and passes to each stage. A profile may restrict, never loosen. The format is fixed with the first real profile (`profile/README.md`).
+
+## Distribution and installation
+
+Repo and ZIP share the same structure. Users download the release ZIP, unzip it, open the folder in their AI app and type "start" (`START.md`). `AGENTS.md` / `CLAUDE.md` are read automatically and turn the agent into the Director — nothing to install, no symlinks, no global skill folders, no network, no telemetry. Developers who want the skills globally can symlink `skills/build*` into `~/.codex/skills/` or `~/.claude/skills/`.
+
+## Release
+
+Repository: https://github.com/ditomax/build — releases at https://github.com/ditomax/build/releases. New version: bump `VERSION`, tag `vX.Y.Z`, GitHub release with the folder attached as `build-vX.Y.Z.zip`.
+
+## Origin
+
+build is the Concept Document Authoring Manifest (DMBG, v1–v8, 2026) plus its companions — the requirement checklists, the architecture consistency checklist, the test tooling register and the day-to-day working rules formerly kept in `CLAUDE.local.md` — restructured into the Director-and-stages form shared with idea and maquette. The manifest text lives on unchanged as `MANIFEST.md`. The working principles in `RULES.md` §10 adapt Andrej Karpathy's observations on LLM coding pitfalls.
+
+## License
+
+© 2026 Dietmar Millinger, MIT License (`LICENSE`).

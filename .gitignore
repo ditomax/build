@@ -1,0 +1,8 @@
+# The user's own work never goes into the public repo.
+builds/*
+!builds/.gitkeep
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp

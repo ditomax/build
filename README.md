@@ -4,7 +4,16 @@
 
 Version: see `VERSION` · September 2026 · DMBG · https://github.com/ditomax/build
 
-_Deutsch: Für Anwender genügt `START.md` — drei Schritte, keine Installation. Die Skills antworten in der Sprache, in der man sie anspricht._
+For users, `START.md` is enough — three steps, no installation. The skills reply in whatever language they are addressed in.
+
+## For agents
+
+If you are reading this from a link and have no local copy yet:
+
+1. Get one — `git clone https://github.com/ditomax/build` or unzip the latest release from https://github.com/ditomax/build/releases — into a folder the user chooses (default: `./build` next to their other work). That download is the only network access; the "no network" rule in `AGENTS.md` applies from then on.
+2. Work from inside that folder and read its `AGENTS.md`. Do not act as the Director from this README — the rules live in `RULES.md` and `skills/`.
+3. Layout: standalone (this folder as is) unless the user has a project with a `planning/` folder — then the suite belongs at `planning/suite/build/` and `planning/AGENTS.md` is the entry point, not this file.
+4. A clone gives updates via `git pull`; the user's work in `builds/` is ignored by git, so nothing of it is ever committed to a clone. `hooks/`, `guard.py` and `skill-suite-setup` are for skillset developers — ignore them.
 
 ## What is build?
 
@@ -24,7 +33,7 @@ The user types **start** and afterwards only **next**, **redo** or **stop**. A D
 | — gate | sponsor | Phase 9 | gap analysis: implemented vs. specified, before release | — |
 | 4 rescue | maintenance crew | Phase 10 | `40-rescue.md` — entropy removed, drift reported; on demand, repeatable | 1 h |
 
-One feature = one concept document. The first feature is the scope of the brief; later features are added one at a time, each checked against the existing ones (interactions and interferences, cross-feature table in `00-build.md`). Requirement IDs carry the feature code (`F-PRC-12`) so two features never collide.
+Finished results look like `examples/10-intake.md` and `examples/20-concept.md` (fictitious company). One feature = one concept document. The first feature is the scope of the brief; later features are added one at a time, each checked against the existing ones (interactions and interferences, cross-feature table in `00-build.md`). Requirement IDs carry the feature code (`F-PRC-12`) so two features never collide.
 
 **Compatibility.** In: `60-brief.md` contract `H2/2` from maquette ≥ 0.5.0 (`H2/1` accepted with a note). Out: none. Version triples tested together: [skill-suite-setup/compat.md](https://github.com/ditomax/skill-suite-setup/blob/main/compat.md). Changes: `CHANGELOG.md`.
 
@@ -45,6 +54,7 @@ build/
   ATTRIBUTION.md       where the method comes from
   checklists/          requirements.md (Phase 1, by field of application) · architecture-consistency.md (Phase 6)
   profile/             optional customer-specific constraints (empty = core defaults)
+  examples/            fictitious finished results — an intake and a concept document (Example GmbH)
   builds/              the users' work in the standalone form, one subfolder per project (not in the repo)
   templates/           one template per result file and per shared register (binding content definition)
   skills/

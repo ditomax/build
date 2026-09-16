@@ -13,7 +13,7 @@ git: no                      # yes | no — checked by the Director at start
 language: en                 # language of the result files' content (requirements and code stay English)
 budget_min: {intake: 60, concept: 120, synthesis_per_slice: 45, rescue: 60}
 profile: none                # none | profile/
-contract_in: none            # none | H2/1 (started from a maquette brief)
+contract_in: none            # none | H2/2 | H2/1 (started from a maquette brief; the version the brief declares)
 ---
 
 # Build: <title>

@@ -1,17 +1,21 @@
-# profile/ — customer-specific constraints (reserved)
+# profile/ — customer-specific constraints
 
-This folder is empty in the public release. When a build workspace is prepared for one customer, it holds that customer's constraints, and the Director reads it at every start (RULES §8).
+Empty in the public release. A customer version carries this customer's constraints here; the Director reads `profile.md` at every start (RULES §8). The format is owned by the setup skill — see https://github.com/ditomax/skill-suite-setup/blob/main/PROFILE.md. This skillset reads: `profile.md`, `questions.md`, `standards.md` (mandatory norms and house checklist rows → intake, concept), `it-constraints.md` (stacks, hosting, network → concept, synthesis), `conventions.md` (coding conventions, CI, commit rules → synthesis, rescue), `review.md` (who signs which gate → Director).
 
-A profile may **restrict, never loosen**: write rules, git behaviour and "nothing outside the work root" stay as defined in `RULES.md`. The profile shapes content and frame.
+A profile may **restrict, never loosen**. `questions.md` may skip (with a value) or add questions by the IDs in `QUESTIONS.md`.
 
-Planned files (the format is fixed with the first real profile):
+## Minimal example
 
-| File | Read by | Purpose |
-| --- | --- | --- |
-| `profile.md` | Director | customer, default language, budgets, sponsor / product owner role |
-| `standards.md` | intake, concept | mandatory standards and regulations beyond the checklists, house-specific compliance |
-| `it-constraints.md` | concept, synthesis | allowed stacks and dependencies, hosting, data rules, "no network" |
-| `conventions.md` | synthesis, rescue | coding conventions, repository layout, CI expectations |
-| `review.md` | Director | who signs which gate, the customer's own review and release process |
+Put this into `profile/profile.md` and the Director will use it at the next start:
 
-Until a profile exists, this README is the only file here and means "core defaults".
+```markdown
+# Profile — Example GmbH
+
+- **Customer:** Example GmbH
+- **Org code:** EXG
+- **Document language:** de
+- **Contact for questions:** Jane Doe, jane@example.com
+- **Profile files present:** none
+```
+
+Every further file (`questions.md`, `scope.md`, …) is optional; the field spec is in PROFILE.md linked above.

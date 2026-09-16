@@ -1,0 +1,11 @@
+#!/bin/sh
+# skill-suite customer-data guard — blocks a commit whose staged text files carry customer markers.
+# Activate once per clone:  git config core.hooksPath hooks
+# The guard lives in the sibling skill-suite-setup repo (dev layout); override with SUITE_GUARD=/path/to/guard.py.
+GUARD="${SUITE_GUARD:-$(git rev-parse --show-toplevel)/../skill-suite-setup/guard.py}"
+if [ ! -f "$GUARD" ]; then
+  echo "guard: $GUARD not found — set SUITE_GUARD, or SUITE_GUARD_SKIP=1 to commit without the guard (not in the suite repos, please)"
+  exit 1
+fi
+[ "${SUITE_GUARD_SKIP:-0}" = "1" ] && exit 0
+exec python3 "$GUARD" staged

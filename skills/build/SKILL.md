@@ -32,7 +32,7 @@ Say which layout you found only if the user asks.
 
 ## Opening (every call)
 
-0. On the first greeting of a session, mention the version from `<suite>/VERSION` in half a sentence ("build 0.1.0"). If the profile folder is not empty, read `profile/README.md` and every file it names; carry the constraints into each stage call (RULES §8).
+0. On the first greeting of a session, mention the version from `<suite>/VERSION` in half a sentence ("build 0.1.3"). If the profile folder is not empty, read `profile/README.md` and every file it names; carry the constraints into each stage call (RULES §8). If `profile/questions.md` exists, read it: report unknown IDs once, and pass each stage the rows that name its questions (RULES §8).
 1. Find `00-build.md` under `<work>`; if `<work>` holds several builds (standalone), ask which. If none exists, this is a first call (below).
 2. Read `00-build.md`. Determine the **current feature** (the one the user is working on — ask if several are open) and its **current stage**: the first row whose status is not `done` or `skipped`. Check `.conflict.md` files, `stale` rows, and pending gates.
 3. Say, in two sentences: where the build stands and what happens now. Then act on the user's word (accept equivalents in the user's language — German: weiter / nochmal / stopp / überspringen):
@@ -48,12 +48,12 @@ Say which layout you found only if the user asks.
 
 Ask one question at a time.
 
-**With a brief** (project layout with one or more `60-brief.md` carrying `contract: H2/1`, or the user names one):
+**With a brief** (project layout with one or more `60-brief.md` carrying `contract: H2/2` — an `H2/1` brief is accepted with a note that guardrails and slices must be asked, or the user names one):
 
 1. If several briefs exist, list them as "code · title · recommendation from Part 4" and ask which one we build. Exactly one per build start.
 2. Read Part 3 of the brief. Propose the **feature code** (2–4 letters, from the maquette code) and the title; let the user correct. Take the field of application from the brief.
 3. **Path:** propose `mixed` (Path B on what the maquette showed, Path A on the rest) and say why in one sentence; the user may choose A or B.
-4. Record `contract_in: H2/1`, `input: brief <code> (<path>@<rev>) + vcode/`, sponsor from the brief's Part 4.
+4. Record `contract_in:` the version the brief declares (`H2/2`, or `H2/1` for an older brief), `input: brief <code> (<path>@<rev>) + vcode/`, sponsor from the brief's Part 4.
 
 **Without a brief** (cold start):
 

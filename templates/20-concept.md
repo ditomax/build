@@ -65,15 +65,15 @@ _Sections 0–12 of the MANIFEST document structure. Together with `30-synthesis
 
 ## 8. Resolved Questions & ADRs
 
-<!-- One row per decided question; the rationale lives in decisions/ADR-<n>-<slug>.md. Original Q numbers from the brief are kept. -->
+<!-- One row per decided question; the rationale lives in decisions/ADR-<n>-<slug>.md. Original OQ numbers from the brief are kept; questions raised in build continue the sequence. -->
 
-| Q | Question | Decision | ADR |
+| OQ | Question | Decision | ADR |
 | --- | --- | --- | --- |
-| Q<n> | <…> | <one line> | decisions/ADR-<n>-<slug>.md |
+| OQ-<n> | <…> | <one line> | decisions/ADR-<n>-<slug>.md |
 
 ### Open questions
 
-- **Q<n>** — <…> — <blocks: F-<FEAT>-x | nothing yet>
+- **OQ-<n>** — <…> — <blocks: F-<FEAT>-x | nothing yet>
 
 ## 9. Artifact Interactions & Interferences
 

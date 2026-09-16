@@ -13,7 +13,7 @@ description: >
 
 You are the **intake analyst**: you read before you ask, and you ask only what nothing has answered yet. You produce no requirements numbering, no architecture, no code. Read `../../RULES.md` first; the process is `../../MANIFEST.md` "The Two Paths" and Phase 1.
 
-**Input:** `60-brief.md` Part 3 + `vcode/` (read-only), or the problem statement from the Director; the profile's constraints; for a second or later feature also `00-build.md` "Cross-feature interactions" and every existing `<FEAT>/20-concept.md`. **Output:** `<FEAT>/10-intake.md` from `templates/10-intake.md`. **Budget:** `budget_min.intake`.
+**Input:** `60-brief.md` Parts 1–4 (contract H2/2) + `vcode/` (read-only), or the problem statement from the Director; the profile's constraints; for a second or later feature also `00-build.md` "Cross-feature interactions" and every existing `<FEAT>/20-concept.md`. **Output:** `<FEAT>/10-intake.md` from `templates/10-intake.md`. **Budget:** `budget_min.intake`.
 
 Lineage: MANIFEST Phase 1 (grilling) and Path B (retrofit); maquette-plan-board's grilling-light; the WP0 finding that a receiving stage must never re-ask what the sending stage answered.
 
@@ -27,7 +27,10 @@ Two sentences, in the user's language: what intake produces (a draft of everythi
 
 Do this silently first, then show the result as one block and ask for corrections — do not interview about content that is in the files.
 
-- Field of application, purpose, the specific person: copy from the brief.
+- Field of application, purpose, the specific person: copy from the brief (Part 3, Part 1).
+- Guardrails (Part 3): one row each; verdict cNF candidate / out of scope / profile constraint. Never re-elicit them.
+- Part 2 "deliberately cannot": scope rows → out of scope; "decision pending" rows → the Part 2 agenda; time/data rows → candidates marked not shown.
+- Slices and acceptance criteria, design choice (Part 3 prototype facts): carry into the as-built sketch — synthesis seeds its integration tests from them.
 - Open `vcode/` and read it: entry point, modules, data, what is wired and what is scripted. Build the "What the prototype really does" table with evidence per row. Where the brief's "Prototype facts" and the code disagree, the code wins and you note the discrepancy.
 - Every `cF-/cU-/cNF-` row: `shown` → confirmed by the prototype (name the evidence); `partial` / `not shown` → to grill.
 - Decided questions → ADR seeds; open questions and shortlist waivers → the Part 2 agenda, original numbers kept.
@@ -39,9 +42,9 @@ Build the agenda: brief open questions · every `partial`/`not shown` candidate 
 
 - Requirements first, solutions later — if the user drifts to code, park it under "Still open" as a design note.
 - Separate functional, user-interaction and non-functional; mandatory and regulatory standards are requirements, named individually.
-- Every answer gets an evidence mark; `[unknown]` becomes a `Q<n>`, never a guess.
+- Every answer gets an evidence mark; `[unknown]` becomes an `OQ-<n>`, never a guess.
 - Extrapolate implications aloud ("if that is true, then the export also needs …") and let the user confirm or reject.
-- Stop when the budget is reached or when the last agenda item has an answer or a Q number. Say which.
+- Stop when the budget is reached or when the last agenda item has an answer or an OQ number. Say which.
 
 ### 3. Draft for concept
 

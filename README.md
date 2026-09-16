@@ -2,7 +2,7 @@
 
 **From brief to product — concept documents as the source of truth, code as their derivative.**
 
-Version 0.1 · September 2026 · DMBG · https://github.com/ditomax/build
+Version: see `VERSION` · September 2026 · DMBG · https://github.com/ditomax/build
 
 _Deutsch: Für Anwender genügt `START.md` — drei Schritte, keine Installation. Die Skills antworten in der Sprache, in der man sie anspricht._
 
@@ -26,6 +26,8 @@ The user types **start** and afterwards only **next**, **redo** or **stop**. A D
 
 One feature = one concept document. The first feature is the scope of the brief; later features are added one at a time, each checked against the existing ones (interactions and interferences, cross-feature table in `00-build.md`). Requirement IDs carry the feature code (`F-PRC-12`) so two features never collide.
 
+**Compatibility.** In: `60-brief.md` contract `H2/2` from maquette ≥ 0.5.0 (`H2/1` accepted with a note). Out: none. Version triples tested together: [skill-suite-setup/compat.md](https://github.com/ditomax/skill-suite-setup/blob/main/compat.md). Changes: `CHANGELOG.md`.
+
 ## Structure
 
 ```
@@ -36,6 +38,9 @@ build/
   VERSION
   README.md            this file
   RULES.md             shared rules — frontmatter, write rules, conversation rules, git, contracts, working principles, definition of done
+  QUESTIONS.md         every question the skillset asks, with stable IDs — the tailoring surface for profiles
+  CHANGELOG.md         what changed per version
+  hooks/               pre-commit guard for development clones (see Release)
   MANIFEST.md          the Concept Document Authoring Manifest v8 — normative process reference
   ATTRIBUTION.md       where the method comes from
   checklists/          requirements.md (Phase 1, by field of application) · architecture-consistency.md (Phase 6)
@@ -52,7 +57,7 @@ build/
 
 ## Contracts
 
-- **In — H2.** `60-brief.md` (contract `H2/1`) written by maquette ≥ 0.4.0, Part 3 "Handover to build", plus the frozen `vcode/` next to it. Intake extracts first (Path B), grills the rest (Path A). Neither file is ever written by build.
+- **In — H2.** `60-brief.md` (contract `H2/2`) written by maquette ≥ 0.5.0 — all four parts — plus the frozen `vcode/` next to it. Intake extracts first (Path B), grills the rest (Path A). Neither file is ever written by build.
 - **Without a brief** build starts from a problem statement and runs the manifest's Path A in full.
 - **Out.** None — the product and its concept documents are the result.
 
@@ -64,13 +69,15 @@ Git is optional. Skills never create a repository; if one exists, a commit marks
 
 ## Profiles
 
-Customer-specific variants (allowed stacks, IT rules, mandatory standards, coding conventions, the customer's review process) do not fork this repo. They live in a `profile/` folder the Director reads at start and passes to each stage. A profile may restrict, never loosen. The format is fixed with the first real profile (`profile/README.md`).
+Customer-specific variants (restricted topics, IT constraints, standards, corporate design, the customer's own review process, questions skipped or added) do not fork this repo. They live in a `profile/` folder the Director reads at start; a profile may restrict, never loosen. The format is specified in [skill-suite-setup/PROFILE.md](https://github.com/ditomax/skill-suite-setup/blob/main/PROFILE.md); a minimal example is in `profile/README.md`. `QUESTIONS.md` lists every question the skillset asks, with stable IDs — read it before a session, and use the IDs in a profile to skip or add questions.
 
 ## Distribution and installation
 
 Repo and ZIP share the same structure. Users download the release ZIP, unzip it, open the folder in their AI app and type "start" (`START.md`). `AGENTS.md` / `CLAUDE.md` are read automatically and turn the agent into the Director — nothing to install, no symlinks, no global skill folders, no network, no telemetry. Developers who want the skills globally can symlink `skills/build*` into `~/.codex/skills/` or `~/.claude/skills/`.
 
 ## Release
+
+Development clones activate the customer-data guard once: `git config core.hooksPath hooks` (the hook calls `guard.py` from the sibling `skill-suite-setup` repo and blocks commits that carry customer markers). Release ZIPs are built with `skill-suite-setup/release.py`, which ships only git-tracked, allowlisted, guard-clean files.
 
 Repository: https://github.com/ditomax/build — releases at https://github.com/ditomax/build/releases. New version: bump `VERSION`, tag `vX.Y.Z`, GitHub release with the folder attached as `build-vX.Y.Z.zip`.
 

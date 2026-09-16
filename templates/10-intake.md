@@ -5,7 +5,7 @@ status: in_progress          # open | in_progress | done | skipped
 revision: 1
 created: <YYYY-MM-DDThh:mm>
 updated: <YYYY-MM-DDThh:mm>
-input: <60-brief.md@<rev>, vcode/ (frozen) | problem statement (chat)>
+input: <60-brief.md@<rev> (contract H2/2), vcode/ (frozen) | problem statement (chat)>
 feature: <FEAT>
 path: <A | B | mixed>
 ---
@@ -24,7 +24,7 @@ _Result of the intake stage. Part 1 is what the prototype and the brief already 
 
 ### Purpose and the specific person
 
-<from brief Part 1 and 10-seed.md Q3 — one paragraph, in the sponsor's words>
+<from brief Part 1 — one paragraph, in the sponsor's words>
 
 ### What the prototype really does
 
@@ -43,9 +43,25 @@ _Result of the intake stage. Part 1 is what the prototype and the brief already 
 | cF-1 | <…> | shown | confirmed by vcode/ (<evidence>) |
 | cF-<n> | <…> | not shown | to grill (Part 2) |
 
+### Guardrails taken over
+
+<!-- Brief Part 3 "Guardrails", one per row. Each becomes a candidate NF requirement or an out-of-scope line in Part 3 below; none is re-asked. -->
+
+| GR | Guardrail | Origin | Intake verdict |
+| --- | --- | --- | --- |
+| GR-1 | <…> | <…> | <cNF candidate | out of scope | profile constraint> |
+
+### Deliberately-cannot rows (brief Part 2)
+
+| Cannot | Reason category | Intake verdict |
+| --- | --- | --- |
+| <…> | <scope | time | data | decision pending> | <out of scope | to grill (decision pending) | requirement not shown> |
+
 ### As-built architecture sketch
 
-<stack, entry point, modules or files, data shapes, external services — what a rebuild would reuse and what it would not; from "Prototype facts" and vcode/>
+<stack, entry point, modules or files, data shapes, external services, design choice — what a rebuild would reuse and what it would not; from "Prototype facts" and vcode/>
+
+**Slices and acceptance criteria as built:** <from "Prototype facts" — seed for the integration scenarios in 30-synthesis.md §13>
 
 ### Decided and open questions carried over
 
@@ -60,7 +76,7 @@ _Result of the intake stage. Part 1 is what the prototype and the brief already 
 
 | # | Topic | Source | Answer (short) | Evidence |
 | --- | --- | --- | --- | --- |
-| 1 | <open question Q<n> / not-shown requirement / field-standard concern> | <brief | checklist | user> | <…> | <[evidenced] | [estimated] | [unknown]> |
+| 1 | <open question OQ-<n> / not-shown requirement / field-standard concern> | <brief | checklist | user> | <…> | <[evidenced] | [estimated] | [unknown]> |
 
 ### Field-standard concerns
 
@@ -78,7 +94,7 @@ _Result of the intake stage. Part 1 is what the prototype and the brief already 
 
 ### Still open after grilling
 
-- **Q<n>** — <…> — <who can answer, by when>
+- **OQ-<n>** — <…> — <who can answer, by when>
 
 ## Part 3 — Draft for the concept stage
 

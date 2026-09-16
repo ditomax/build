@@ -29,7 +29,7 @@ Take every draft and confirmed candidate from intake; assign `F-<FEAT>-n`, `U-<F
 
 ### 2. Resolve questions (Phase 2, §8)
 
-Batch the open questions by theme; ask one at a time; each answer is a one-line decision. Write an ADR per decision (`decisions/ADR-<n>-<slug>.md`: context, decision, rationale, consequences, traces to). Research dependencies or existing code when a question needs it — say so before you do. New requirements found here are appended with the next free number, never inserted.
+Batch the open questions by theme; ask one at a time; each answer is a one-line decision. Write an ADR per decision (`decisions/ADR-<n>-<slug>.md`, referencing its `OQ-<n>`: context, decision, rationale, consequences, traces to). Research dependencies or existing code when a question needs it — say so before you do. New requirements found here are appended with the next free number, never inserted.
 
 ### 3. Ubiquitous language (§2, `CONTEXT.md`)
 

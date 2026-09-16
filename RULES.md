@@ -76,7 +76,7 @@ feature: <FEAT>
 - **One question at a time.** Never stack questions. A grilling session is a sequence of single questions, batched by theme, not a questionnaire.
 - **Language.** Skill text is English. Talk to the user in the language they use (German: informal "du"). Write result files in the language given by `language` in `00-build.md`; keep the template's section headings English. Requirement text, identifiers, code and commit messages are always English.
 - **Opening line.** Each stage starts with two sentences: what this stage produces and roughly how long it takes. No lecture.
-- **Evidence marks.** Facts the user gives are tagged `[evidenced]`, `[estimated]` or `[unknown]`. Never fill a gap with your own guess; `[unknown]` is a valid answer that becomes an open question `Q<n>`.
+- **Evidence marks.** Facts the user gives are tagged `[evidenced]`, `[estimated]` or `[unknown]`. Never fill a gap with your own guess; `[unknown]` is a valid answer that becomes an open question `OQ-<n>` (numbered on from the brief; `Q1–Q6` are maquette's forcing questions, a different namespace).
 - **Requirements first, solutions later.** In intake and the first half of concept, push back when the conversation drifts to code.
 - **Opportunity language.** Say "still open" / "to be clarified", never "bad" / "unrealistic".
 - **Stop anytime.** On "stop" (or its equivalent): write the file with whatever exists, mark unfinished sections "open", set `status: in_progress`, hand back to the Director.
@@ -105,15 +105,24 @@ Every commit that changes behaviour cites the requirement IDs it touches in the 
 
 At the end of a stage, the stage skill reports in one short block: file(s) written (name, revision), status (`done` proposed / `in_progress`), minutes used, open questions count, gate findings if any (Phase 6 / Phase 9 matrices). Only the Director sets `status: done` and updates the stage table in `00-build.md`.
 
-## 8. Profile (reserved)
+## 8. Profile
 
-A workspace may contain a `profile/` folder with customer-specific constraints (allowed stacks, IT rules, mandatory standards, coding conventions, the customer's own review process). The Director reads it at start and passes the relevant parts to each stage. **A profile may restrict, never loosen:** write rules, git behaviour and "nothing outside the folder" stay as defined here. The profile format is defined in `profile/README.md` once the first profile exists.
+A workspace may contain a `profile/` folder with customer-specific constraints. **The profile format is owned by the setup skill** (skill-suite-setup, design §5); this skillset only reads it. The Director reads `profile/profile.md` at every start and passes the files it names to the stages. **A profile may restrict, never loosen:** write rules, git behaviour and "nothing outside the workspace" stay as defined here. An absent or empty `profile/` means core defaults.
 
+Files this skillset reads: `profile.md`, `questions.md`, `standards.md` (mandatory norms and house checklist rows → intake, concept), `it-constraints.md` (stacks, hosting, network → concept, synthesis), `conventions.md` (coding conventions, CI, commit rules → synthesis, rescue), `review.md` (who signs which gate → Director).
+
+**`profile/questions.md`** tailors the questions listed in `QUESTIONS.md` by ID:
+
+- `skip <ID>` with a value — the stage shows the value as prefilled ("from your profile: …"), lets the user correct it once, records the answer in its result file; the profile itself is never edited.
+- `add after <ID>` with a question — asked exactly once per stage run, right after the named question; the answer goes into the stage's result file under the closest section, marked `(profile)`.
+- Gate and safety questions (approvals, "good as it is?", stop) can never be skipped. Unknown IDs are reported at start, not silently ignored.
+
+The Director passes the rows of the coming stage to the stage skill together with the other profile constraints (§7 hand-back names which rows were applied).
 ## 9. Contracts
 
 build is the last of three skillsets and talks to its predecessor through one file. A missing contract file is never an error — it only means more questions for the user.
 
-- **H2 — in.** `60-brief.md` (contract `H2/1`, written by maquette-brief), Part 3 "Handover to build", plus the frozen `vcode/` next to it. Intake runs Path B on them first (extract what the prototype already answers), then Path A on the rest (grill what it does not). Neither file is ever written by build.
+- **H2 — in.** `60-brief.md` (contract `H2/2`, written by maquette ≥ 0.5.0) — all four parts: Part 1 (purpose, the person, click path), Part 2 (can / deliberately cannot with reason — "decision pending" rows are grilling material, "scope" rows are out-of-scope candidates), Part 3 (handover: guardrails, candidates, vocabulary, questions, riskiest assumption, prototype facts), Part 4 (sponsor, date) — plus the frozen `vcode/` next to it. Intake runs Path B on them first (extract what the prototype already answers), then Path A on the rest (grill what it does not). Neither file is ever written by build.
 - **Without a brief:** cold start. Intake asks for the problem statement and runs Path A in full (MANIFEST Phase 1). `contract_in: none`.
 - **Out:** none. The product and its concept documents are the result.
 

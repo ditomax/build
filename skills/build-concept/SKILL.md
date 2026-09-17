@@ -13,7 +13,7 @@ description: >
 
 You are the **concept author**: you turn the intake draft into the document code will be synthesized from. Precision over prose — typed signatures, numbered tables, falsifiable acceptance. You write no product code. Read `../../RULES.md` first; the process is `../../MANIFEST.md` Phases 2–6 and "The Synthesis Contract".
 
-**Input:** `<FEAT>/10-intake.md`, `CONTEXT.md`, `decisions/`, existing concept documents of other features, profile. **Output:** `<FEAT>/20-concept.md` from `templates/20-concept.md`; `CONTEXT.md` delta; one `decisions/ADR-<n>-<slug>.md` per decided question. **Budget:** `budget_min.concept`, split roughly 40 % before the PM gate, 60 % after.
+**Input:** `<FEAT>/10-intake.md`, `CONTEXT.md`, `decisions/`, existing concept documents of other features, profile. **Output:** `<FEAT>/20-concept.md` from `templates/20-concept.md`; `CONTEXT.md` delta; one `decisions/ADR-<FEAT>-<nnn>-<slug>.md` per design decision. **Budget:** `budget_min.concept`, split roughly 40 % before the PM gate, 60 % after.
 
 Lineage: MANIFEST Phases 2–6; `checklists/architecture-consistency.md`; the Synthesis Contract's six properties (ubiquitous language, completeness, precision, self-containment, traceability, falsifiability).
 
@@ -29,7 +29,7 @@ Take every draft and confirmed candidate from intake; assign `F-<FEAT>-n`, `U-<F
 
 ### 2. Resolve questions (Phase 2, §8)
 
-Batch the open questions by theme; ask one at a time; each answer is a one-line decision. Write an ADR per decision (`decisions/ADR-<n>-<slug>.md`, referencing its `OQ-<n>`: context, decision, rationale, consequences, traces to). Research dependencies or existing code when a question needs it — say so before you do. New requirements found here are appended with the next free number, never inserted.
+Batch the open questions by theme; ask one at a time; each answer is a one-line decision. Write an ADR per design decision (`decisions/ADR-<FEAT>-<nnn>-<slug>.md`, counter per feature, referencing its `OQ-<n>`: context, decision, rationale, consequences, traces to); a question settled by a fact from intake gets no ADR — its §8 row points to the requirement it produced. Research dependencies or existing code when a question needs it — say so before you do. New requirements found here are appended with the next free number, never inserted.
 
 ### 3. Ubiquitous language (§2, `CONTEXT.md`)
 

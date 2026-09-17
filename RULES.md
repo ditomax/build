@@ -29,7 +29,7 @@ Two layouts; the Director resolves which applies and calls the work root `<work>
 <work>/
   00-build.md            Director    control — features, stage tables, code root, cross-feature interactions
   CONTEXT.md             concept     ubiquitous language of the whole project (seeded from the brief)
-  decisions/             concept     one ADR per decided question: ADR-<n>-<slug>.md
+  decisions/             concept     one ADR per design decision: ADR-<FEAT>-<nnn>-<slug>.md (counter per feature)
   deployment.md          synthesis   register of deployment and support scripts
   test_tooling.md        synthesis   register of test and debug tooling
   <FEAT>/                one folder per feature
@@ -87,7 +87,7 @@ feature: <FEAT>
 
 ## 6. Git
 
-Git is optional and never created by a skill. `git` in `00-build.md` is `yes` only if `<work>` or `code_root` (or a parent) is a git repository at start; skills never run `git init`. With `git: no`, every commit step below is skipped and the result file records "— (no git)".
+Git is optional and never created by a skill. `git` in `00-build.md` is `yes` only if `<work>` or `code_root` (or a parent) is a git repository at start; skills never run `git init`. `yes` also requires that the work folder is tracked: a clone of the public build repo ignores `builds/` via `.gitignore`, so a clone counts as `no` — the Director checks with `git check-ignore`. With `git: no`, every commit step below is skipped and the result file records "— (no git)".
 
 With `git: yes`, a commit marks a **frozen state, never progress**.
 
@@ -122,7 +122,7 @@ The Director passes the rows of the coming stage to the stage skill together wit
 
 build is the last of three skillsets and talks to its predecessor through one file. A missing contract file is never an error — it only means more questions for the user.
 
-- **H2 — in.** `60-brief.md` (contract `H2/2`, written by maquette ≥ 0.5.0) — all four parts: Part 1 (purpose, the person, click path), Part 2 (can / deliberately cannot with reason — "decision pending" rows are grilling material, "scope" rows are out-of-scope candidates), Part 3 (handover: guardrails, candidates, vocabulary, questions, riskiest assumption, prototype facts), Part 4 (sponsor, date) — plus the frozen `vcode/` next to it. Intake runs Path B on them first (extract what the prototype already answers), then Path A on the rest (grill what it does not). Neither file is ever written by build.
+- **H2 — in.** `60-brief.md` (contract `H2/2`, written by maquette ≥ 0.5.0) — all four parts: Part 1 (purpose, the person, click path), Part 2 (can / deliberately cannot with reason — "decision pending" rows are grilling material, "scope" rows are out-of-scope candidates), Part 3 (handover: guardrails, candidates, vocabulary, questions, riskiest assumption, prototype facts), Part 4 (sponsor, date) — plus the frozen `vcode/` next to it. Intake runs Path B on them first (extract what the prototype already answers), then Path A on the rest (grill what it does not). Neither file is ever written by build. Decided and open questions keep the brief's `OQ-n` numbers; questions raised in build continue the sequence.
 - **Without a brief:** cold start. Intake asks for the problem statement and runs Path A in full (MANIFEST Phase 1). `contract_in: none`.
 - **Out:** none. The product and its concept documents are the result.
 

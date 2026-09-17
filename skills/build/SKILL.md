@@ -32,7 +32,7 @@ Say which layout you found only if the user asks.
 
 ## Opening (every call)
 
-0. On the first greeting of a session, mention the version from `<suite>/VERSION` in half a sentence ("build 0.1.3"). If the profile folder is not empty, read `profile/README.md` and every file it names; carry the constraints into each stage call (RULES §8). If `profile/questions.md` exists, read it: report unknown IDs once, and pass each stage the rows that name its questions (RULES §8).
+0. On the first greeting of a session, mention the version from `<suite>/VERSION` in half a sentence ("build 0.1.4"). If the profile folder is not empty, read `profile/README.md` and every file it names; carry the constraints into each stage call (RULES §8). If `profile/questions.md` exists, read it: report unknown IDs once, and pass each stage the rows that name its questions (RULES §8).
 1. Find `00-build.md` under `<work>`; if `<work>` holds several builds (standalone), ask which. If none exists, this is a first call (below).
 2. Read `00-build.md`. Determine the **current feature** (the one the user is working on — ask if several are open) and its **current stage**: the first row whose status is not `done` or `skipped`. Check `.conflict.md` files, `stale` rows, and pending gates.
 3. Say, in two sentences: where the build stands and what happens now. Then act on the user's word (accept equivalents in the user's language — German: weiter / nochmal / stopp / überspringen):
@@ -57,14 +57,15 @@ Ask one question at a time.
 
 **Without a brief** (cold start):
 
-1. **Input:** "What are we building — the problem in two sentences, and for whom?" Record `contract_in: none`, path `A`.
+0. **Coming from maquette?** If the user's first message mentions maquette, a brief, a prototype or a clickable model, do not ask the cold-start question yet: standalone → "Give me the path to the maquette folder (with `60-brief.md` and `vcode/`) — or just describe what we build in two sentences if you do not have it at hand", then continue under *With a brief*; project layout → say that no finished brief was found in `planning/maquette/` and offer the cold start.
+1. **Input:** "What are we building — the problem in two sentences, and for whom? Or, if you come from maquette, the path to the maquette folder." Record `contract_in: none`, path `A`.
 2. **Feature code** and title — propose, let the user correct.
 3. **Field of application** — infer from the answer, confirm in half a sentence.
 
 **Both paths:**
 
 5. **Code root:** project layout → `<project>/` is the default, confirm it; standalone → ask. Never inside `<work>`.
-6. **Git:** check silently whether `<work>` or `code_root` (or a parent) is a git repository (`git rev-parse --is-inside-work-tree` if a shell is available; else look for `.git`). Record `yes`/`no`. Never run `git init`. Tell the user in half a sentence.
+6. **Git:** check silently whether `<work>` or `code_root` (or a parent) is a git repository (`git rev-parse --is-inside-work-tree` if a shell is available; else look for `.git`). Record `yes`/`no`. Then `git check-ignore -q` on the folder the results will live in (standalone: `builds/<project>`; the path need not exist yet): if it is ignored (the workspace is a clone of the public repo), record `no (clone — work folder ignored)` instead. Never run `git init`. Tell the user in half a sentence.
 7. **Language** of result files: English by default; a profile may set it; the language the user writes in overrides that; an explicit statement by the user overrides everything. Requirement text, IDs, code and commits stay English regardless. Confirm in half a sentence.
 
 Then create `00-build.md` from `templates/00-build.md` (revision 1, one feature block, budgets from the template, log line `start`), create `CONTEXT.md`, `deployment.md`, `test_tooling.md` and `decisions/` from the templates if absent, and run intake.
@@ -76,7 +77,7 @@ Then create `00-build.md` from `templates/00-build.md` (revision 1, one feature 
 3. Read and follow `<suite>/skills/build-<stage>/SKILL.md` in full, passing: work root, feature code, current input files and revisions, path, field, `git`, `language`, `code_root`, minutes, and the profile constraints that concern this stage.
 4. When the stage skill hands back (RULES §7): verify the result file exists, has valid frontmatter, cites the right `input@revision`, keeps every template heading, and that every requirement ID carries the feature code. If a check fails, name it and ask the stage skill to fix — do not fix content yourself.
 5. **Gates.** Concept hands back twice: once after §3–§10 (PM review, MANIFEST Phase 4) and once after §11–§12 (consistency review, Phase 6). Synthesis hands back after the gap analysis (Phase 9). At each gate you ask the sponsor's decision, one question, and log it in the Gates table with rationale. PM review is a hard gate: no architecture without approval. Phase 6 and 9 are advisory: findings are shown prominently, the human accepts (logged), requests a fix (loop back), or defers (tracked in "Open items").
-6. Ask the user: "Good as it is — next, or redo?" On next: set `status: done` in the result file's frontmatter (the only field you edit in another skill's file), fill the stage table, log the decision. With `git: yes`, commit that file (RULES §6) and say so in half a sentence.
+6. Ask the user: "Good as it is — next, or redo?" On next: set `status: done` in the result file's frontmatter (the only field you edit in another skill's file) — that write bumps `revision` and `updated` like any other (RULES §4.4), fill the stage table, log the decision. With `git: yes`, commit that file (RULES §6) and say so in half a sentence.
 7. If minutes used exceed the budget by more than 25 %, note it under "Open items for the Director" — data for the retro, not a reprimand.
 
 ## Cross-feature interactions

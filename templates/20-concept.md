@@ -65,11 +65,11 @@ _Sections 0–12 of the MANIFEST document structure. Together with `30-synthesis
 
 ## 8. Resolved Questions & ADRs
 
-<!-- One row per decided question; the rationale lives in decisions/ADR-<n>-<slug>.md. Original OQ numbers from the brief are kept; questions raised in build continue the sequence. -->
+<!-- One row per decided question. A design decision gets an ADR: decisions/ADR-<FEAT>-<nnn>-<slug>.md (counter per feature). A question settled by an intake fact rather than a decision points to the requirement it produced (→ F-<FEAT>-n) instead. Original OQ numbers from the brief are kept; questions raised in build continue the sequence. -->
 
 | OQ | Question | Decision | ADR |
 | --- | --- | --- | --- |
-| OQ-<n> | <…> | <one line> | decisions/ADR-<n>-<slug>.md |
+| OQ-<n> | <…> | <one line> | <decisions/ADR-<FEAT>-<nnn>-<slug>.md | → F-<FEAT>-n> |
 
 ### Open questions
 

@@ -20,7 +20,7 @@ Unzip the file and place the `build` folder where you will find it again. You ma
 - **Claude (Cowork):** new task → connect folder → select this folder.
 - **Claude Code / Codex / Vibe in a terminal:** change into the folder and start the program.
 
-The app is meant to read the rules from this folder by itself. **If nothing happens after step 3, type: "Read AGENTS.md and begin."**
+The app is meant to read the rules from this folder by itself. **If nothing happens after step 3, type: "Read build/AGENTS.md and begin."**
 
 ## 3. Type "start"
 
@@ -39,7 +39,7 @@ You can stop at any time. Whatever exists by then stays in the folder and contin
 
 If a clickable model exists, its `60-brief.md` is the starting point: type "start", and when the AI asks what to build, say *"here is the brief:"* and give the path to the maquette folder (the brief and the model's `vcode/` next to it). The AI extracts what the model already answers and asks only about the rest. Without a brief, the problem in two sentences is enough — expect more questions then.
 
-One project folder for all three tools — `planning/` with the skillsets, a profile and an entry point that knows which tool is up — is produced with the maintainers' tool [skill-suite-setup](https://github.com/ditomax/skill-suite-setup). That is also the recommended form for build, because the product code lives next to `planning/`.
+One project folder for all three tools — `planning/` with the skillsets, a profile and an entry point that knows which tool is up — is produced with the suite's setup tool [skill-suite-setup](https://github.com/ditomax/skill-suite-setup). That is also the recommended form for build, because the product code lives next to `planning/`.
 
 ## Where is what?
 
@@ -47,7 +47,7 @@ Inside a project everything lives in `planning/build/`: one subfolder per featur
 
 ## If something does not work
 
-- The AI does not react to "start"? Type: "Read AGENTS.md and begin."
+- The AI does not react to "start"? Type: "Read build/AGENTS.md and begin."
 - You want to add a second feature? Type: "New feature." The first one is kept.
 - New version of build? Download the latest ZIP from https://github.com/ditomax/build/releases, unzip it next to the old folder, and move your work folder (`builds/` and `profile/` if you have one) across. Work started under an older version is fine — the AI notices what changed and offers to redo a step where needed; it never fails on it. Ask us before editing a profile, so your changes survive the next version.
 - Uninstall? Delete the folder. Your work is in the work folder — take it with you first.

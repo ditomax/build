@@ -12,8 +12,8 @@ If you are reading this from a link and have no local copy yet:
 
 1. Get one — `git clone https://github.com/ditomax/build` or unzip the latest release from https://github.com/ditomax/build/releases — into a folder the user chooses (default: `./build` next to their other work). That download is the only network access; the "no network" rule in `AGENTS.md` applies from then on.
 2. Work from inside that folder and read its `AGENTS.md`. Do not act as the Director from this README — the rules live in `RULES.md` and `skills/`.
-3. Layout: standalone (this folder as is) unless the user has a project with a `planning/` folder — then the suite belongs at `planning/suite/build/` and `planning/AGENTS.md` is the entry point, not this file.
-4. A clone gives updates via `git pull`; the user's work in `builds/` is ignored by git, so nothing of it is ever committed to a clone. `hooks/`, `guard.py` and `skill-suite-setup` are for skillset developers — ignore them.
+3. Layout: standalone (this folder as is) unless the user has a project with a `planning/` folder — then the suite belongs at `planning/suite/build/` and `planning/AGENTS.md` is the entry point, not this file. That `planning/` form is produced by [skill-suite-setup](https://github.com/ditomax/skill-suite-setup) (see *The suite*), never assembled by hand.
+4. A clone gives updates via `git pull`; the user's work in `builds/` is ignored by git, so nothing of it is ever committed to a clone. `hooks/` and `guard.py` are for skillset developers — ignore them.
 
 ## What is build?
 
@@ -64,6 +64,17 @@ build/
     build-synthesis/
     build-rescue/
 ```
+
+## The suite
+
+| Repo | What it does |
+| --- | --- |
+| [idea](https://github.com/ditomax/idea) | vague wish → ranked shortlist (`10-shortlist.md`, contract H1) |
+| [maquette](https://github.com/ditomax/maquette) | one shortlist entry → clickable model and brief (`60-brief.md`, contract H2) |
+| [build](https://github.com/ditomax/build) — this repo | brief → product, with concept documents as the source of truth |
+| [skill-suite-setup](https://github.com/ditomax/skill-suite-setup) | puts the three into one project folder (`planning/`) with a profile and a single entry point that knows which skillset is up; builds customer-specific versions |
+
+Each skillset works on its own. Anyone who wants more than one of them, or a customer-specific version, gets the `planning/` form from [skill-suite-setup](https://github.com/ditomax/skill-suite-setup) instead of standalone folders side by side.
 
 ## Contracts
 

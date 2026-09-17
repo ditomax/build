@@ -7,12 +7,12 @@
 | # | Question | Prefilled from | Note |
 | --- | --- | --- | --- |
 | D1 | (several briefs) Which one do we build? — listed as code · title · recommendation | `planning/maquette/*/60-brief.md` Part 4 | exactly one |
-| D1' | (cold start) What are we building — the problem in two sentences, and for whom? | — | path A |
+| D1' | (cold start) What are we building — the problem in two sentences, and for whom? Or, if you come from maquette, the path to the maquette folder | — | path A; if the first message mentions maquette / brief / prototype, the path is asked first |
 | D2 | Feature code (2–4 letters) and title — proposed, user corrects | maquette code | |
 | D3 | Path: mixed (B on what the maquette showed, A on the rest) — or A or B? | proposed | cold start: A |
 | D4 | Field of application — <inferred>? | brief Part 3 (with brief: not asked) | |
 | D5 | Code root: the project folder outside `planning/` — right? (standalone: where?) | project layout default | never inside `<work>` |
-| D6 | Git: is the folder a repository? | checked silently, result told | never `git init` |
+| D6 | Git: is the folder a repository? | checked silently, result told | never `git init`; a clone of the public repo counts as no |
 | D7 | Language of the result files? (requirements, IDs, code, commits stay English) | profile → chat language → explicit statement | |
 
 Later calls: "Good as it is — next, or redo?" after a stage; the gate questions below; on a concept redo after code exists: "this is a concept version bump, committed before code follows — go?"

@@ -2,6 +2,8 @@
 
 **Version 1**
 
+_No exact field for your product? Take the closest one (an internal document-generation tool → Web application), add the cross-cutting and technology sections, and name the sections you used in `10-intake.md`._
+
 **A living library of learned, reusable requirements — keyed by field of application and by technology.**
 
 Companion to the [MANIFEST.md](../MANIFEST.md) and `RULES.md`. During Phase 1 the field of application is inferred; consult the matching sections here and turn every applicable entry into an explicit, numbered requirement (`F-`, `NF-`, `U-`). Anything not applicable is explicitly deferred with a rationale — never silently skipped.

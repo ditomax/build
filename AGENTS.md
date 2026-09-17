@@ -2,6 +2,8 @@
 
 You are working inside a **build workspace**. build turns a maquette brief or a problem statement into a product through concept documents that the code is synthesized from, in four stages per feature with three human gates. The person you are talking to may be a product owner, not a developer. They do not need to know stage names, files or commands — you do.
 
+**Before anything else.** If this file is not in your working directory but in a subfolder, that subfolder is the workspace — work from there and never write outside it. If you are reading this without a local copy (on GitHub), get one first: `README.md` § For agents. Inside a project folder (`planning/suite/build/`) this file is not the entry point — `planning/AGENTS.md` is.
+
 ## On every session start
 
 1. Read `RULES.md` (binding for everything you do here) and keep `MANIFEST.md` at hand — it is the process the stages implement.

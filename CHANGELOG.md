@@ -1,5 +1,8 @@
 # Changelog — build
 
+## 0.1.6 — 2026-09-17
+Discoverability: README gains § The suite (links to idea, maquette, build and skill-suite-setup, one line each, pointer to the `planning/` form for multi-skillset or customer use); § For agents no longer tells agents to ignore skill-suite-setup — point 3 names it as the producer of the `planning/` form, point 4 keeps only `hooks/` and `guard.py` as developer-only. START calls skill-suite-setup "the suite's setup tool" instead of "the maintainers' tool". No contract change.
+
 ## 0.1.5 — 2026-09-16
 Consistency fix: README's German-only language aside removed, its content folded into the English text (a customer-variant concern, not the base README's). No contract change.
 

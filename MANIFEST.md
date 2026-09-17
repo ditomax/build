@@ -1,4 +1,4 @@
-<!-- build skillset — normative reference. This is the Concept Document Authoring Manifest v8 (DMBG, 2026), carried into the build skillset unchanged in substance. The stage skills cite it as "MANIFEST Phase n". Path references were adjusted to this folder: checklists live in checklists/, the day-to-day rules of the former CLAUDE.local.md are in RULES.md §10, and the document structure template is realised as templates/20-concept.md + templates/30-synthesis.md. -->
+<!-- build skillset — normative reference. This is the Concept Document Authoring Manifest v8 (Dietmar Millinger, 2026), carried into the build skillset unchanged in substance. The stage skills cite it as "MANIFEST Phase n". Path references were adjusted to this folder: checklists live in checklists/, the day-to-day rules of the former CLAUDE.local.md are in RULES.md §10, and the document structure template is realised as templates/20-concept.md + templates/30-synthesis.md. -->
 
 # Concept Document Authoring Manifest
 

@@ -1,10 +1,10 @@
 # Attribution
 
-build is an original skill suite by DMBG (Dietmar Millinger). It contains no code and no text copied from third-party projects. This file names the sources of its method.
+build is an original skill suite by Dietmar Millinger. It contains no code and no text copied from third-party projects. This file names the sources of its method.
 
-## Concept Document Authoring Manifest — DMBG, 2026
+## Concept Document Authoring Manifest — Dietmar Millinger, 2026
 
-`MANIFEST.md` is version 8 of DMBG's own manifest, developed across several projects in 2026 (versions 1–8), together with its companion files `requirement_checklists.md` (v1), `architecture_consistency_checklist.md` (v1), `test_tooling.md` and `CLAUDE.local.md` (v2). build restructures them into the Director-and-stages form shared with the idea and maquette skillsets; the manifest text itself is carried unchanged in substance.
+`MANIFEST.md` is version 8 of Dietmar Millinger's own manifest, developed across several projects in 2026 (versions 1–8), together with its companion files `requirement_checklists.md` (v1), `architecture_consistency_checklist.md` (v1), `test_tooling.md` and `CLAUDE.local.md` (v2). build restructures them into the Director-and-stages form shared with the idea and maquette skillsets; the manifest text itself is carried unchanged in substance.
 
 ## Andrej Karpathy — observations on LLM coding pitfalls
 
@@ -16,4 +16,4 @@ build itself adopts no gstack method directly. Its sibling maquette does (see th
 
 ## The suite
 
-idea, maquette and build share the Director pattern, the frontmatter and write rules, the conversation rules and the git policy, first written for maquette 0.1–0.4 and generalised in the suite's target picture (DMBG, September 2026).
+idea, maquette and build share the Director pattern, the frontmatter and write rules, the conversation rules and the git policy, first written for maquette 0.1–0.4 and generalised in the suite's target picture (September 2026).

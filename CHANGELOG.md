@@ -1,5 +1,8 @@
 # Changelog — build
 
+## 0.1.7 — 2026-09-17
+README: new **Language** and **Git** sections (git moved out of *Inside a project*), intro language sentence matched to idea and maquette, section order aligned with idea and maquette. No contract change. The company abbreviation DMBG is gone from the public texts: the product is simply the skill suite (idea → maquette → build); source credits in `ATTRIBUTION.md` name Dietmar Millinger.
+
 ## 0.1.6 — 2026-09-17
 Discoverability: README gains § The suite (links to idea, maquette, build and skill-suite-setup, one line each, pointer to the `planning/` form for multi-skillset or customer use); § For agents no longer tells agents to ignore skill-suite-setup — point 3 names it as the producer of the `planning/` form, point 4 keeps only `hooks/` and `guard.py` as developer-only. START calls skill-suite-setup "the suite's setup tool" instead of "the maintainers' tool". No contract change.
 

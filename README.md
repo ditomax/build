@@ -2,9 +2,9 @@
 
 **From brief to product — concept documents as the source of truth, code as their derivative.**
 
-Version: see `VERSION` · September 2026 · DMBG · https://github.com/ditomax/build
+Version: see `VERSION` · September 2026 · https://github.com/ditomax/build
 
-For users, `START.md` is enough — three steps, no installation. The skills reply in whatever language they are addressed in.
+For users, `START.md` is enough — three steps, no installation. Conversation and output files follow the user's language; headings in the templates stay in English.
 
 ## For agents
 
@@ -37,6 +37,23 @@ Finished results look like `examples/10-intake.md` and `examples/20-concept.md` 
 
 **Compatibility.** In: `60-brief.md` contract `H2/2` from maquette ≥ 0.5.0 (`H2/1` accepted with a note). Out: none. Version triples tested together: [skill-suite-setup/compat.md](https://github.com/ditomax/skill-suite-setup/blob/main/compat.md). Changes: `CHANGELOG.md`.
 
+## The suite
+
+| Repo | What it does |
+| --- | --- |
+| [idea](https://github.com/ditomax/idea) | vague wish → ranked shortlist (`10-shortlist.md`, contract H1) |
+| [maquette](https://github.com/ditomax/maquette) | one shortlist entry → clickable model and brief (`60-brief.md`, contract H2) |
+| [build](https://github.com/ditomax/build) — this repo | brief → product, with concept documents as the source of truth |
+| [skill-suite-setup](https://github.com/ditomax/skill-suite-setup) | puts the three into one project folder (`planning/`) with a profile and a single entry point that knows which skillset is up; builds customer-specific versions |
+
+Each skillset works on its own. Anyone who wants more than one of them, or a customer-specific version, gets the `planning/` form from [skill-suite-setup](https://github.com/ditomax/skill-suite-setup) instead of standalone folders side by side.
+
+## Contracts
+
+- **In — H2.** `60-brief.md` (contract `H2/2`) written by maquette ≥ 0.5.0 — all four parts — plus the frozen `vcode/` next to it. Intake extracts first (Path B), grills the rest (Path A). Neither file is ever written by build.
+- **Without a brief** build starts from a problem statement and runs the manifest's Path A in full.
+- **Out.** None — the product and its concept documents are the result.
+
 ## Structure
 
 ```
@@ -65,36 +82,25 @@ build/
     build-rescue/
 ```
 
-## The suite
-
-| Repo | What it does |
-| --- | --- |
-| [idea](https://github.com/ditomax/idea) | vague wish → ranked shortlist (`10-shortlist.md`, contract H1) |
-| [maquette](https://github.com/ditomax/maquette) | one shortlist entry → clickable model and brief (`60-brief.md`, contract H2) |
-| [build](https://github.com/ditomax/build) — this repo | brief → product, with concept documents as the source of truth |
-| [skill-suite-setup](https://github.com/ditomax/skill-suite-setup) | puts the three into one project folder (`planning/`) with a profile and a single entry point that knows which skillset is up; builds customer-specific versions |
-
-Each skillset works on its own. Anyone who wants more than one of them, or a customer-specific version, gets the `planning/` form from [skill-suite-setup](https://github.com/ditomax/skill-suite-setup) instead of standalone folders side by side.
-
-## Contracts
-
-- **In — H2.** `60-brief.md` (contract `H2/2`) written by maquette ≥ 0.5.0 — all four parts — plus the frozen `vcode/` next to it. Intake extracts first (Path B), grills the rest (Path A). Neither file is ever written by build.
-- **Without a brief** build starts from a problem statement and runs the manifest's Path A in full.
-- **Out.** None — the product and its concept documents are the result.
-
 ## Inside a project
 
 The workspace above is the standalone form. Inside a project folder the same suite is copied to `planning/suite/build/` (read-only), the work lives in `planning/build/`, the profile in `planning/profile/`, briefs wait in `planning/maquette/<x>/60-brief.md`, and the product code lives in the project root outside `planning/`. The Director recognises the layout by the `planning/` folder. A coding agent working on the product reads `planning/build/` as its specification and treats `planning/idea/` and `planning/maquette/` as history.
 
-Git is optional. Skills never create a repository; if one exists, a commit marks a frozen state — a stage done, a green slice, an accepted concept version, a kept refactor — and every commit that changes behaviour cites the requirement IDs it touches (`RULES.md` §6).
+## Distribution and installation
+
+Repo and ZIP share the same structure. Users download the release ZIP, unzip it, open the folder in their AI app and type "start" (`START.md`). `AGENTS.md` / `CLAUDE.md` are read automatically and turn the agent into the Director — nothing to install, no symlinks, no global skill folders, no network, no telemetry. Developers who want the skills globally can symlink `skills/build*` into `~/.codex/skills/` or `~/.claude/skills/`.
 
 ## Profiles
 
 Customer-specific variants (restricted topics, IT constraints, standards, corporate design, the customer's own review process, questions skipped or added) do not fork this repo. They live in a `profile/` folder the Director reads at start; a profile may restrict, never loosen. The format is specified in [skill-suite-setup/PROFILE.md](https://github.com/ditomax/skill-suite-setup/blob/main/PROFILE.md); a minimal example is in `profile/README.md`. `QUESTIONS.md` lists every question the skillset asks, with stable IDs — read it before a session, and use the IDs in a profile to skip or add questions.
 
-## Distribution and installation
+## Language
 
-Repo and ZIP share the same structure. Users download the release ZIP, unzip it, open the folder in their AI app and type "start" (`START.md`). `AGENTS.md` / `CLAUDE.md` are read automatically and turn the agent into the Director — nothing to install, no symlinks, no global skill folders, no network, no telemetry. Developers who want the skills globally can symlink `skills/build*` into `~/.codex/skills/` or `~/.claude/skills/`.
+All skill text, template headings, frontmatter keys and status values are English. The conversation follows the user's language (German → informal "du"). The result files are written in the language recorded as `language` in `00-build.md`; template headings, requirement text, identifiers, code and commit messages stay English.
+
+## Git
+
+Optional. Skills never create a repository; if one exists, a commit marks a frozen state — a stage done, a green slice, an accepted concept version, a kept refactor — and every commit that changes behaviour cites the requirement IDs it touches (`RULES.md` §6).
 
 ## Release
 
@@ -104,7 +110,7 @@ Repository: https://github.com/ditomax/build — releases at https://github.com/
 
 ## Origin
 
-build is the Concept Document Authoring Manifest (DMBG, v1–v8, 2026) plus its companions — the requirement checklists, the architecture consistency checklist, the test tooling register and the day-to-day working rules formerly kept in `CLAUDE.local.md` — restructured into the Director-and-stages form shared with idea and maquette. The manifest text lives on unchanged as `MANIFEST.md`. The working principles in `RULES.md` §10 adapt Andrej Karpathy's observations on LLM coding pitfalls.
+build is the Concept Document Authoring Manifest (Dietmar Millinger, v1–v8, 2026) plus its companions — the requirement checklists, the architecture consistency checklist, the test tooling register and the day-to-day working rules formerly kept in `CLAUDE.local.md` — restructured into the Director-and-stages form shared with idea and maquette. The manifest text lives on unchanged as `MANIFEST.md`. The working principles in `RULES.md` §10 adapt Andrej Karpathy's observations on LLM coding pitfalls.
 
 ## License
 

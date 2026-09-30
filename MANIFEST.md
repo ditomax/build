@@ -116,6 +116,8 @@ A concept document is synthesis-ready when it satisfies all of the following:
 
 ## The 10 Phases
 
+_Read as a V-model: Phases 1–7 are the left leg — every document is written together with the test that will check it (Phase 7 collects those tests); Phase 8 is the bottom; Phases 8–9 climb the right leg, checking the result against the documents at the same height._
+
 ### Phase 1 — Critique the Draft via AI "Grilling"
 
 Start with whatever exists (loose notes, bullet points, a half-finished doc). To avoid the common failure mode of misalignment, force the agent to rigorously interview you.
@@ -179,6 +181,7 @@ Add the architecture chapter with full traceability, ensuring the design is expl
 * Every module lists which requirements it fulfills (`Traces to: F-x, NF-y`).
 * **Mandatory Artifacts**: Include the module tree, class/method signatures (pseudocode), a mermaid flowchart, an inter-module interface table, and a state machine diagram.
 * End with a traceability matrix: every F/NF/U requirement $\rightarrow$ module(s). No orphan requirements.
+* *Distributed real-time systems:* a vertical slice is a **transaction** — the causal chain from sensor to actuator across nodes, with an end-to-end deadline and a budget per stage. Slice along the chain, not along the nodes.
 
 
 

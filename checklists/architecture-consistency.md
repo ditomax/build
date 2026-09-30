@@ -34,8 +34,15 @@ Each row is: **element type → the full chain to trace → the cross-module agr
 | **Hardware / peripherals / registers** *(embedded/HW)* | device/register → owning driver → users | exclusive access, pin-mux/bus arbitration, init order |
 | **Clock / power domains** *(HW)* | domain → enabler/gater → dependents | enabled and sequenced before use |
 | **Security / trust boundaries** | boundary crossing → authorizer/validator → downstream | every crossing authenticated/validated before trust |
+| **Global time** *(DRS)* | time source → synchronization algorithm → every local clock | π held, g > π, macrotick semantics identical on all nodes |
+| **Temporal accuracy of RT images** *(DRS)* | RT entity → observation → transmission → using task | `d_acc` ≥ age at the point of use; phase sensitivity resolved or entered as a scheduling constraint |
+| **Transactions** *(DRS)* | sensor → input → action → transmission → reception → output → actuator | a budget per stage; worst-case sum ≤ end-to-end deadline; one owner for the chain, not one per node |
+| **Message semantics** *(DRS)* | sender semantics → channel → receiver assumption | state vs. event message agree on both sides; idempotence where messages are replicated |
+| **Fault hypothesis** *(DRS)* | assumed failure mode per node → degree of redundancy → voter / receiver | k consistent; the receiver expects the failure mode the sender actually has |
+| **Flow control mode** *(DRS)* | producer → gateway / channel → consumer | implicit / explicit settled on both sides; back-pressure possible or a buffer strategy defined |
+| **Ground state / reintegration** *(DRS)* | operating state → ground state → reintegration point | all nodes share a ground state; mode changes only there |
 
-The hardware-specific rows apply according to the `Field of application` established in Phase 1.
+The hardware-specific rows apply according to the `Field of application` established in Phase 1; the *(DRS)* rows apply to distributed real-time systems.
 
 ---
 

@@ -38,7 +38,7 @@ Do this silently first, then show the result as one block and ask for correction
 
 ### 2. Path A — grill
 
-Build the agenda: brief open questions · every `partial`/`not shown` candidate · every applicable row of `checklists/requirements.md` for the field of application (cross-cutting standards first, then the field section, then technology rows that apply) · for later features every cross-feature row that names this feature. Batch by theme, then ask **one question at a time**. Rules from MANIFEST Phase 1:
+Build the agenda: brief open questions · every `partial`/`not shown` candidate · every applicable row of `checklists/requirements.md` for the field of application (cross-cutting standards first, then the field section, then technology rows that apply) · for later features every cross-feature row that names this feature · **operation** (I7, on every agenda whatever the path): who operates the product permanently — per role a name and a time share; unknown → `OQ-<n>`, "nobody" → tell the sponsor before concept. Batch by theme, then ask **one question at a time**. Rules from MANIFEST Phase 1:
 
 - Requirements first, solutions later — if the user drifts to code, park it under "Still open" as a design note.
 - Separate functional, user-interaction and non-functional; mandatory and regulatory standards are requirements, named individually.

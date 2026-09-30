@@ -1,6 +1,6 @@
 # build — Every question the skillset asks a human
 
-**Version 1 (build 0.1.3).** One row per question, in the order it is asked. **The IDs are stable identifiers** — `profile/questions.md` (setup skill) refers to them; renumbering is a breaking change. With a brief (contract H2) the Path B rows are extracted from `60-brief.md` and `vcode/` and confirmed in one block, never re-asked. Grilling questions are agenda-driven — the list names the sources of the agenda, not every item, since those depend on the field of application. Three gate questions go to the sponsor.
+**Version 2 (build 0.1.9).** One row per question, in the order it is asked. **The IDs are stable identifiers** — `profile/questions.md` (setup skill) refers to them; renumbering is a breaking change. With a brief (contract H2) the Path B rows are extracted from `60-brief.md` and `vcode/` and confirmed in one block, never re-asked. Grilling questions are agenda-driven — the list names the sources of the agenda, not every item, since those depend on the field of application. Three gate questions go to the sponsor.
 
 ## Director (`build`) — first call only
 
@@ -27,6 +27,7 @@ Later calls: "Good as it is — next, or redo?" after a stage; the gate question
 | I3 | Per applicable row of `checklists/requirements.md` for the field: does this apply — as a requirement, or deferred with a reason? (cross-cutting standards first, then field, then technology) | A | field of application | Part 2 field-standard concerns |
 | I4 | Per cross-feature row naming this feature (later features only): how do we interact, what could we break? | A | `00-build.md` cross-feature table, other concepts §0/§9 | Part 2 |
 | I5 | Implication check: if that is true, then … also needs — right? | A | — | Part 2 |
+| I7 | Operation: who operates the product permanently — per role (content / data upkeep, technology / hosting, user support) a name and a time share? | always, every path | — (idea's shortlist only settled a plausible operating model, V6) | Part 2 Operation |
 | I6 | Part 3 in five lines (path, vocabulary seeds, out of scope, integration points, riskiest assumption, first slice) — anything missing? | | — | Part 3 |
 
 Cold start: I0 is replaced by D1' and the grilling runs on the full Phase 1 agenda (purpose, actors, functional / user-interaction / non-functional, field concerns, standards).

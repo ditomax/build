@@ -86,6 +86,16 @@ _Result of the intake stage. Part 1 is what the prototype and the brief already 
 | --- | --- | --- | --- |
 | <…> | <…> | yes / no / deferred | <…> |
 
+### Operation
+
+<!-- I7 — asked on every path. Who operates the product permanently, per role. idea's V6 only settled a plausible operating model; names and time shares are settled here. Unknown → OQ-<n>; nobody for a role → tell the sponsor before concept. Operation duties that bind the product become cNF candidates below. -->
+
+| Role | Name | Time share | Evidence |
+| --- | --- | --- | --- |
+| content / data upkeep | <…> | <…> | <…> |
+| technology / hosting | <…> | <…> | <…> |
+| user support | <…> | <…> | <…> |
+
 ### New candidate requirements
 
 | Draft ID | Requirement | Type | Origin | Evidence |

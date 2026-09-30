@@ -1,5 +1,11 @@
 # Changelog — build
 
+## 0.1.9 — 2026-09-25
+Operation moves into intake: new question **I7** (on every agenda, whatever the path) — who operates the product permanently, per role (content / data upkeep, technology / hosting, user support) a name and a time share; unknown → `OQ-<n>`, nobody → sponsor before concept. `templates/10-intake.md` gains Part 2 § *Operation*. Counterpart of idea 0.2.4, where V6 now only settles a plausible operating model (asking for names at idea stage proved too early in a field test). QUESTIONS.md Version 2. No contract change.
+
+## 0.1.8 — 2026-09-23
+Additive, for distributed real-time systems (DRS): `checklists/requirements.md` gains § *Distributed real-time system (DRS)* (global time, temporal accuracy, permanence, transactions, fault hypothesis, replica determinism, membership, load hypothesis and thrashing, composability, gateways, end-to-end protocols, reintegration). `checklists/architecture-consistency.md` gains seven rows marked *(DRS)*. MANIFEST: one sentence reading the phases as a V-model, and in Phase 5 that a vertical slice in a DRS is a transaction. No phase renamed, no contract change.
+
 ## 0.1.7 — 2026-09-17
 README: new **Language** and **Git** sections (git moved out of *Inside a project*), intro language sentence matched to idea and maquette, section order aligned with idea and maquette. No contract change. The company abbreviation DMBG is gone from the public texts: the product is simply the skill suite (idea → maquette → build); source credits in `ATTRIBUTION.md` name Dietmar Millinger.
 

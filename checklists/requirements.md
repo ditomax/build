@@ -72,6 +72,26 @@ Each entry is: **trigger → required check/standard → how it is verified.** A
 | Watchdog present | Watchdog kick strategy, fault recovery | Fault-injection reset test |
 | Buses (I2C/SPI/CAN) | Bus contention, error handling, protocol version | Bus stress test |
 
+### Distributed real-time system (DRS)
+
+_Valid for distributed real-time systems — several nodes that together close a loop through the physical world. Applies in addition to **Embedded system**; skip it for a single-node product._
+
+| Trigger | Required | Verified by |
+| --- | --- | --- |
+| Several nodes coordinate actions | Global time base: precision π, granularity g with g > π | Measured clock offset between nodes, synchronization test |
+| Timestamps compared across nodes | Reasonableness condition; limits of time measurement (±2g) | Evaluation of distributed timestamps |
+| Observation taken from the physical process | Temporal accuracy `d_acc` per RT image; phase sensitivity checked against the period of the reading task | Age measurement at the point of use, scheduling proof |
+| Message triggers an action | Permanence / action delay defined; hidden channels considered | Test with a deliberately delayed channel |
+| End-to-end function across nodes (a transaction) | End-to-end deadline and a budget per stage (input, action, transmission, reception, output) | Worst-case sum ≤ deadline; measurement per stage on the target |
+| Node failure must be tolerated | Fault hypothesis: failure mode per node, k, degree of redundancy (k+1 / 2k+1 / 3k+1) | Fault injection, including beyond the hypothesis |
+| Replicated nodes vote | Replica determinism; exact vs. inexact voting decided | Comparison of replica outputs |
+| Nodes join / leave | Membership service, clique detection, degraded mode | Membership test with network partition |
+| Peak load specified | Load hypothesis per channel and node; freedom from thrashing | Load test above peak, throughput curve |
+| Subsystems are integrated | Composability: which property survives integration | Property shown before and after integration |
+| Gateway between clusters | Flow-control mode of both sides, buffering, skipping strategy | Gateway overflow test |
+| Safety-relevant actuator | End-to-end protocol: the effect is monitored, not the command | Test with a blocked actuator |
+| Node is reintegrated | Ground state defined, minimal h-state, reintegration point | Restart of a node in the running system |
+
 ### Hardware system
 
 | Trigger | Required | Verified by |

@@ -53,6 +53,30 @@ _Sections 0–12 of the MANIFEST document structure. Together with `30-synthesis
 | --- | --- | --- | --- | --- |
 | NF-<FEAT>-1 | <…> | <…> | <checklist row / grilling> | <…> |
 
+### Load and growth model
+
+<!-- From 10-intake.md § Load and growth. The single source of volume figures: the operating cost model below and every capacity requirement take theirs from here. -->
+
+| Quantity | At launch | 1 year | 3 years | Peak factor | Evidence |
+| --- | --- | --- | --- | --- | --- |
+| Users / concurrent at peak | <…> | <…> | <…> | <…> | <…> |
+| Requests per second at peak | <…> | <…> | <…> | — | <…> |
+| Data volume / largest table or collection | <…> | <…> | <…> | — | <…> |
+| Calls to external services per minute vs. their limit | <…> | <…> | <…> | <…> | <…> |
+
+- **Scale decision:** <single instance is enough — scale-out deferred, reason: the figures above | scale-out needed → NF-<FEAT>-n>
+
+### Operating cost model
+
+<!-- From 10-intake.md § Running cost and checklists/requirements.md § Operating Cost. "Fixed running cost only — no usage-dependent drivers" is valid one-line content. Every guard is an NF row above. -->
+
+| Cost driver | Unit | Cost per unit | Units per typical action | Volume per month (expected / peak) | Cost per month (expected / peak) | Guard | Evidence |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| <AI model call> | <1k tokens> | <…> | <…> | <…> | <…> | <cache · quota · cap → NF-<FEAT>-n> | <[evidenced] | [estimated]> |
+
+- **Cost per typical action:** <…>
+- **Covered by:** <price per user | fixed budget | nobody yet> — expected load <yes | no>, heaviest user <yes | no → quota NF-<FEAT>-n>
+
 ## 6. Integration Points
 
 | System / module | Direction | Contract (schema, protocol, version) | Owner |
@@ -139,6 +163,13 @@ stateDiagram-v2
 ### Design for testability
 
 <seams, injection points, fakes for external services, deterministic clocks and IDs>
+
+### Scaling strategy
+
+<!-- From §5 Load and growth model and checklists/requirements.md § Capacity & Scaling. With "single instance is enough" this is still filled: the bottleneck we would hit first, and when. -->
+
+- **Capacity budget:** <instances × pool size vs. database limit; workers; calls per minute vs. external limits>
+- **First bottleneck:** <component> at <load, from §5> — **lever:** <larger instance | index or query fix | cache | queue | read replica | second instance> — **trigger:** <measured signal, e.g. p95 latency > … or pool wait > …>
 
 ### Requirement traceability matrix
 

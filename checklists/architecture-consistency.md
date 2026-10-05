@@ -1,6 +1,6 @@
 # Architecture Consistency Checklist
 
-**Version 1**
+**Version 2**
 
 **A checklist for validating cross-module consistency of an architecture — used by Phase 6 of the [MANIFEST.md](../MANIFEST.md).**
 
@@ -31,6 +31,10 @@ Each row is: **element type → the full chain to trace → the cross-module agr
 | **Error / fault handling** | raise site → propagation path → handler/recovery | every error path ends in a handler; fault → safe-state mapping |
 | **End-to-end mechanisms** | system-boundary entry → each intermediate step/module → system-boundary exit | the complete path exists and is unbroken; every hop preserves semantics and data; no gap, dead-end, or silent drop; boundary in/out contracts honored |
 | **Component life cycle** | creation/init → configured → started/active → suspended/resumed → stopped/destroyed | who owns each transition; init/shutdown ordering & dependencies; acquire/release paired; no use-before-init or use-after-destroy; restart/re-init is safe |
+| **Capacity budget** (connections, workers, external rate limits) | load model peak → every consumer's demand (instances × pool, workers, calls per minute) → the shared limit it draws on | the sum of all consumers stays below the shared limit with headroom; the first bottleneck is named in §11 *Scaling strategy* |
+| **Request path** | entry point → every synchronous call on the way → response | every external or long call has a timeout; nothing slower than ~1 s runs synchronously unless a requirement says so; every list query is bounded and indexed |
+| **Instance-local state** *(scale-out)* | data held in memory or on local disk → instances → users | no state that a second instance would not see; scheduled jobs run exactly once |
+| **Cost drivers** (metered calls, tokens, compute) | user action → every metered call it triggers → guard (cache, quota, budget cap, token budget) → cost metric | every metered call passes a guard and is counted; no path bypasses cache or quota; cost per action matches concept §5 *Operating cost model* |
 | **Hardware / peripherals / registers** *(embedded/HW)* | device/register → owning driver → users | exclusive access, pin-mux/bus arbitration, init order |
 | **Clock / power domains** *(HW)* | domain → enabler/gater → dependents | enabled and sequenced before use |
 | **Security / trust boundaries** | boundary crossing → authorizer/validator → downstream | every crossing authenticated/validated before trust |

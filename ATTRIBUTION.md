@@ -17,3 +17,7 @@ build itself adopts no gstack method directly. Its sibling maquette does (see th
 ## The suite
 
 idea, maquette and build share the Director pattern, the frontmatter and write rules, the conversation rules and the git policy, first written for maquette 0.1–0.4 and generalised in the suite's target picture (September 2026).
+
+## AI tools used in development
+
+build was written and revised with the help of AI assistants: **Claude Opus** (Anthropic) and **GPT-6 Astra** (OpenAI). They drafted and edited texts and were used in field tests. The method, every decision and the review of every change are Dietmar Millinger's.

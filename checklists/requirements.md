@@ -1,6 +1,6 @@
 # Requirement Checklists
 
-**Version 1**
+**Version 2**
 
 _No exact field for your product? Take the closest one (an internal document-generation tool → Web application), add the cross-cutting and technology sections, and name the sections you used in `10-intake.md`._
 
@@ -48,6 +48,7 @@ Each entry is: **trigger → required check/standard → how it is verified.** A
 | Public or internal API | Versioning & backward-compatibility policy | Contract tests, deprecation plan |
 | Any API | Schema/contract definition (OpenAPI/proto) | Schema lint, contract tests |
 | Stateful service | Idempotency, timeouts, retries, circuit breakers | Fault-injection tests |
+| Any multi-user service | Load and growth model: users, concurrency at peak, peak factor, data volume, external rate limits — at launch, 1 and 3 years (concept §5) | Figures in concept §5 with evidence marks; § Capacity & Scaling |
 | Any service | Health/readiness endpoints, graceful shutdown | Probe test, drain test |
 | Persistent data | Migration strategy, backup & restore, PITR | Restore drill |
 
@@ -162,6 +163,40 @@ _Valid for distributed real-time systems — several nodes that together close a
 | Config | Externalized, validated, environment-specific, documented | Config schema test |
 | Documentation | README, ADRs, runbooks, API docs kept current | Doc review in PR |
 | Reproducibility | Deterministic builds, pinned dependencies | Clean-room build |
+
+---
+
+## Operating Cost (Software)
+
+_Applies whenever running cost grows with use — AI model calls, embeddings, metered APIs, serverless compute, per-document processing. A product can pass every functional test and still lose money with every user; these rows make cost a requirement, not a surprise. The section is skipped only when `10-intake.md` § Running cost says "fixed running cost only"._
+
+| Trigger | Required | Verified by |
+| --- | --- | --- |
+| Usage-dependent running cost | Cost model: drivers, cost per typical user action, cost per month at expected and at peak load (concept §5 *Operating cost model*) | Cost per action measured in a test run and compared with the model |
+| Fixed price or fixed budget, variable cost | Price or budget covers the heaviest realistic user (e.g. the 95th percentile) — otherwise usage is capped per user or tier | Calculation with a heavy-user profile; quota test |
+| Metered third-party service (AI model, cloud) | Hard spending cap at the provider plus an in-product budget guard; on exhaustion non-critical functions degrade, critical ones keep working | Simulated budget exhaustion |
+| Per-user or per-tenant usage | Rate limits and quotas per user or tier | Quota test (limit reached → defined answer, no cost) |
+| Repeated identical or similar requests | Caching of results and embeddings with TTL and invalidation; unchanged input is never processed twice | Cache hit rate measured; re-index test on unchanged input |
+| AI model in the product | Token budget per call: context built from retrieved pieces, not whole documents; maximum output set; model size matched to the task | Tokens per call logged; budget test with the largest expected input |
+| Any usage-dependent cost | Cost observability: cost per feature and per user or tenant, alert on deviation from the model | Cost dashboard; alert fire drill |
+
+---
+
+## Capacity & Scaling (Software)
+
+_Sized by concept §5 *Load and growth model*. Rows marked (scale-out) apply only when the scale decision says scale-out is needed; with "single instance is enough" they are deferred with the figures as the reason. The other rows apply to every multi-user service — a small load still needs indexes and timeouts._
+
+| Trigger | Required | Verified by |
+| --- | --- | --- |
+| Database with a connection pool | Pool budget: instances × pool size (plus workers, jobs, admin) ≤ the database's connection limit with headroom; serverless functions or many short-lived processes connect through a pooler, never directly | Calculation in concept §11; load test at peak without connection errors |
+| Persistent data | Every query a request runs has a supporting index; no unbounded result set — lists are paginated; no query per item in a loop (N+1) | Query plans checked on a database filled to the 3-year volume of the load model |
+| Data that grows without end | Retention and archiving: what is deleted or archived, when, by whom | Retention job test |
+| Long-running work (> ~1 s: AI calls, imports, reports) | Out of the request path: job queue with status, timeout and retry limit; the user gets a reference, not a hanging request | Test with a slow external service |
+| Retries anywhere | Exponential backoff with jitter and a retry cap; retries never multiply load during an outage | Fault injection with the dependency down |
+| External service with rate limits (AI provider, partner API) | Our peak call rate (load model) stays below their limit with headroom, or we queue and throttle; defined behaviour on "limit exceeded"; a fallback (smaller model, degraded mode) where the function matters | Load test against a throttled stub |
+| Instances hold state (scale-out) | Stateless instances: no session state, files or caches local to one instance; scheduled jobs run exactly once (lock or single scheduler) | Test with two instances behind a load balancer |
+| Overload possible (scale-out) | Load shedding and priorities: under overload the critical path keeps working, the rest is refused early with a defined answer | Load test above peak; critical path stays within its target |
+| Any multi-user service | Capacity test against the load model: at peak, then rising until the first bottleneck is found and named (concept §11 *Scaling strategy*) | Load-test report with breaking point and bottleneck |
 
 ---
 

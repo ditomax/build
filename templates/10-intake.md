@@ -96,6 +96,29 @@ _Result of the intake stage. Part 1 is what the prototype and the brief already 
 | technology / hosting | <…> | <…> | <…> |
 | user support | <…> | <…> | <…> |
 
+### Running cost
+
+<!-- I8 — asked on every path. What makes running cost grow with use, who pays, what the heaviest user does. "Fixed running cost only" is a valid answer and skips checklists § Operating Cost; otherwise that section joins the field-standard concerns. Unknown → OQ-<n>. Guards that bind the product become cNF candidates below. -->
+
+| Question | Answer | Evidence |
+| --- | --- | --- |
+| Cost drivers that grow with use (AI calls, documents, compute, metered services) | <… | fixed running cost only> | <…> |
+| Who pays — price per user, fixed budget, nobody yet | <…> | <…> |
+| Heaviest realistic user — what, how much | <…> | <…> |
+| Monthly ceiling | <…> | <…> |
+
+### Load and growth
+
+<!-- I9 — asked on every path. The figures every capacity decision rests on; they also fill the volume column of the concept's operating cost model. "Small and stable" with figures is a valid answer — it is the written reason to defer scale-out. Unknown → OQ-<n>. -->
+
+| Quantity | At launch | In 1 year | In 3 years | Evidence |
+| --- | --- | --- | --- | --- |
+| Users (named / active per day; internal or external) | <…> | <…> | <…> | <…> |
+| Concurrent users at peak | <…> | <…> | <…> | <…> |
+| Peak pattern and factor (time of day, month end, campaign) | <…> | <…> | <…> | <…> |
+| Data volume (records, documents, GB) | <…> | <…> | <…> | <…> |
+| External limits (rate limits or quotas of services we call) | <…> | <…> | <…> | <…> |
+
 ### New candidate requirements
 
 | Draft ID | Requirement | Type | Origin | Evidence |

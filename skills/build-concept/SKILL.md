@@ -25,7 +25,7 @@ Two sentences: the concept document — requirements with IDs, decisions with re
 
 ### 1. Number and freeze (§3–§5, §7)
 
-Take every draft and confirmed candidate from intake; assign `F-<FEAT>-n`, `U-<FEAT>-n`, `NF-<FEAT>-n` in one pass, keep `Origin` and `Evidence`. Every row gets a falsifiable acceptance — if you cannot write a test for it, say so and ask whether it is a requirement or a wish (MANIFEST: "it is a wish"). Out of scope gets a reason and, if it is a later feature, its name.
+Take every draft and confirmed candidate from intake; assign `F-<FEAT>-n`, `U-<FEAT>-n`, `NF-<FEAT>-n` in one pass, keep `Origin` and `Evidence`. Every row gets a falsifiable acceptance — if you cannot write a test for it, say so and ask whether it is a requirement or a wish (MANIFEST: "it is a wish"). Out of scope gets a reason and, if it is a later feature, its name. Fill §5 *Load and growth model* from intake § Load and growth and write the scale decision (a deferred scale-out is a decision with the figures as its reason); every capacity limit is an NF row. Fill §5 *Operating cost model* from intake § Running cost, with the volumes of the load model: one row per cost driver, cost per typical action, and whether price or budget covers expected load and the heaviest user; every guard (cache, quota, cap, token budget) is an NF row. "Fixed running cost only" is one line.
 
 ### 2. Resolve questions (Phase 2, §8)
 
@@ -47,7 +47,7 @@ Write `20-concept.md` with §0–§10 filled and §11–§12 marked "open — af
 
 ### 6. Architecture and vertical slices (Phase 5, §11)
 
-One module = one file = one class = one responsibility. Fill every mandatory artifact: module tree, slices table (each slice delivers named requirements, has an acceptance, the first proves the core end to end), module specifications with signatures in pseudocode and `Traces to:`, mermaid flowchart, interface table, state machine (or "not relevant"), design for testability, traceability matrix with every requirement → module → slice. No orphan requirements, no orphan modules. Path B features: state per module whether it is rebuilt from concept or adapted from `vcode/` (and why); `vcode/` itself is never the code root.
+One module = one file = one class = one responsibility. Fill every mandatory artifact: module tree, slices table (each slice delivers named requirements, has an acceptance, the first proves the core end to end), module specifications with signatures in pseudocode and `Traces to:`, mermaid flowchart, interface table, state machine (or "not relevant"), design for testability, scaling strategy (capacity budget, first bottleneck, its lever and trigger — also for a single instance), traceability matrix with every requirement → module → slice. No orphan requirements, no orphan modules. Path B features: state per module whether it is rebuilt from concept or adapted from `vcode/` (and why); `vcode/` itself is never the code root.
 
 ### 7. Consistency review (Phase 6, §12)
 

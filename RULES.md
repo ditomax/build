@@ -1,17 +1,19 @@
 # build — Shared Rules for All Stage Skills
 
-**Version 1.** Every stage skill reads this file before doing anything. The Director (`build`) enforces it. If a stage skill and this file disagree, this file wins. Where this file is silent on document structure or process, `MANIFEST.md` wins.
+**Version 2** (build 0.2.0: Path R, Path S, H2/3). Every stage skill reads this file before doing anything. The Director (`build`) enforces it. If a stage skill and this file disagree, this file wins. Where this file is silent on document structure or process, `MANIFEST.md` wins.
 
 ## 1. Vocabulary
 
 - **Build** — the work of turning a brief (or a problem statement) into a shipped product through concept documents that code is synthesized from. Named for what it is: the building after the maquette.
-- **Feature** — one coherent group of functions with its own concept document. The first feature is the scope of the brief; later features are added one at a time. Feature code: 2–4 letters (`PRC`, `AUTH`).
+- **Feature** — one coherent group of functions with its own concept document. The first feature is the scope of the brief; later features are added one at a time. Feature code: 2–5 letters (`PRC`, `AUTH`).
 - **Stage** — one of: intake → concept → synthesis → rescue. Each stage has one owner skill, defined inputs, one result file per feature. Rescue is on demand and repeatable; the other three run once per feature (reruns via `redo`).
 - **Concept document** — `20-concept.md` (Sections 0–12 of the MANIFEST template) plus `30-synthesis.md` (Sections 13–16). Together they are the source of truth for the feature's code.
 - **Result file** — `NN-<stage>.md` in the feature folder, filled from the matching template in `templates/`.
 - **Director** — the `build` skill. Reads the work root, tells the user where they are, calls the stage skill, updates `00-build.md`.
 - **Gate** — a point where the human decides before the next stage starts: PM review (MANIFEST Phase 4), consistency review (Phase 6), gap analysis (Phase 9). Gates are Director questions with a logged answer, not stages.
 - **Human notes** — the section `## Notes (human)` at the end of every result file.
+- **Path** — how intake gets its material: **B** extract from a brief and `vcode/` · **A** grill · **mixed** B then A · **R** trace every item `R-<n>` of an idea register (directly, or via an H2/3 brief: `mixed+R`, `A+R`, `B+R`) · **S** extract one shortlist entry from idea (no maquette). R and S are always followed by A on the gaps.
+- **Trace** — `R-<n> → F/U/NF-<FEAT>-n`: every register item (and every `R-M<n>` a maquette added) reaches a requirement, another feature, or a deferral with a reason. Intake closes only when every MUST has one; the concept keeps it in §0 *Register trace*.
 - **Profile** — an optional `profile/` folder with customer-specific constraints (§8).
 
 ## 2. Folder is the state
@@ -20,10 +22,10 @@ There is no state outside the work root — no `~/.something`, no environment va
 
 Two layouts; the Director resolves which applies and calls the work root `<work>`:
 
-| Layout | `<suite>` (read-only) | `<work>` | profile | brief (H2) | product code |
+| Layout | `<suite>` (read-only) | `<work>` | profile | brief (H2) · register · shortlist | product code |
 | --- | --- | --- | --- | --- | --- |
 | standalone workspace | the folder holding `AGENTS.md`, `VERSION` | `<suite>/builds/<project>/` | `<suite>/profile/` | a file the user names, or none | `code_root` in `00-build.md` |
-| inside a project | `<project>/planning/suite/build/` | `<project>/planning/build/` | `<project>/planning/profile/` | `<project>/planning/maquette/<x>/60-brief.md` | `<project>/` minus `planning/` |
+| inside a project | `<project>/planning/suite/build/` | `<project>/planning/build/` | `<project>/planning/profile/` | `<project>/planning/maquette/<x>/60-brief.md` · `<project>/planning/idea/10-register.md` (highest `.vN`) · `<project>/planning/idea/10-shortlist.md` | `<project>/` minus `planning/` |
 
 ```
 <work>/
@@ -120,9 +122,12 @@ Files this skillset reads: `profile.md`, `questions.md`, `standards.md` (mandato
 The Director passes the rows of the coming stage to the stage skill together with the other profile constraints (§7 hand-back names which rows were applied).
 ## 9. Contracts
 
-build is the last of three skillsets and talks to its predecessor through one file. A missing contract file is never an error — it only means more questions for the user.
+build is the last of three skillsets and talks to its predecessors through files — the brief from maquette, or, without a maquette, the register or the shortlist from idea. A missing contract file is never an error — it only means more questions for the user.
 
-- **H2 — in.** `60-brief.md` (contract `H2/2`, written by maquette ≥ 0.5.0) — all four parts: Part 1 (purpose, the person, click path), Part 2 (can / deliberately cannot with reason — "decision pending" rows are grilling material, "scope" rows are out-of-scope candidates), Part 3 (handover: guardrails, candidates, vocabulary, questions, riskiest assumption, prototype facts), Part 4 (sponsor, date) — plus the frozen `vcode/` next to it. Intake runs Path B on them first (extract what the prototype already answers), then Path A on the rest (grill what it does not). Neither file is ever written by build. Decided and open questions keep the brief's `OQ-n` numbers; questions raised in build continue the sequence.
+- **H2 — in.** `60-brief.md` (contract `H2/3` from maquette ≥ 0.7.0, `H2/2` from maquette ≥ 0.5.0) — all four parts: Part 1 (purpose, the person, click path), Part 2 (can / deliberately cannot with reason — "decision pending" rows are grilling material, "scope" rows are out-of-scope candidates), Part 3 (handover: guardrails, candidates, vocabulary, questions, riskiest assumption, prototype facts), Part 4 (sponsor, date) — plus the frozen `vcode/` next to it. Intake runs Path B on them first (extract what the prototype already answers), then Path A on the rest (grill what it does not). Neither file is ever written by build. Decided and open questions keep the brief's `OQ-n` numbers; questions raised in build continue the sequence.
+  H2/3 adds Part 3 *Register and coverage* (the full register with the final coverage of every R-ID, K.o. decisions, Users and scale, V6 note) and a *Register* column on the candidates: intake adds Path R to the chosen path (`mixed+R`, `A+R`, `B+R`).
+- **register/1 — in.** `10-register.md` (`contract: register/1`, `track: focus`, from idea ≥ 0.3.0), when no brief exists. Path R: every R-ID is traced (`→ d-n`, another feature, deferred with reason, out); K.o. conditions become guardrails; open questions become `OQ-n`; I9 from the frame's *Users and scale*, I7 and I8 from the V6 note. Intake closes only when every MUST is mapped or deferred. Priorities are the committee's and are never changed. A newer register version is shown as a delta and taken over by an intake redo. `register/2` or later → the Director names it and stops.
+- **H1 — in.** One entry of `10-shortlist.md` (contract `H1/2` from idea ≥ 0.2.0, `H1/1` with a note), when neither brief nor register exists. Path S: card, variants, evaluation (V1–V10 with evidence, K.o. gates, waivers) and handover are extracted silently; I7 and I8 from the V6 note, I9 from the card's *Users & scale*; then Path A on the gaps.
 - **Without a brief:** cold start. Intake asks for the problem statement and runs Path A in full (MANIFEST Phase 1). `contract_in: none`.
 - **Out:** none. The product and its concept documents are the result.
 

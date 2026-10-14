@@ -1,6 +1,6 @@
 ---
 name: build-concept
-version: "0.1"
+version: "0.2"
 description: >
   Stage 2 of the build skillset. Writes <FEAT>/20-concept.md (MANIFEST Sections
   0–12), CONTEXT.md and decisions/ — numbers and freezes requirements, resolves
@@ -25,7 +25,7 @@ Two sentences: the concept document — requirements with IDs, decisions with re
 
 ### 1. Number and freeze (§3–§5, §7)
 
-Take every draft and confirmed candidate from intake; assign `F-<FEAT>-n`, `U-<FEAT>-n`, `NF-<FEAT>-n` in one pass, keep `Origin` and `Evidence`. Every row gets a falsifiable acceptance — if you cannot write a test for it, say so and ask whether it is a requirement or a wish (MANIFEST: "it is a wish"). Out of scope gets a reason and, if it is a later feature, its name. Fill §5 *Load and growth model* from intake § Load and growth and write the scale decision (a deferred scale-out is a decision with the figures as its reason); every capacity limit is an NF row. Fill §5 *Operating cost model* from intake § Running cost, with the volumes of the load model: one row per cost driver, cost per typical action, and whether price or budget covers expected load and the heaviest user; every guard (cache, quota, cap, token budget) is an NF row. "Fixed running cost only" is one line.
+Take every draft and confirmed candidate from intake; assign `F-<FEAT>-n`, `U-<FEAT>-n`, `NF-<FEAT>-n` in one pass, keep `Origin` and `Evidence`. **Register trace** (Path R): every `d-n` that carries an `R-n` keeps it in `Origin` (`R-4 · d-3`), and §0 *Register trace* gets one row per R-ID of intake's trace table: `R-n → F/U/NF-<FEAT>-n` (several allowed), or the intake verdict unchanged (other feature, deferred, out). A MUST mapped in intake must reach at least one requirement here; if it cannot (merged away, turned out to be a wish), say so before the PM gate — never silently. Every row gets a falsifiable acceptance — if you cannot write a test for it, say so and ask whether it is a requirement or a wish (MANIFEST: "it is a wish"). Out of scope gets a reason and, if it is a later feature, its name. Fill §5 *Load and growth model* from intake § Load and growth and write the scale decision (a deferred scale-out is a decision with the figures as its reason); every capacity limit is an NF row. Fill §5 *Operating cost model* from intake § Running cost, with the volumes of the load model: one row per cost driver, cost per typical action, and whether price or budget covers expected load and the heaviest user; every guard (cache, quota, cap, token budget) is an NF row. "Fixed running cost only" is one line.
 
 ### 2. Resolve questions (Phase 2, §8)
 
@@ -41,7 +41,7 @@ Pick the checklist matching the field (software-only or embedded; both for mixed
 
 ### 5. Hand back for the PM gate (Phase 4)
 
-Write `20-concept.md` with §0–§10 filled and §11–§12 marked "open — after PM review", revision 1, `status: in_progress`. Hand back per RULES §7 and say: "Ready for the sponsor's review — no architecture until then." The Director asks the gate question. Small fixes go into the same file (revision + 1); large changes mean the Director sends the feature back to intake.
+Write `20-concept.md` with §0–§10 filled and §11–§12 marked "open — after PM review", revision 1, `status: in_progress`. Hand back per RULES §7 with, on Path R, the trace count (MUST → requirement · other feature · deferred) and the `R-M<n>` items whose proposed priority the sponsor confirms at the gate and say: "Ready for the sponsor's review — no architecture until then." The Director asks the gate question. Small fixes go into the same file (revision + 1); large changes mean the Director sends the feature back to intake.
 
 ## Sequence — second half (Phases 5–6, after PM approval)
 
@@ -69,6 +69,7 @@ A `redo` of this stage is a concept version bump: new file `20-concept.vN.md`, `
 | Describe signatures in prose | Pseudocode with concrete types and errors |
 | Leave a question dangling | Decide (ADR) or defer explicitly with rationale and owner |
 | Renumber on rerun | Append; IDs are stable across versions |
+| Lose an R-ID between intake and concept | §0 Register trace: every R-ID of intake reappears with its requirement IDs or its verdict |
 | Reference "the code" or "vcode/" for a detail | Embed it; the document is self-contained |
 | Skip the consistency matrix because it looks fine | Always produce it; the human decides |
 | Let the user's jargon drift | `CONTEXT.md` is the dictionary; one term per thing |

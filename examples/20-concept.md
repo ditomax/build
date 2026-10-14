@@ -22,6 +22,10 @@ _Sections 0–12 of the MANIFEST document structure. Together with `30-synthesis
 - **Synthesis scope:** the whole feature, from this document, `CONTEXT.md` and `decisions/ADR-OFA-001…003`. The maquette's 19-field list with its CRM column mapping is restated in §10.
 - **Field of application:** internal web app (document assistant) — `checklists/requirements.md` Cross-Cutting, Web application, Technology.
 
+### Register trace
+
+not relevant — no register.
+
 ## 1. Purpose
 
 "Our engineers spend two hours per offer copying data and hunting for old offers, so customers wait three days for a quote." A sales engineer turns a CRM opportunity into a complete, checkable offer draft in minutes, with every value showing where it came from.
@@ -77,6 +81,14 @@ _Sections 0–12 of the MANIFEST document structure. Together with `30-synthesis
 | NF-OFA-5 | HTTPS only; no calls outside the company network; no credentials in the repository | Header scan; egress test; CI secret scan | checklist, GR-6, d-7 | [evidenced] |
 | NF-OFA-6 | Structured logs without customer names, contacts or offer text | Log scan finds no fixture values | checklist, d-10 | [evidenced] |
 | NF-OFA-7 | Rollback to the previous release within 15 min | Rollback drill on the VM | checklist, d-9 | [estimated] |
+
+### Load and growth model
+
+_Omitted in this example (section added in build 0.1.10)._
+
+### Operating cost model
+
+_Omitted in this example (section added in build 0.1.10)._
 
 ## 6. Integration Points
 
@@ -240,6 +252,10 @@ stateDiagram-v2
 ### Design for testability
 
 Injected `Clock` (36-month window, export age, purge). Archive access behind a `FileSource` interface with an in-memory fake. Fake SsoGate with chosen groups. Fixtures: the six maquette-shaped opportunities with invented values (one with empty delivery address), a register of 9 offers across 3 series, one block with "l/s" and one with "bar", the real template and a test terms file.
+
+### Scaling strategy
+
+_Omitted in this example (section added in build 0.1.10)._
 
 ### Requirement traceability matrix
 

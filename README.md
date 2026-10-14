@@ -10,7 +10,7 @@ For users, `START.md` is enough — three steps, no installation. Conversation a
 
 If you are reading this from a link and have no local copy yet:
 
-1. Get one — `git clone https://github.com/ditomax/build` or unzip the latest release from https://github.com/ditomax/build/releases — into a folder the user chooses (default: `./build` next to their other work). That download is the only network access; the "no network" rule in `AGENTS.md` applies from then on.
+1. Get one — `git clone https://github.com/ditomax/build` or unzip the latest release from https://github.com/ditomax/build/releases — into a project folder **on the user's computer** that the user chooses and can see and open (default: `./build` next to their other work) — never only into your own sandbox or a temporary copy the user cannot see; if you cannot write there, tell the user which step to do themselves. That download is the only network access; the "no network" rule in `AGENTS.md` applies from then on.
 2. Work from inside that folder and read its `AGENTS.md`. Do not act as the Director from this README — the rules live in `RULES.md` and `skills/`.
 3. Layout: standalone (this folder as is) unless the user has a project with a `planning/` folder — then the suite belongs at `planning/suite/build/` and `planning/AGENTS.md` is the entry point, not this file. That `planning/` form is produced by [skill-suite-setup](https://github.com/ditomax/skill-suite-setup) (see *The suite*), never assembled by hand.
 4. A clone gives updates via `git pull`; the user's work in `builds/` is ignored by git, so nothing of it is ever committed to a clone. `hooks/` and `guard.py` are for skillset developers — ignore them.
@@ -25,7 +25,7 @@ The user types **start** and afterwards only **next**, **redo** or **stop**. A D
 
 | Stage | "Team member" | MANIFEST | Result | Typical duration |
 | --- | --- | --- | --- | --- |
-| 1 intake | intake analyst | Path B, Phase 1 | `10-intake.md` — what the prototype already answers, what had to be asked, the draft | 1 h with a brief |
+| 1 intake | intake analyst | Path B · R · S, Phase 1 | `10-intake.md` — what the prototype already answers, what had to be asked, the draft | 1 h with a brief |
 | 2 concept | concept author | Phases 2–6 | `20-concept.md` — numbered requirements, ADRs, interactions, architecture in slices, consistency matrix; `CONTEXT.md`, `decisions/` | 2 sessions |
 | — gate | sponsor | Phase 4 | PM review: requirements approved before any architecture | — |
 | — gate | sponsor | Phase 6 | consistency review: findings accepted, fixed or deferred | — |
@@ -35,22 +35,24 @@ The user types **start** and afterwards only **next**, **redo** or **stop**. A D
 
 Finished results look like `examples/10-intake.md` and `examples/20-concept.md` (fictitious company). One feature = one concept document. The first feature is the scope of the brief; later features are added one at a time, each checked against the existing ones (interactions and interferences, cross-feature table in `00-build.md`). Requirement IDs carry the feature code (`F-PRC-12`) so two features never collide.
 
-**Compatibility.** In: `60-brief.md` contract `H2/2` from maquette ≥ 0.5.0 (`H2/1` accepted with a note). Out: none. Version triples tested together: [skill-suite-setup/compat.md](https://github.com/ditomax/skill-suite-setup/blob/main/compat.md). Changes: `CHANGELOG.md`.
+**Compatibility.** In: `60-brief.md` contract `H2/3` from maquette ≥ 0.7.0 or `H2/2` from maquette ≥ 0.5.0 (`H2/1` accepted with a note); `10-register.md` contract `register/1` from idea ≥ 0.3.0; `10-shortlist.md` entry contract `H1/2` from idea ≥ 0.2.0 (`H1/1` with a note). Out: none. Version triples tested together: [skill-suite-setup/compat.md](https://github.com/ditomax/skill-suite-setup/blob/main/compat.md). Changes: `CHANGELOG.md`.
 
 ## The suite
 
 | Repo | What it does |
 | --- | --- |
-| [idea](https://github.com/ditomax/idea) | vague wish → ranked shortlist (`10-shortlist.md`, contract H1) |
-| [maquette](https://github.com/ditomax/maquette) | one shortlist entry → clickable model and brief (`60-brief.md`, contract H2) |
-| [build](https://github.com/ditomax/build) — this repo | brief → product, with concept documents as the source of truth |
+| [idea](https://github.com/ditomax/idea) | vague wish → ranked shortlist (`10-shortlist.md`, contract H1) — or, for a fixed project, a prioritised requirement register (`10-register.md`, contract register/1) |
+| [maquette](https://github.com/ditomax/maquette) | one shortlist entry or one register → clickable model and brief (`60-brief.md`, contract H2) |
+| [build](https://github.com/ditomax/build) — this repo | brief (or register or shortlist entry) → product, with concept documents as the source of truth |
 | [skill-suite-setup](https://github.com/ditomax/skill-suite-setup) | puts the three into one project folder (`planning/`) with a profile and a single entry point that knows which skillset is up; builds customer-specific versions |
 
 Each skillset works on its own. Anyone who wants more than one of them, or a customer-specific version, gets the `planning/` form from [skill-suite-setup](https://github.com/ditomax/skill-suite-setup) instead of standalone folders side by side.
 
 ## Contracts
 
-- **In — H2.** `60-brief.md` (contract `H2/2`) written by maquette ≥ 0.5.0 — all four parts — plus the frozen `vcode/` next to it. Intake extracts first (Path B), grills the rest (Path A). Neither file is ever written by build.
+- **In — H2.** `60-brief.md` (contract `H2/3`, or `H2/2` from older maquette) — all four parts — plus the frozen `vcode/` next to it. Intake extracts first (Path B), grills the rest (Path A). An H2/3 brief built on a register adds Path R: every requirement `R-<n>` is traced. Neither file is ever written by build.
+- **In — register/1 (Path R).** Without a maquette, build takes `10-register.md` from idea's focus track directly: every R-ID becomes a candidate with a trace `R-n → F-<FEAT>-n`, mapped to another feature, or deferred with a reason. Intake closes only when every MUST has one.
+- **In — H1 (Path S).** Without maquette and register, build takes one entry of `10-shortlist.md`: card, variants and evaluation are extracted, operation, running cost and load are prefilled — only the gaps are asked.
 - **Without a brief** build starts from a problem statement and runs the manifest's Path A in full.
 - **Out.** None — the product and its concept documents are the result.
 
@@ -84,7 +86,7 @@ build/
 
 ## Inside a project
 
-The workspace above is the standalone form. Inside a project folder the same suite is copied to `planning/suite/build/` (read-only), the work lives in `planning/build/`, the profile in `planning/profile/`, briefs wait in `planning/maquette/<x>/60-brief.md`, and the product code lives in the project root outside `planning/`. The Director recognises the layout by the `planning/` folder. A coding agent working on the product reads `planning/build/` as its specification and treats `planning/idea/` and `planning/maquette/` as history.
+The workspace above is the standalone form. Inside a project folder the same suite is copied to `planning/suite/build/` (read-only), the work lives in `planning/build/`, the profile in `planning/profile/`, briefs wait in `planning/maquette/<x>/60-brief.md` (register and shortlist in `planning/idea/`), and the product code lives in the project root outside `planning/`. The Director recognises the layout by the `planning/` folder. A coding agent working on the product reads `planning/build/` as its specification and treats `planning/idea/` and `planning/maquette/` as history.
 
 ## Distribution and installation
 

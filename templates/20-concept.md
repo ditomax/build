@@ -16,10 +16,18 @@ _Sections 0–12 of the MANIFEST document structure. Together with `30-synthesis
 
 ## 0. Synthesis Context
 
-- **Development path:** <A: frontloaded | B: retrofitted from vcode/ | mixed>
+- **Development path:** <A: frontloaded | B: retrofitted from vcode/ | mixed | R / S (from idea) | A+R · B+R · mixed+R>
 - **Synthesis dependencies:** <other feature concept documents this feature requires, with version — or "none">
 - **Synthesis scope:** <what can be regenerated from this document alone; what needs the dependencies>
 - **Field of application:** <one line — drives the checklists>
+
+### Register trace
+
+<!-- Path R only (idea register, directly or via brief H2/3); otherwise the line "not relevant — no register". One row per R-ID of 10-intake.md "Register trace". IDs here never change; reruns append. -->
+
+| Item | Priority | Requirements | Verdict |
+| --- | --- | --- | --- |
+| <R-n | R-M<n>> | <MUST | SHOULD | COULD — R-M: confirmed at the PM gate> | <F-<FEAT>-n, NF-<FEAT>-m | —> | <mapped | feature <CODE> | → OQ-n | deferred: … | out: …> |
 
 ## 1. Purpose
 
@@ -37,7 +45,7 @@ _Sections 0–12 of the MANIFEST document structure. Together with `30-synthesis
 
 | ID | Requirement | Acceptance (falsifiable) | Origin | Evidence |
 | --- | --- | --- | --- | --- |
-| F-<FEAT>-1 | <…> | <what a test observes> | <intake d-n / brief cF-n / grilling> | <[evidenced] | [estimated]> |
+| F-<FEAT>-1 | <…> | <what a test observes> | <intake d-n / brief cF-n / R-n · d-n / entry <ID> · d-n / grilling> | <[evidenced] | [estimated]> |
 
 ## 4. User Interaction Requirements
 

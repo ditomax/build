@@ -15,7 +15,7 @@ path: mixed
 
 _Result of the intake stage. Part 1 is what the prototype and the brief already answer (Path B — extracted, not asked). Part 2 is what had to be grilled (Path A). Part 3 is the draft the concept stage starts from. Nothing here is ratified; the concept stage numbers and freezes._
 
-## Part 1 — Extracted from the brief and the prototype (Path B)
+## Part 1 — Extracted from the brief, the prototype, the register or the shortlist entry (Path B · R · S)
 
 ### Field of application
 
@@ -93,6 +93,14 @@ Plain HTML + JavaScript, no framework, no build step; entry `vcode/index.html`; 
 - **Decided:** OQ-2 (maquette: nine mock earlier offers; real search out of scope) · OQ-7 (maquette: neutral layout; binding template decided with cF-7) · F1 (frozen mock data) · F3 (data in one file, no fetch). OQ-2 and OQ-7 were decided for the maquette only and are re-asked for the product; F1 and F3 are maquette-only and not carried.
 - **Open:** OQ-1, OQ-3, OQ-4, OQ-5, OQ-6, OQ-8, OQ-9, OQ-10, OQ-11.
 
+### Register trace (Path R)
+
+not relevant for this feature — no register (started from brief H2/2).
+
+### Taken from the shortlist entry (Path S)
+
+not relevant for this feature — started from a brief.
+
 ## Part 2 — Grilling (Path A)
 
 ### Agenda worked through
@@ -129,6 +137,18 @@ Source: `checklists/requirements.md` — Cross-Cutting, "Web application" (close
 | AuthN/AuthZ, secrets, HTTPS | Web application, Technology | yes | d-5, d-7 |
 | Deployment and rollback | Web application | yes | d-9 |
 | Observability | Web application | yes | d-10 |
+
+### Operation
+
+_Omitted in this example — see `10-intake-path-r.md` for a filled Operation section._
+
+### Running cost
+
+_Omitted in this example — see `10-intake-path-r.md`._
+
+### Load and growth
+
+_Omitted in this example — see `10-intake-path-r.md`._
 
 ### New candidate requirements
 

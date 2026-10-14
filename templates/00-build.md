@@ -13,7 +13,8 @@ git: no                      # yes | no — checked by the Director at start
 language: en                 # language of the result files' content (requirements and code stay English)
 budget_min: {intake: 60, concept: 120, synthesis_per_slice: 45, rescue: 60}
 profile: none                # none | profile/
-contract_in: none            # none | H2/2 | H2/1 (started from a maquette brief; the version the brief declares)
+contract_in: none            # none | H2/3 | H2/2 | H2/1 (maquette brief, the version it declares) | register/1 (idea register, Path R) | H1/2 | H1/1 (shortlist entry, Path S)
+register: —                  # Path R only: the register version every R-ID is traced against, relative to <work>, e.g. ../idea/10-register.md@3
 ---
 
 # Build: <title>
@@ -22,15 +23,16 @@ contract_in: none            # none | H2/2 | H2/1 (started from a maquette brief
 
 ## Starting point
 
-- **Input:** <brief <code> (<path to 60-brief.md>@<rev>) + vcode/ | problem statement in prose>
+- **Input:** <brief <code> (<path to 60-brief.md>@<rev>) + vcode/ | register <code> (<path>@<rev>) | shortlist entry <ID> (<path>@<rev>) | problem statement in prose>
 - **Sponsor / product owner:** <role — the person who signs the PM gate>
+- **Decision date:** <YYYY-MM-DD | open — from the register's or the entry's handover, or asked>
 - **Purpose of this build:** <one sentence: what ships when this is done?>
 
 ## Features
 
 | Code | Title | Path | Field of application | Concept version | Status |
 | --- | --- | --- | --- | --- | --- |
-| <FEAT> | <title> | <A | B | mixed> | <web app | backend service | embedded | …> | — | open |
+| <FEAT> | <title> | <A | B | mixed | R | S | A+R | B+R | mixed+R> | <web app | backend service | embedded | …> | — | <open | in_progress | done | planned (named by a trace, not started)> |
 
 ## Feature <FEAT> — <title>
 
@@ -47,7 +49,7 @@ contract_in: none            # none | H2/2 | H2/1 (started from a maquette brief
 
 | Gate | MANIFEST | When | Decision | By | Date | Rationale / accepted items |
 | --- | --- | --- | --- | --- | --- | --- |
-| PM review | Phase 4 | after concept §3–§10, before architecture | <pending | approved | changes requested> | | | |
+| PM review | Phase 4 | after concept §3–§10, before architecture | <pending | approved | changes requested> | | | <Path R: trace count — MUST → requirement · other feature · deferred; R-M priorities confirmed> |
 | Consistency review | Phase 6 | after architecture, before synthesis | <pending | clean | accepted with findings | fix requested> | | | |
 | Gap analysis | Phase 9 | after the last slice | <pending | clean | accepted with gaps | back to synthesis> | | | |
 

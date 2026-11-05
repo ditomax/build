@@ -1,6 +1,6 @@
 ---
 name: build-rescue
-version: "0.1"
+version: "0.3"
 description: >
   Stage 4 of the build skillset, on demand and repeatable. Writes
   <FEAT>/40-rescue.md — scans code, CONTEXT.md and decisions/ for entropy and
@@ -23,11 +23,12 @@ Two sentences: a maintenance round — find what got tangled, untangle the most 
 
 ## Sequence
 
+0. **Round kind.** The Director has asked the review triggers (R0); write them into §0. An incident → `kind: incident`: fill *Incident analysis* (CAST-light) before the scan — what happened, which loss, which control loop failed (missing SC · SC not enforced · feedback missing · process model wrong · conflicting controllers · authority too wide), why the structure allowed it (no blame on persons or the model), the new or changed SC with *Enforced by* now → target. Every new SC is a concept change: name it for the redo, with a regression test. Otherwise `kind: maintenance`.
 1. **Scan.** Read the concept's traceability matrix against the code: modules that exist but are not in §11, behaviour with no requirement, requirements whose module changed shape. List drift with IDs. Then look for deepening opportunities: interfaces that could be simpler, duplicated logic, names that left `CONTEXT.md`, dead code, modules doing two things. Rank by expected gain × low risk.
 2. **Propose.** Show the ranked table and ask: "which ones, in this order?" — one question.
 3. **Apply, one at a time.** Run the full test suite before; apply the refactor; run it after. Green → keep (with git: commit, RULES §6). Any regression → revert immediately, record the reason, move on. Stop at the refactor budget or the time budget and say which.
 4. **Reconcile.** Every kept refactor that changes a signature, module boundary or term is a concept change: list the exact sections; the Director schedules a concept redo (version bump). Add ADRs for decisions taken here. Update `test_tooling.md` if a tool changed.
-5. **Write** `40-rescue.md` and hand back per RULES §7 with: kept / reverted counts, drift items, concept sections to update.
+5. **Write** `40-rescue.md` and hand back per RULES §7 with: round kind, kept / reverted counts, drift items, concept sections to update, and for an incident the SCs to add or change.
 
 ## Anti-patterns
 

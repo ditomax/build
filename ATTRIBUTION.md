@@ -10,6 +10,14 @@ build is an original skill suite by Dietmar Millinger. It contains no code and n
 
 The four working principles in `RULES.md` §10 (think before coding, simplicity first, surgical changes, goal-driven execution) are adapted from the guidance collected at https://github.com/multica-ai/andrej-karpathy-skills. Method was adopted, not text.
 
+## Nancy Leveson — STAMP / STPA (inspired by)
+
+The STPA-light in build — losses, hazards, constraints, the control structure, unsafe control actions of four types, causal factors, and CAST-style incident analysis in rescue — is inspired by the work of Nancy Leveson: *Engineering a Safer World* (MIT Press, 2011), the *STPA Handbook* (with John Thomas, 2018), and STPA-Sec (with William Young, 2014). build takes the core mechanisms, not the full method, and aims them at reliability, security and robustness, not safety. Method was adopted, not text.
+
+## Public AI security sources
+
+`checklists/ai-threats.md` is built only from public material: NIST AI 100-2 E2025, the OWASP Top 10 for LLM Applications 2025 and for Agentic Applications 2026, MITRE ATLAS and ETSI EN 304 223. Threats are named and paraphrased in our own words; no text is copied.
+
 ## gstack — Garry Tan, MIT License
 
 build itself adopts no gstack method directly. Its sibling maquette does (see that repo's `ATTRIBUTION.md`); the one-commit-per-fix, revert-on-regression discipline in the rescue stage reached build through maquette-harden.

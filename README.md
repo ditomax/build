@@ -26,7 +26,7 @@ The user types **start** and afterwards only **next**, **redo** or **stop**. A D
 | Stage | "Team member" | MANIFEST | Result | Typical duration |
 | --- | --- | --- | --- | --- |
 | 1 intake | intake analyst | Path B · R · S, Phase 1 | `10-intake.md` — what the prototype already answers, what had to be asked, the draft | 1 h with a brief |
-| 2 concept | concept author | Phases 2–6 | `20-concept.md` — numbered requirements, ADRs, interactions, architecture in slices, consistency matrix; `CONTEXT.md`, `decisions/` | 2 sessions |
+| 2 concept | concept author | Phases 2–6 | `20-concept.md` — numbered requirements, ADRs, interactions, losses, hazards and constraints, control structure and unsafe control actions (STPA-light), architecture in slices, consistency matrix; `CONTEXT.md`, `decisions/` | 2 sessions |
 | — gate | sponsor | Phase 4 | PM review: requirements approved before any architecture | — |
 | — gate | sponsor | Phase 6 | consistency review: findings accepted, fixed or deferred | — |
 | 3 synthesis | build team | Phases 7–9 | `30-synthesis.md` + product code — test concept, red-green-refactor per slice, registers, gap analysis | per slice |
@@ -47,6 +47,8 @@ Finished results look like `examples/10-intake.md` and `examples/20-concept.md` 
 | [skill-suite-setup](https://github.com/ditomax/skill-suite-setup) | puts the three into one project folder (`planning/`) with a profile and a single entry point that knows which skillset is up; builds customer-specific versions |
 
 Each skillset works on its own. Anyone who wants more than one of them, or a customer-specific version, gets the `planning/` form from [skill-suite-setup](https://github.com/ditomax/skill-suite-setup) instead of standalone folders side by side.
+
+**Reliability, security, robustness — not safety.** Every concept carries an STPA-light analysis: losses from a fixed catalogue (data loss, GDPR breach, loss of control, wrong output, outage, runaway cost, leaked secrets, abuse against others, lost maintenance access …), the hazards that lead there, the constraints that prevent them, the control structure of users, components, error handlers and AI components, and the unsafe control actions that would break it — each constraint traced to a requirement and a test. build does not produce safety-critical software: a product that could harm people, controls a safety function, or directly controls, switches or protects electrical power gets a documented warning (simulation / teaching, non-safety part only, or stop).
 
 ## Contracts
 
@@ -71,7 +73,7 @@ build/
   hooks/               pre-commit guard for development clones (see Release)
   MANIFEST.md          the Concept Document Authoring Manifest v8 — normative process reference
   ATTRIBUTION.md       where the method comes from
-  checklists/          requirements.md (Phase 1, by field of application) · architecture-consistency.md (Phase 6)
+  checklists/          requirements.md (Phase 1, by field of application) · architecture-consistency.md (Phase 6) · losses-hazards.md and ai-threats.md (STPA-light, concept §5 / §9)
   profile/             optional customer-specific constraints (empty = core defaults)
   examples/            fictitious finished results — an intake and a concept document (Example GmbH)
   builds/              the users' work in the standalone form, one subfolder per project (not in the repo)

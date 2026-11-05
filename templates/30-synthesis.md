@@ -28,9 +28,17 @@ _Sections 13–16 of the MANIFEST document structure plus the slice log. Written
 | --- | --- | --- | --- | --- |
 | <…> | <…> | <…> | <…> | <…> |
 
+### Constraint and UCA tests
+
+<!-- One row per UCA and per SC of 20-concept.md §5 / §9. Kind: negative (the unsafe action is refused) · fault injection (the dependency fails, the feedback is missing) · adversarial (manipulated documents, tool results, prompts — CS3, checklists/ai-threats.md). An SC enforced by "prompt + test" needs its test here. -->
+
+| UCA / SC | Test | Kind | Requirement | Status |
+| --- | --- | --- | --- | --- |
+| <UCA-<FEAT>-n / SC-<FEAT>-n> | <test name> | <negative | fault injection | adversarial> | <NF-<FEAT>-n> | <planned | green | red> |
+
 ### Synthetic test data strategy
 
-<templates + variations, golden outputs, where they live in the repo, how they are versioned>
+<templates + variations, golden outputs, the injection set for adversarial tests (manipulated documents, tool results, prompts), where they live in the repo, how they are versioned>
 
 ### CI constraints
 
@@ -70,7 +78,9 @@ _Sections 13–16 of the MANIFEST document structure plus the slice log. Written
 
 | Item | Kind | Traces to | Verdict | What is missing |
 | --- | --- | --- | --- | --- |
-| <requirement / module / test> | requirement / module / test / tool | <…> | IMPLEMENTED / PARTIAL / MOCKED / MISSING | <…> |
+| <requirement / module / test / constraint> | requirement / module / test / tool / constraint | <…> | IMPLEMENTED / PARTIAL / MOCKED / MISSING | <…> |
+
+<!-- Kind "constraint": one row per SC — IMPLEMENTED only when its requirement exists in code and its test passes. An SC left PARTIAL or MISSING is accepted only as a residual risk with name and date below. -->
 
 ### Tooling register check
 

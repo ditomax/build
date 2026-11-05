@@ -20,7 +20,7 @@ START.md                the three steps for the human
 RULES.md                shared rules for all stages, working principles, definition of done
 MANIFEST.md             the Concept Document Authoring Manifest v8
 README.md               what build is, for humans
-checklists/             requirement and architecture-consistency checklists
+checklists/             requirement, architecture-consistency and STPA-light checklists (losses and hazards, AI threats)
 templates/              one template per result file and register — the binding content definition
 skills/                 the Director and the four stage skills
 profile/                optional customer constraints (empty = core defaults)

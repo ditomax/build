@@ -20,6 +20,8 @@ _Sections 0–12 of the MANIFEST document structure. Together with `30-synthesis
 - **Synthesis dependencies:** <other feature concept documents this feature requires, with version — or "none">
 - **Synthesis scope:** <what can be regenerated from this document alone; what needs the dependencies>
 - **Field of application:** <one line — drives the checklists>
+- **Scope boundary:** <not relevant | warning acknowledged on <date>: <simulation / teaching | non-safety part only>; carved out: <…>> (RULES §12)
+- **System card:** autonomy <…> · exposure <…> · learning loop <…> · actions <…>
 
 ### Register trace
 
@@ -85,6 +87,20 @@ _Sections 0–12 of the MANIFEST document structure. Together with `30-synthesis
 - **Cost per typical action:** <…>
 - **Covered by:** <price per user | fixed budget | nobody yet> — expected load <yes | no>, heaviest user <yes | no → quota NF-<FEAT>-n>
 
+### Losses, hazards and constraints
+
+<!-- STPA-light, checklists/losses-hazards.md. From 10-intake.md § Losses and hazards. Losses: the selected L-IDs with one line each. Every hazard reaches at least one constraint; every constraint reaches requirements (their Origin names the SC). "Enforced by": code · configuration · prompt + test · prompt · human · organisation — on Path B and in rescue "now → target". An SC for L1, L2, L3, L9, L10 or L11 enforced only by prompt, human or organisation is a finding for the PM gate. IDs never change; reruns append. -->
+
+- **Losses:** <L-ID — what exactly, for whom; one per line | not relevant ones: L-ID — reason>
+
+| H-ID | Hazard (system state) | Losses | Asset at stake | Origin |
+| --- | --- | --- | --- | --- |
+| H-<FEAT>-1 | <…> | <L…> | <…> | <h-n | GR-n | R-n | checklist | UCA-<FEAT>-n> |
+
+| SC-ID | Constraint | Hazards | Enforced by | Requirements |
+| --- | --- | --- | --- | --- |
+| SC-<FEAT>-1 | <…> | H-<FEAT>-1 | <code | configuration | prompt + test | prompt | human | organisation> | <NF-<FEAT>-n, U-<FEAT>-m> |
+
 ## 6. Integration Points
 
 | System / module | Direction | Contract (schema, protocol, version) | Owner |
@@ -115,6 +131,30 @@ _Sections 0–12 of the MANIFEST document structure. Together with `30-synthesis
 | --- | --- | --- | --- | --- |
 | <…> | <…> | <…> | <…> | yes / no / n.a. |
 
+### Control structure
+
+<!-- STPA-light, checklists/losses-hazards.md §3. Every controller that can act on the product: user roles, operators, system components, error handlers, AI components, external services, scheduled jobs, mechanical checks. Written before the PM gate at the level of roles and components; §11 refines it per module (Regulation line). -->
+
+| Controller | Kind | Control actions | Controlled process | Feedback | Process model (what it believes, how refreshed) |
+| --- | --- | --- | --- | --- | --- |
+| <…> | <human user role | operator | system component | error handler | AI component | external service | scheduled job | mechanical> | <…> | <…> | <…> | <…> |
+
+```mermaid
+flowchart TD
+  <controller> -->|<control action>| <controlled process>
+  <controlled process> -.->|<feedback>| <controller>
+```
+
+### Unsafe control actions
+
+<!-- One row per control action that can lead to a hazard (typically 5–15). Types: N not provided · P provided and harmful · T too early / too late / wrong order · D stopped too soon / applied too long. Causes: CS1–CS6 (checklists/losses-hazards.md §5), AI threats as T01–T22 (checklists/ai-threats.md). Every UCA reaches an SC — new SCs go into §5 above and produce requirements with the next free number. Control actions without a path to a selected loss: one line below the table. -->
+
+| UCA-ID | Controller | Control action | Type | Unsafe in this context | Hazard | Causes | SC |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| UCA-<FEAT>-1 | <…> | <…> | <N | P | T | D> | <…> | H-<FEAT>-n | <CS… · T…> | SC-<FEAT>-n |
+
+- **No path to a selected loss:** <control actions skipped, one line | none>
+
 ## 10. Schema Extensions
 
 <typed structures — tables, messages, config keys — added or changed; each with type, default, valid range where applicable>
@@ -143,6 +183,7 @@ _Sections 0–12 of the MANIFEST document structure. Together with `30-synthesis
 
 - **Responsibility:** <…>
 - **Traces to:** <…>
+- **Regulation:** <enforces SC-<FEAT>-n; watches <feedback>; on violation <refuse | degrade | contain | alert>; refreshes its process model by <…> | not a controller>
 
 ```
 <signatures>

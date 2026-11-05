@@ -6,3 +6,7 @@ builds/*
 .DS_Store
 Thumbs.db
 *.swp
+
+# Customer profiles never go into the public repo (README explains the folder)
+profile/*
+!profile/README.md

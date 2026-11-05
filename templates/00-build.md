@@ -9,11 +9,12 @@ input: —
 # --- only in 00-build.md ---
 title: <working title of the product>
 code_root: <path to the product code, relative to <work> or absolute — never inside <work>>
-git: no                      # yes | no — checked by the Director at start
+git: no                      # yes (user commits) | yes (agent commits) | no — checked by the Director at start (RULES §6)
 language: en                 # language of the result files' content (requirements and code stay English)
-budget_min: {intake: 60, concept: 120, synthesis_per_slice: 45, rescue: 60}
+budget_min: {intake: 60, concept: 180, synthesis_per_slice: 45, rescue: 60}
 profile: none                # none | profile/
 contract_in: none            # none | H2/3 | H2/2 | H2/1 (maquette brief, the version it declares) | register/1 (idea register, Path R) | H1/2 | H1/1 (shortlist entry, Path S)
+scope_boundary: not relevant # not relevant | simulation / teaching | non-safety part only | stop — RULES §12, per feature in the block below
 register: —                  # Path R only: the register version every R-ID is traced against, relative to <work>, e.g. ../idea/10-register.md@3
 ---
 
@@ -27,6 +28,14 @@ register: —                  # Path R only: the register version every R-ID is
 - **Sponsor / product owner:** <role — the person who signs the PM gate>
 - **Decision date:** <YYYY-MM-DD | open — from the register's or the entry's handover, or asked>
 - **Purpose of this build:** <one sentence: what ships when this is done?>
+
+## Scope boundary
+
+<!-- RULES §12. One row per warning (D9). "not relevant" when no trigger came up. The warning is repeated at every PM gate of the feature. -->
+
+| Date | Feature | Trigger | Answer | Carved out of scope | By |
+| --- | --- | --- | --- | --- | --- |
+| — | — | not relevant | — | — | — |
 
 ## Features
 
@@ -49,7 +58,7 @@ register: —                  # Path R only: the register version every R-ID is
 
 | Gate | MANIFEST | When | Decision | By | Date | Rationale / accepted items |
 | --- | --- | --- | --- | --- | --- | --- |
-| PM review | Phase 4 | after concept §3–§10, before architecture | <pending | approved | changes requested> | | | <Path R: trace count — MUST → requirement · other feature · deferred; R-M priorities confirmed> |
+| PM review | Phase 4 | after concept §3–§10, before architecture | <pending | approved | changes requested> | | | <Path R: trace count — MUST → requirement · other feature · deferred; R-M priorities confirmed> · <losses, SC count, UCA count; SCs for L1/L2/L3/L9/L10/L11 enforced only by prompt, human or organisation> · <scope boundary repeated, if any> |
 | Consistency review | Phase 6 | after architecture, before synthesis | <pending | clean | accepted with findings | fix requested> | | | |
 | Gap analysis | Phase 9 | after the last slice | <pending | clean | accepted with gaps | back to synthesis> | | | |
 
@@ -57,9 +66,9 @@ register: —                  # Path R only: the register version every R-ID is
 
 <!-- Maintained by the Director from every feature's 20-concept.md §0 (dependencies) and §9 (interactions & interferences). One row per pair. Empty with one feature. -->
 
-| Feature | Depends on | Touches | Interference risk | Where documented |
-| --- | --- | --- | --- | --- |
-| — | — | — | — | — |
+| Feature | Depends on | Touches | Interference risk | Shared hazards / constraints | Where documented |
+| --- | --- | --- | --- | --- | --- |
+| — | — | — | — | — | — |
 
 ## Decision log
 
@@ -67,7 +76,7 @@ register: —                  # Path R only: the register version every R-ID is
 | --- | --- | --- | --- | --- |
 | <hh:mm> | <FEAT> | — | start | path <B>, git <no>, code root <…> |
 
-<!-- Allowed decisions: start · next · redo · stop · skip · gate:<name>:<result> · budget_exceeded (with the user's answer) · new_feature -->
+<!-- Allowed decisions: start · next · redo · stop · skip · gate:<name>:<result> · budget_exceeded (with the user's answer) · new_feature · scope_boundary:<answer> · review_trigger:<what changed> -->
 
 ## Open items for the Director
 

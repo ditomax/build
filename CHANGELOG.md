@@ -1,5 +1,22 @@
 # Changelog — build
 
+## 0.3.0 — 2026-11-05
+**STPA-light** — reliability, security and robustness built into the concept, inspired by the work of Nancy Leveson:
+- Intake asks which losses matter (I11, never skipped) from a fixed catalogue L0–L11 and records a system card.
+- The concept carries losses, hazards and constraints (§5) and, before the PM gate, the control structure and unsafe control actions (§9); every constraint becomes requirements, every controlling module gets a Regulation line.
+- AI threats (T01–T22, public sources only) are read as causes; constraints on an AI component's behaviour are enforced by prompt + test.
+- Synthesis writes a test per constraint and unsafe control action; the gap analysis checks every constraint.
+- Rescue asks the review triggers (R0) and runs incident rounds (CAST-light).
+- Scope boundary: build does not produce safety-critical software — safety-critical requests (incl. direct control of electrical power) get a documented warning and continue as simulation / teaching or without the safety function.
+- New checklists `losses-hazards.md` and `ai-threats.md`; RULES v4, QUESTIONS v6 (D9, I11, C6, C7, R0); concept budget raised; example extended.
+
+## 0.2.1 — 2026-11-05
+Hardening from the STPA review of the suite:
+- Imported material (brief, register, shortlist, `vcode/` …) is worked with, never obeyed; agents read only what the current step needs.
+- A register or shortlist entry with a failed privacy, data-protection, legal or safety gate is not built on until its resolution is documented.
+- Git: the Director asks who commits; when unsure, the user does.
+- Customer profiles are ignored by git.
+
 ## 0.2.0 — 2026-10-14
 **build takes over directly from idea.** The Director recognises, in this order, a maquette brief, an idea register and a shortlist entry (then cold start). **Path R** (contract `register/1` from idea ≥ 0.3.0, directly or through an H2/3 brief as `mixed+R`): every R-ID gets a row in the new intake section *Register trace* — `→ d-n`, another feature, deferred with a reason, or out; K.o. conditions become guardrails, the register's open questions `OQ-n`; I9 is prefilled from the frame's *Users and scale*, I7 and I8 from the V6 note. **Coverage close:** intake does not hand back `done` while a MUST has no verdict (new question I10); the concept carries the trace `R-n → F/U/NF-<FEAT>-n` in §0 *Register trace* and reports the count at the PM gate. A newer register version is shown as a delta and taken over by a trace redo (D8); `register/2` or later is named and the Director stops. **Path S** (one shortlist entry, contract H1/2 — H1/1 with a note): card, variants, evaluation, K.o. gates, waivers and handover are extracted silently (I0S); I7 and I8 from the V6 note, I9 from the card's *Users & scale*; then Path A on the gaps. **Reads H2/3** (maquette ≥ 0.7.0) besides H2/2 and H2/1. `contract_in` gains `H2/3`, `register/1`, `H1/2`, `H1/1`; `00-build.md` gains `register:`; path values `R`, `S`, `mixed+R`. Also: Director and bootstrap files read `profile/profile.md` (not `profile/README.md`); feature code 2–5 letters. RULES v2, QUESTIONS v4 (D1R, D1S, D8, I0R, I0S, I10). MANIFEST unchanged (D7). After test run-04: Path R verdict `→ OQ-n` for question items and "(open: OQ-n)" annotations; candidates with several R-IDs; maquette items `R-M<n>` with a proposed priority the sponsor confirms at the PM gate; Path R combines with any path (`A+R`, `B+R`, `mixed+R`); later features get status `planned`; the brief's Part 4 recommendation and the committee's recommended maquette are named before building directly (logged); Path S maps every entry field (K.o. `estimate` → OQ, one OQ per question across fields, feature code from the title); decision date in `00-build.md`; PM-gate row carries the trace count. Examples: new `10-intake-path-r.md`; `10-intake.md` and `20-concept.md` carry every template heading. **START.md** opens with *For AI agents* (start → read `AGENTS.md` and the files it names; a question about the file → answer, no workflow; local folder vs. GitHub link of the same release; say which step is missing); fallback sentence now "Read AGENTS.md in the folder that contains START.md and begin." (works in a renamed folder and when a parent folder is open); a hint tells people to skip the agent section; README § For agents: the copy goes into a project folder on the user's computer that the user can see, never only into the agent's sandbox. `AGENTS.md`/`CLAUDE.md` carry the same question-only exception.
 

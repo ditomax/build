@@ -8,6 +8,7 @@ updated: <YYYY-MM-DDThh:mm>
 input: <FEAT>/20-concept.md@<rev>, <FEAT>/30-synthesis.md@<rev>, ../CONTEXT.md@<rev>, ../decisions/
 feature: <FEAT>
 git: no
+kind: maintenance             # maintenance | incident (CAST-light)
 budget_refactors: <n>
 ---
 
@@ -15,11 +16,32 @@ budget_refactors: <n>
 
 _MANIFEST Phase 10. A periodic maintenance round against software entropy: find deepening opportunities, apply them one at a time within budget, revert on regression, and reconcile concept and code. Each round is its own file._
 
+## 0. Review triggers (R0)
+
+<!-- Asked by the Director at the start of the round. Any yes → concept redo of §5 / §9 for this feature, or this round becomes an incident round. -->
+
+| Since the last concept version | Changed? | What |
+| --- | --- | --- |
+| AI model or model version | <yes | no> | <…> |
+| Data source | <yes | no> | <…> |
+| Tool or permission of an AI component | <yes | no> | <…> |
+| Exposure (internal → partner → public) | <yes | no> | <…> |
+| Learning loop | <yes | no> | <…> |
+| Incident | <yes | no> | <…> |
+
 ## 1. Scan
 
 - **Scope scanned:** <code_root paths, concept sections, ADRs>
 - **Drift found (concept ≠ code):** <none | list with requirement IDs>
 - **Complexity hotspots:** <modules, why>
+
+## 1a. Incident analysis (CAST-light)
+
+<!-- Incident rounds only; otherwise "not relevant — maintenance round". No blame on persons or the model: the question is why the control structure allowed it. -->
+
+| What happened | Loss | Failed control loop | Why the structure allowed it | Fix | Enforced by | Remaining gap |
+| --- | --- | --- | --- | --- | --- | --- |
+| <…> | <L…> | <missing SC | SC not enforced | feedback missing | process model wrong | conflicting controllers | authority too wide> | <…> | <new or changed SC-<FEAT>-n → concept redo, regression test> | <now → target> | <…> |
 
 ## 2. Opportunities
 

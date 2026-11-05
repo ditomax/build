@@ -21,6 +21,8 @@ _Sections 0–12 of the MANIFEST document structure. Together with `30-synthesis
 - **Synthesis dependencies:** none — OFA is the first feature.
 - **Synthesis scope:** the whole feature, from this document, `CONTEXT.md` and `decisions/ADR-OFA-001…003`. The maquette's 19-field list with its CRM column mapping is restated in §10.
 - **Field of application:** internal web app (document assistant) — `checklists/requirements.md` Cross-Cutting, Web application, Technology.
+- **Scope boundary:** not relevant — pumps are offered, not controlled.
+- **System card:** autonomy suggests only · exposure internal · learning loop no · actions read CRM export, register and archive; write drafts; Word export — no AI component, so `checklists/ai-threats.md` does not apply.
 
 ### Register trace
 
@@ -58,7 +60,8 @@ not relevant — no register.
 | F-OFA-11 | Standard terms come from the current terms file only | Terms section equals the terms file, byte for byte | OQ-3, d-4 | [evidenced] |
 | F-OFA-12 | Save a draft and reopen it | Save, sign out, sign in, reopen → same values, origins, accepted blocks | intake #12, d-1 | [evidenced] |
 | F-OFA-13 | The Word export carries no origin tags | Export text contains no origin label | intake #8, d-12 | [evidenced] |
-| F-OFA-14 | Show the export date; warn if the CRM export is older than 26 h | 27 h old export → banner on every screen | §9 | [evidenced] |
+| F-OFA-14 | Show the export date; warn if the CRM export is older than 26 h | 27 h old export → banner on every screen | §9, SC-OFA-1 | [evidenced] |
+| F-OFA-15 | Flag customer names from the offer register (other than the current customer) inside a suggested block | Block mentioning "Muster AG" offered for another customer → flagged, accept needs a second click | SC-OFA-4 | [evidenced] |
 
 ## 4. User Interaction Requirements
 
@@ -69,6 +72,7 @@ not relevant — no register.
 | U-OFA-3 | Preview enabled only when no missing field is empty | One empty missing field → preview disabled | cU-3 | [evidenced] |
 | U-OFA-4 | Preview shows typed values distinctly and lists them | The 3 typed values are marked and listed under the origin count | Q5 observation, d-11 | [evidenced] |
 | U-OFA-5 | Keyboard focus follows the visual order | Tab walks fields top to bottom, then blocks | brief shortcut, d-8 | [evidenced] |
+| U-OFA-6 | Unreadable archive files are counted and shown next to the suggestions | 2 locked files → "2 earlier offers could not be read" | SC-OFA-2 | [evidenced] |
 
 ## 5. Non-Functional Requirements
 
@@ -80,7 +84,8 @@ not relevant — no register.
 | NF-OFA-4 | GDPR: of contact data, only name and e-mail are stored; drafts purged after `retention_days` | Stored draft holds no other contact column; purge deletes expired drafts | checklist Cross-Cutting, OQ-4, d-6 | [unknown] — period is OQ-14 |
 | NF-OFA-5 | HTTPS only; no calls outside the company network; no credentials in the repository | Header scan; egress test; CI secret scan | checklist, GR-6, d-7 | [evidenced] |
 | NF-OFA-6 | Structured logs without customer names, contacts or offer text | Log scan finds no fixture values | checklist, d-10 | [evidenced] |
-| NF-OFA-7 | Rollback to the previous release within 15 min | Rollback drill on the VM | checklist, d-9 | [estimated] |
+| NF-OFA-7 | Rollback to the previous release within 15 min | Rollback drill on the VM | checklist, d-9, SC-OFA-10 | [estimated] |
+| NF-OFA-8 | A save is atomic and refused when the draft changed since it was opened | Two tabs, save in both → second save refused with a reload hint; no partial file after a killed process | SC-OFA-6 | [evidenced] |
 
 ### Load and growth model
 
@@ -89,6 +94,37 @@ _Omitted in this example (section added in build 0.1.10)._
 ### Operating cost model
 
 _Omitted in this example (section added in build 0.1.10)._
+
+### Losses, hazards and constraints
+
+- **Losses:** L1 a paused draft · L2 contact names and e-mails · L3 drafts reachable outside sales · L4 wrong values in a sent offer · L7 outdated terms in a binding offer · L8 another customer's details in a reused block · L9 the single-sign-on secret · L11 a release IT cannot roll back. Not relevant: L5 (manual fallback for a few hours), L6 (fixed running cost only), L10 (no outbound calls).
+
+| H-ID | Hazard (system state) | Losses | Asset at stake | Origin |
+| --- | --- | --- | --- | --- |
+| H-OFA-1 | The engineer works on stale or incomplete inputs without seeing it | L4 | offer values | h-1 |
+| H-OFA-2 | A reused block carries another customer's details into this offer | L8, L2 | earlier offers | h-2 |
+| H-OFA-3 | A reused block or value does not fit this pump (other series, older than 36 months, unconverted unit) | L4 | offer values | h-3 |
+| H-OFA-4 | Outdated terms are copied from an earlier offer | L7 | terms | h-4 |
+| H-OFA-5 | A draft is lost or overwritten by a second save | L1 | drafts | h-5 |
+| H-OFA-6 | Contact data is kept beyond its purpose | L2 | drafts | h-6 |
+| H-OFA-7 | Someone outside the sales engineers reaches drafts | L3, L8 | drafts | h-7 |
+| H-OFA-8 | The single-sign-on client secret sits in the repository or in logs | L9 | SSO secret | checklist |
+| H-OFA-9 | A faulty release cannot be rolled back | L11 | the running service | checklist |
+
+| SC-ID | Constraint | Hazards | Enforced by | Requirements |
+| --- | --- | --- | --- | --- |
+| SC-OFA-1 | The export date is always visible; older than 26 h → banner on every screen | H-OFA-1 | code | F-OFA-14 |
+| SC-OFA-2 | Unreadable archive files are counted and shown, never silently skipped | H-OFA-1 | code | U-OFA-6 |
+| SC-OFA-3 | Blocks only from the same pump series and ≤ 36 months; l/s converted, bar flagged | H-OFA-3 | code | F-OFA-4, F-OFA-8, F-OFA-9 |
+| SC-OFA-4 | Other customers' names are flagged in a block before it can be accepted; the engineer accepts every block | H-OFA-2 | code · human | F-OFA-15, U-OFA-2 |
+| SC-OFA-5 | Terms come only from the current terms file | H-OFA-4 | code | F-OFA-11 |
+| SC-OFA-6 | A save is atomic and refused when the draft changed since it was opened | H-OFA-5 | code | F-OFA-12, NF-OFA-8 |
+| SC-OFA-7 | Only name and e-mail are stored; drafts are purged after `retention_days` | H-OFA-6 | code | NF-OFA-4 |
+| SC-OFA-8 | Access only for the group "sales engineers" | H-OFA-7 | configuration | NF-OFA-3 |
+| SC-OFA-9 | The SSO secret comes from the VM's secret store; CI secret scan; logs carry no secrets | H-OFA-8 | configuration · code | NF-OFA-5, NF-OFA-6 |
+| SC-OFA-10 | Rollback to the previous release within 15 min, drilled | H-OFA-9 | organisation | NF-OFA-7 |
+
+PM gate finding: SC-OFA-10 protects against L11 and is enforced by organisation only — accepted by the Head of Sales on 2026-09-24: the rollback drill is part of IT's quarterly VM routine.
 
 ## 6. Integration Points
 
@@ -142,6 +178,46 @@ Software-only checklist. The cross-feature table in `00-build.md` is empty, beca
 | Offer template, terms file | Fill, copy | Legal changes the template → layout drift | Named content fields in the template | yes — still usable by hand |
 | Other features | none | none | none | n.a. |
 
+### Control structure
+
+| Controller | Kind | Control actions | Controlled process | Feedback | Process model (what it believes, how refreshed) |
+| --- | --- | --- | --- | --- | --- |
+| Sales engineer | human user role | open an opportunity, type missing values, accept or reject blocks, save, export | the draft | origin tags, missing markers, export-age banner, origin count in the preview | "the CRM values are current", "a suggested block fits this customer" — refreshed by the banner and the flags |
+| WebApp | system component | assemble the draft, enable the preview, start the export | workbench, preview | FieldMapper and BlockExtractor results | the list of missing fields — recomputed on every change |
+| BlockExtractor | system component | suggest blocks for a pump series | suggestions | register rows, archive files | the register is complete — read on start |
+| Archive error handler | error handler | skip an unreadable file, log it | suggestions | file read error | "a skipped file only means fewer suggestions" |
+| DraftStore | system component | save, reopen, purge drafts | stored drafts | version check, purge log | the draft version the engineer opened |
+| Nightly CRM export | scheduled job (CRM admin) | write the CSV of open opportunities | export folder | — (OFA sees only the file date) | — |
+| IT operator | operator | deploy, roll back | the VM | health check | the previous release is restorable |
+
+```mermaid
+flowchart TD
+  E[Sales engineer] -->|type, accept, save, export| W[WebApp]
+  W -.->|origin tags, flags, banner, origin count| E
+  W -->|blocks_for| B[BlockExtractor]
+  B -->|read| A[(Offer archive)]
+  A -.->|read error → error handler: count + log| W
+  W -->|save| S[DraftStore]
+  S -.->|version check| W
+  J[Nightly CRM export] -->|CSV| W
+  O[IT operator] -->|deploy, roll back| V[(VM)]
+```
+
+### Unsafe control actions
+
+| UCA-ID | Controller | Control action | Type | Unsafe in this context | Hazard | Causes | SC |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| UCA-OFA-1 | WebApp | assemble the draft | P | from an export older than a night, without telling the engineer | H-OFA-1 | CS2 (only the file date is feedback) | SC-OFA-1 |
+| UCA-OFA-2 | Archive error handler | skip an unreadable file | P | silently — the engineer believes there are no earlier offers | H-OFA-1 | CS2 | SC-OFA-2 |
+| UCA-OFA-3 | Sales engineer | accept a block | P | the block names another customer | H-OFA-2 | CS1 (believes blocks are generic) | SC-OFA-4 |
+| UCA-OFA-4 | BlockExtractor | suggest a block | P | from another series, older than 36 months, or with an unconverted unit | H-OFA-3 | CS1, CS3 | SC-OFA-3 |
+| UCA-OFA-5 | Sales engineer | export | T | before the flags on accepted blocks are resolved | H-OFA-2, H-OFA-3 | CS1 | SC-OFA-4 |
+| UCA-OFA-6 | DraftStore | save | P | a second tab saves over a newer version | H-OFA-5 | CS5 | SC-OFA-6 |
+| UCA-OFA-7 | DraftStore | purge | N | never runs while `retention_days` is open (OQ-14) | H-OFA-6 | CS6 (nobody decides the period yet) | SC-OFA-7 |
+| UCA-OFA-8 | IT operator | roll back | D | stopped half-way — old code on new draft data | H-OFA-9 | CS4 | SC-OFA-10 |
+
+- **No path to a selected loss:** the nightly CRM export job (OFA does not control it; its failure is UCA-OFA-1).
+
 ## 10. Schema Extensions
 
 ```
@@ -183,9 +259,9 @@ ofa/
 | Slice | Name | Delivers (requirements) | Depends on | Acceptance |
 | --- | --- | --- | --- | --- |
 | S1 | Walking skeleton: real opportunity to preview | F-OFA-1, F-OFA-2, F-OFA-3, F-OFA-5, U-OFA-1, U-OFA-3, NF-OFA-2, NF-OFA-3 | — | As-built S1 and S3 scenarios pass on the real nightly export (without blocks) |
-| S2 | Text blocks | F-OFA-4, F-OFA-6, F-OFA-8, F-OFA-9, U-OFA-2 | S1 | As-built S2 scenario passes on register fixtures; bar block flagged |
+| S2 | Text blocks | F-OFA-4, F-OFA-6, F-OFA-8, F-OFA-9, F-OFA-15, U-OFA-2, U-OFA-6 | S1 | As-built S2 scenario passes on register fixtures; bar block flagged |
 | S3 | Export | F-OFA-7, F-OFA-10, F-OFA-11, F-OFA-13, U-OFA-4, U-OFA-5 | S2 | Word file on the real template: no tags, placeholder price, terms from file |
-| S4 | Save and operations | F-OFA-12, F-OFA-14, NF-OFA-1, NF-OFA-4 … NF-OFA-7 | S3 | Save/reopen round trip; scans and rollback drill pass; timing study with 5 engineers |
+| S4 | Save and operations | F-OFA-12, F-OFA-14, NF-OFA-1, NF-OFA-4 … NF-OFA-8 | S3 | Save/reopen round trip; scans and rollback drill pass; timing study with 5 engineers |
 
 ### Module specifications
 
@@ -195,6 +271,7 @@ ofa/
 
 - **Responsibility:** turn one CRM row into the 19 offer fields with origins; name the missing ones.
 - **Traces to:** F-OFA-2, F-OFA-3
+- **Regulation:** not a controller — WebApp acts on its missing list.
 
 ```
 class FieldMapper:
@@ -208,6 +285,7 @@ class FieldMapper:
 
 - **Responsibility:** normalise units inside field values and block text.
 - **Traces to:** F-OFA-8, F-OFA-9
+- **Regulation:** enforces SC-OFA-3; watches units in field values and block text; on violation contains (l/s converted) or alerts (bar flagged); stateless — no process model to refresh.
 
 ```
 class UnitNormalizer:
@@ -267,11 +345,12 @@ _Omitted in this example (section added in build 0.1.10)._
 | F-OFA-2, F-OFA-3 | FieldMapper | S1 | filled by synthesis |
 | F-OFA-5 | WebApp | S1 | filled by synthesis |
 | F-OFA-4, F-OFA-6 | OfferRegister, BlockExtractor | S2 | filled by synthesis |
+| F-OFA-15 | BlockExtractor, OfferRegister, WebApp | S2 | filled by synthesis |
 | F-OFA-8, F-OFA-9 | UnitNormalizer | S2 | filled by synthesis |
 | F-OFA-7, F-OFA-10, F-OFA-11, F-OFA-13 | DocxExporter | S3 | filled by synthesis |
 | F-OFA-12, F-OFA-14 | DraftStore, CrmExportReader, WebApp | S4 | filled by synthesis |
-| U-OFA-1 … 5 | WebApp | S1–S3 | filled by synthesis |
-| NF-OFA-1 … 7 | SsoGate, DraftStore, WebApp, deployment | S1, S4 | filled by synthesis |
+| U-OFA-1 … 6 | WebApp | S1–S3 | filled by synthesis |
+| NF-OFA-1 … 8 | SsoGate, DraftStore, WebApp, deployment | S1, S4 | filled by synthesis |
 
 ## 12. Architecture Consistency Review
 
@@ -286,6 +365,9 @@ _Omitted in this example (section added in build 0.1.10)._
 | F-OFA-13 | origin tags | DraftStore → DocxExporter | DraftStore, DocxExporter | OK | exporter writes `value` only |
 | F-OFA-4 | block boundaries | OfferRegister → BlockExtractor heading rule | OfferRegister, BlockExtractor | DANGLING | rule unconfirmed until OQ-13 |
 | NF-OFA-4 | retention | Config `retention_days` → DraftStore.purge | Config, DraftStore | DANGLING | no value until OQ-14; purge disabled |
+| U-OFA-6 | error handling as controller | archive read error → BlockExtractor → WebApp notice | BlockExtractor, WebApp | OK | `ArchiveFileError` counted, never swallowed |
+| F-OFA-15 | untrusted content path | archive Word file → BlockExtractor → WebApp suggestion → DocxExporter | BlockExtractor, WebApp, DocxExporter | OK | block text is shown and exported as text only; customer names flagged before accept |
+| NF-OFA-8 | control loop | WebApp save → DraftStore version check → WebApp reload hint | WebApp, DraftStore | OK | the effect (stored version) is confirmed, not the click |
 
 ### Findings & human-review decisions
 

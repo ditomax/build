@@ -1,6 +1,6 @@
 # Requirement Checklists
 
-**Version 2**
+**Version 3**
 
 _No exact field for your product? Take the closest one (an internal document-generation tool → Web application), add the cross-cutting and technology sections, and name the sections you used in `10-intake.md`._
 
@@ -16,6 +16,9 @@ Each entry is: **trigger → required check/standard → how it is verified.** A
 
 | Trigger | Required | Verified by |
 | --- | --- | --- |
+| Any product | Losses L1–L11 checked; hazards, constraints and unsafe control actions in concept §5 / §9 (`checklists/losses-hazards.md`) | Every SC has a requirement and a passing test (synthesis §14) |
+| AI component in the product (system card, concept §0) | AI threats T01–T22 checked as causes (`checklists/ai-threats.md`) | Adversarial and negative tests in synthesis §13 |
+| Product could harm people or property, controls a safety function, or directly controls, switches or protects electrical power | **Scope-boundary trigger (RULES §12)** — build does not produce safety-critical software: warning D9, then *simulation / teaching*, *non-safety part only* or *stop*; a diagnostic or advisory component is not a trigger (its output is advisory, a qualified person decides) | Warning and answer logged in `00-build.md` *Scope boundary* and concept §0 |
 | Processing personal data of EU subjects | DSGVO/GDPR compliance (lawful basis, data minimization, deletion, DSAR) | Data-flow map, privacy review, deletion test |
 | Handling of information security at org level | ISO/IEC 27001 controls where in scope | Control mapping, audit evidence |
 | Software with quality-management obligations | ISO 9001 / ISO/IEC 25010 quality attributes | Quality plan, metrics review |
@@ -65,7 +68,7 @@ Each entry is: **trigger → required check/standard → how it is verified.** A
 | Trigger | Required | Verified by |
 | --- | --- | --- |
 | Real-time behavior | Deadlines, WCET analysis, jitter bounds | Timing analysis, scheduling proof |
-| Safety-relevant | IEC 61508 / ISO 26262 (automotive) / IEC 62304 (medical) | Safety case, hazard analysis |
+| Safety-relevant (IEC 61508 / ISO 26262 / IEC 62304 would apply) | **Scope-boundary trigger (RULES §12)** — build does not produce the safety function; warning D9 | Logged in `00-build.md` *Scope boundary* |
 | Constrained resources | RAM/flash/CPU budgets, stack-depth analysis | Static analysis, high-water-mark test |
 | Battery/powered device | Power budget, sleep modes, brown-out handling | Power measurement, brown-out test |
 | Firmware in the field | Bootloader + OTA update with rollback | Update/rollback test on target |
@@ -90,7 +93,7 @@ _Valid for distributed real-time systems — several nodes that together close a
 | Peak load specified | Load hypothesis per channel and node; freedom from thrashing | Load test above peak, throughput curve |
 | Subsystems are integrated | Composability: which property survives integration | Property shown before and after integration |
 | Gateway between clusters | Flow-control mode of both sides, buffering, skipping strategy | Gateway overflow test |
-| Safety-relevant actuator | End-to-end protocol: the effect is monitored, not the command | Test with a blocked actuator |
+| Safety-relevant actuator | **Scope-boundary trigger (RULES §12)** — warning D9; in *simulation / teaching*: end-to-end protocol, the effect is monitored, not the command | Logged in `00-build.md`; test with a blocked actuator |
 | Node is reintegrated | Ground state defined, minimal h-state, reintegration point | Restart of a node in the running system |
 
 ### Hardware system
@@ -99,7 +102,7 @@ _Valid for distributed real-time systems — several nodes that together close a
 | --- | --- | --- |
 | Any electronics | EMC/EMI compliance (e.g. EN 55032/55035), ESD | Pre-compliance + certified lab test |
 | Any hardware | Environmental spec: temperature, humidity, vibration, IP rating | Environmental test campaign |
-| Powered hardware | Electrical safety (e.g. IEC 62368-1), power sequencing | Safety test, sequencing scope trace |
+| Powered hardware | Electrical safety (e.g. IEC 62368-1): **Scope-boundary trigger (RULES §12)** when the product directly controls, switches or protects electrical power — a diagnostic or advisory component is not; power sequencing | Warning logged; sequencing scope trace |
 | Multiple HW revisions | Revision matrix, silicon errata review, backward compat | Regression on each revision |
 | Signal integrity concern | Voltage/level matching, timing, termination | SI simulation / measurement |
 | Manufacturing | DFM/DFT, test points, ICT/boundary scan, calibration | Board bring-up + production test plan |
@@ -112,7 +115,7 @@ _Valid for distributed real-time systems — several nodes that together close a
 | Measurement device | Calibration procedure, traceability to standards | Calibration record |
 | Regulated lab | GLP / ISO/IEC 17025 as applicable | Audit evidence |
 | Data-producing instrument | Data integrity (ALCOA+), audit trail | Data-integrity review |
-| Safety in lab | Interlocks, emergency stop, fail-safe defaults | Safety FMEA, interlock test |
+| Safety in lab | Interlocks, emergency stop, fail-safe defaults: **Scope-boundary trigger (RULES §12)** — build does not produce them | Warning logged in `00-build.md` |
 
 ### Desktop application
 

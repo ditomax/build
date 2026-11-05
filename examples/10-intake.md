@@ -124,6 +124,7 @@ not relevant for this feature — started from a brief.
 | 15 | OQ-4 — data protection | brief | Data protection officer consulted 2026-09-19: contact name and e-mail may be used; drafts need a retention period, not yet set (new: OQ-14) | [evidenced] / [unknown] |
 | 16 | cNF-2 — A4 printing | brief | Not needed; engineers print from Word | [evidenced] |
 | 17 | Q5 surprise — "which of these did I type?" | brief | Yes: preview should show typed values distinctly | [evidenced] — Head of Sales |
+| 18 | I11 — losses and hazards | always | L1, L2, L3, L4, L7, L8, L9, L11 relevant; worst for sales: an offer that carries another customer's details (L8) | [evidenced] — Head of Sales |
 
 ### Field-standard concerns
 
@@ -149,6 +150,48 @@ _Omitted in this example — see `10-intake-path-r.md`._
 ### Load and growth
 
 _Omitted in this example — see `10-intake-path-r.md`._
+
+### Losses and hazards (I11)
+
+**System card**
+
+| Line | Value | Evidence |
+| --- | --- | --- |
+| Autonomy | suggests only — the engineer accepts every block and exports himself | [evidenced] — brief Part 1 |
+| Exposure | internal — sales engineers, company network only | [evidenced] — #11, #14 |
+| Learning loop | no | [evidenced] |
+| Actions | reads the CRM export, the offer register and archive files; writes drafts; produces a Word file — no messages, no requests to others | [evidenced] — #2, #4, #7 |
+
+**Losses**
+
+| Loss | Relevant | What exactly would be lost, for whom | Prefilled from | Evidence |
+| --- | --- | --- | --- | --- |
+| L1 | yes | a half-finished draft, for the engineer who paused it | #12 | [evidenced] |
+| L2 | yes | contact names and e-mails kept too long | GR-6, #15 | [evidenced] |
+| L3 | yes | drafts reachable by people outside sales | #14 | [evidenced] |
+| L4 | yes | an offer with wrong values — old CRM data, wrong series, wrong unit — sent to a customer | GR-7, #10 | [evidenced] |
+| L5 | not relevant — engineers fall back to the manual way for a few hours | — | [evidenced] |
+| L6 | not relevant — fixed running cost only (one VM) | — | [evidenced] |
+| L7 | yes | outdated standard terms in a binding offer | #6 | [evidenced] |
+| L8 | yes | another customer's names or project details inside a reused block | #18 | [evidenced] |
+| L9 | yes | the single-sign-on client secret | checklist | [evidenced] |
+| L10 | not relevant — no outbound calls (#11) | — | [evidenced] |
+| L11 | yes | a faulty release IT cannot roll back | checklist | [evidenced] |
+
+- **Worst for this sponsor:** L8 — an offer that shows a customer what we quoted to a competitor of theirs.
+- **Scope boundary:** not relevant — pumps are offered, not controlled.
+
+**Draft hazards**
+
+| Draft | Hazard (system state) | Losses | Origin |
+| --- | --- | --- | --- |
+| h-1 | the engineer works on stale or incomplete inputs without seeing it (old CRM export, unreadable archive files) | L4 | #2, #4 |
+| h-2 | a reused block carries another customer's details into this offer | L8, L2 | #18 |
+| h-3 | a reused block or value does not fit this pump (other series, older than 36 months, unconverted unit) | L4 | #6, #10 |
+| h-4 | outdated terms copied from an earlier offer | L7 | #6 |
+| h-5 | a draft is lost or overwritten by a second save | L1 | #12 |
+| h-6 | contact data kept beyond its purpose | L2 | #15 |
+| h-7 | someone outside the sales engineers reaches drafts | L3, L8 | #14 |
 
 ### New candidate requirements
 

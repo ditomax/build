@@ -140,6 +140,34 @@ _Result of the intake stage. Part 1 is what the prototype, the brief, the regist
 | Data volume (records, documents, GB) | <…> | <…> | <…> | <…> |
 | External limits (rate limits or quotas of services we call) | <…> | <…> | <…> | <…> |
 
+### Losses and hazards (I11)
+
+<!-- I11 — asked on every path, never skipped (RULES §8). Prefilled and read back first from: brief Part 3 guardrails, register K.o. conditions and V6 note, shortlist entry *Personal data* / *Data situation*, field-standard concerns already answered. Losses only from checklists/losses-hazards.md — never invented. L0 or any RULES §12 trigger → the Director asks D9. Draft hazards are unnumbered (h-n); the concept numbers them. -->
+
+**System card**
+
+| Line | Value | Evidence |
+| --- | --- | --- |
+| Autonomy | <suggests only | acts with human confirmation | acts alone> | <…> |
+| Exposure | <internal | partner | public> | <…> |
+| Learning loop | <no | yes — what feeds back> | <…> |
+| Actions | <tools, write access, code execution, messages or requests to others, other agents — or "reads only"> | <…> |
+
+**Losses**
+
+| Loss | Relevant | What exactly would be lost, for whom | Prefilled from | Evidence |
+| --- | --- | --- | --- | --- |
+| L1 … L11 | <yes | not relevant — reason> | <…> | <GR-n | R-n | entry field | grilling> | <[evidenced] | [estimated]> |
+
+- **Worst for this sponsor:** <one loss and one sentence>
+- **Scope boundary:** <not relevant | trigger: … → D9 answer: …>
+
+**Draft hazards**
+
+| Draft | Hazard (system state) | Losses | Origin |
+| --- | --- | --- | --- |
+| h-1 | <…> | <L…> | <…> |
+
 ### New candidate requirements
 
 | Draft ID | Requirement | Type | Origin | Evidence |

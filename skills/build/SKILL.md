@@ -1,6 +1,6 @@
 ---
 name: build
-version: "0.2"
+version: "0.3"
 description: >
   Director of the build skillset — takes a maquette brief, a requirement register
   or a shortlist entry from idea (or a problem statement) to a shipped product through concept documents that code is synthesized from,
@@ -40,8 +40,8 @@ Say which layout you found only if the user asks.
    - **redo** — rerun the current or last finished stage as a new version (`NN-<stage>.vN.md`); afterwards mark all later stages of that feature `stale`. For the concept stage, remind the user this is a concept version bump and, with `git: yes`, commit it before any code follows (RULES §6).
    - **stop** — write nothing new; summarise the state in three lines; end.
    - **skip** — allowed only for rescue; log it.
-   - **new feature** — add a feature block (below) without touching existing ones.
-   - **rescue** — start a rescue round on the current feature at any time after synthesis S1.
+   - **new feature** — add a feature block (below) without touching existing ones; ask the review triggers **R0** first (below).
+   - **rescue** — start a rescue round on the current feature at any time after synthesis S1; ask the review triggers **R0** first (below).
    - no word — treat as **next** after confirming.
 
 ## First call (no `00-build.md`)
@@ -65,13 +65,13 @@ What build starts from, in this order — say in half a sentence what else exist
 **With a register** (no brief; `10-register.md` with `track: focus` and `status: done`, or the user names or pastes one):
 
 1. **Contract check.** `contract: register/1` → continue. `register/2` or later, or no contract line → say "This register speaks <contract>; build <VERSION> reads register/1 — update the suite first" and **stop**; never guess the format.
-2. Say outcome and next stage in one sentence. `next: maquette` → "The committee planned a maquette first — build directly?" (a yes is logged with the reason). `outcome: stop` → say so; continue only on an explicit yes with a reason (logged). `Complete: partial` → say once that a later register version may change priorities; you will notice it.
+2. Say outcome and next stage in one sentence. `next: maquette` → "The committee planned a maquette first — build directly?" (a yes is logged with the reason). `outcome: stop` → say so; continue only on an explicit yes with a reason (logged) — **except** when a gate failed on privacy, data-protection, legal or safety grounds without a documented resolution: name the gate and stop until a new register version documents the resolution (RULES §9 *Blockers*). `Complete: partial` → say once that a later register version may change priorities; you will notice it.
 3. Propose the **feature code** (2–5 letters, from the register's project title — the register code is usually the org code) and the title; the field of application is inferred from the frame and confirmed in half a sentence.
 4. **Path:** `R` — intake imports every R-ID as a candidate with a trace, then grills the gaps (Path A). Record `contract_in: register/1`, `register: <file>@<rev>`, `input: register <code> (<path>@<rev>)`, sponsor and decision date from the register's Handover.
 
 **With a shortlist entry** (no brief, no register; `10-shortlist.md` `done` with `contract: H1/2` — `H1/1` accepted with a note that *Users & scale* may be missing — or the user names or pastes one entry):
 
-1. `next_maquette` names an entry → "The committee chose <ID — title> and recommended a maquette (<recommended mode>, tendency <…>); there is none — build it directly?" A yes is logged with the user's reason. Otherwise list the entries as "rank · ID · title · tendency" and ask which one. Exactly one per build start; consumed cards (merged / split) are never offered.
+1. `next_maquette` names an entry → "The committee chose <ID — title> and recommended a maquette (<recommended mode>, tendency <…>); there is none — build it directly?" A yes is logged with the user's reason. Otherwise list the entries as "rank · ID · title · tendency" and ask which one. Exactly one per build start; consumed cards (merged / split) are never offered; an entry parked on a red K.o. gate on privacy, data-protection, legal or safety grounds is offered only with a documented resolution, otherwise named with its gate (RULES §9 *Blockers*).
 2. Propose the **feature code** (2–5 letters, from the entry's title — the ID is only org code and number) and the title; field of application from the entry's V4 note and *Process & systems*, confirmed in half a sentence.
 3. **Path:** `S` — intake extracts silently from the entry (card, variants, evaluation, K.o. gates, handover), then grills the gaps. Record `contract_in:` `H1/2` (or `H1/1`), `input: shortlist entry <ID> (<path>@<rev>)`, sponsor and decision date from the entry's handover block.
 
@@ -84,8 +84,10 @@ What build starts from, in this order — say in half a sentence what else exist
 
 **All branches:**
 
+**Scope boundary (D9, RULES §12)** — as soon as the field of application or the input names a trigger (harm to people or property, a safety function, direct control, switching or protection of electrical power, a functional-safety standard): say plainly that build does not produce safety-critical software and that what it builds must not be the safety function; a diagnostic or advisory component is not a trigger. Then ask D9 — *simulation / teaching*, *non-safety part only* (name the carved-out safety function), or *stop* — never skipped, not even by a profile. Log the answer in `00-build.md` (`scope_boundary`, block *Scope boundary*, decision `scope_boundary:<answer>`). The same applies whenever a stage reports L0 or a trigger later.
+
 5. **Code root:** project layout → `<project>/` is the default, confirm it; standalone → ask. Never inside `<work>`.
-6. **Git:** check silently whether `<work>` or `code_root` (or a parent) is a git repository (`git rev-parse --is-inside-work-tree` if a shell is available; else look for `.git`). Record `yes`/`no`. Then `git check-ignore -q` on the folder the results will live in (standalone: `builds/<project>`; the path need not exist yet): if it is ignored (the workspace is a clone of the public repo), record `no (clone — work folder ignored)` instead. Never run `git init`. Tell the user in half a sentence.
+6. **Git:** check silently whether `<work>` or `code_root` (or a parent) is a git repository (`git rev-parse --is-inside-work-tree` if a shell is available; else look for `.git`). Record `yes`/`no`. Then `git check-ignore -q` on the folder the results will live in (standalone: `builds/<project>`; the path need not exist yet): if it is ignored (the workspace is a clone of the public repo), record `no (clone — work folder ignored)` instead. Never run `git init`. Tell the user in half a sentence. With `yes`, ask once: "Do I commit, or do you? Some agent sandboxes cannot delete files and leave git lock files behind." When unsure, the user commits (RULES §6).
 7. **Language** of result files: English by default; a profile may set it; the language the user writes in overrides that; an explicit statement by the user overrides everything. Requirement text, IDs, code and commits stay English regardless. Confirm in half a sentence.
 
 Then create `00-build.md` from `templates/00-build.md` (revision 1, one feature block, budgets from the template, log line `start`), create `CONTEXT.md`, `deployment.md`, `test_tooling.md` and `decisions/` from the templates if absent, and run intake.
@@ -96,13 +98,17 @@ Then create `00-build.md` from `templates/00-build.md` (revision 1, one feature 
 2. Mark the row `in_progress` with the start time in `00-build.md` (revision + 1).
 3. Read and follow `<suite>/skills/build-<stage>/SKILL.md` in full, passing: work root, feature code, current input files and revisions, path, field, `git`, `language`, `code_root`, minutes, and the profile constraints that concern this stage.
 4. When the stage skill hands back (RULES §7): verify the result file exists, has valid frontmatter, cites the right `input@revision`, keeps every template heading, and that every requirement ID carries the feature code. If a check fails, name it and ask the stage skill to fix — do not fix content yourself.
-5. **Gates.** Concept hands back twice: once after §3–§10 (PM review, MANIFEST Phase 4) and once after §11–§12 (consistency review, Phase 6). Synthesis hands back after the gap analysis (Phase 9). At each gate you ask the sponsor's decision, one question, and log it in the Gates table with rationale. PM review is a hard gate: no architecture without approval. Phase 6 and 9 are advisory: findings are shown prominently, the human accepts (logged), requests a fix (loop back), or defers (tracked in "Open items").
+5. **Gates.** Concept hands back twice: once after §3–§10 (PM review, MANIFEST Phase 4) and once after §11–§12 (consistency review, Phase 6). Synthesis hands back after the gap analysis (Phase 9). At each gate you ask the sponsor's decision, one question, and log it in the Gates table with rationale. PM review is a hard gate: no architecture without approval. At the PM gate also show: the selected losses, the SC count, every SC for L1, L2, L3, L9, L10 or L11 enforced only by prompt, human or organisation (a finding — the sponsor accepts it with a rationale or asks for code, configuration or a test), the UCA count, and any scope-boundary warning again. Phase 6 and 9 are advisory: findings are shown prominently, the human accepts (logged), requests a fix (loop back), or defers (tracked in "Open items").
 6. Ask the user: "Good as it is — next, or redo?" On next: set `status: done` in the result file's frontmatter (the only field you edit in another skill's file) — that write bumps `revision` and `updated` like any other (RULES §4.4), fill the stage table, log the decision. With `git: yes`, commit that file (RULES §6) and say so in half a sentence.
 7. If minutes used exceed the budget by more than 25 %, note it under "Open items for the Director" — data for the retro, not a reprimand.
 
 ## Cross-feature interactions
 
-After every concept `done`, read its §0 dependencies and §9 rows and update the "Cross-feature interactions" table in `00-build.md`. When a new feature starts intake, pass the table and the paths of all existing concept documents to the intake skill so Phase 3 checks against them.
+After every concept `done`, read its §0 dependencies, its §5 hazards and constraints that other features share, and its §9 rows and update the "Cross-feature interactions" table in `00-build.md`. When a new feature starts intake, pass the table and the paths of all existing concept documents to the intake skill so Phase 3 checks against them.
+
+## Review triggers (R0)
+
+At the start of a second or later feature and of every rescue round, ask once: since the last concept version, did any of these change — AI model or model version, a data source, a tool or permission of an AI component, exposure (internal → partner → public), a learning loop — or was there an incident? Yes → log `review_trigger:<what>`; a change → concept redo of §5 / §9 for the affected feature; an incident → the rescue round runs as an incident round (CAST-light, `kind: incident`).
 
 ## Consistency checks (each opening)
 
@@ -124,6 +130,8 @@ Calm, brief, a little dry humour is fine. Never mention skill file names, revisi
 | Write requirements, architecture or code yourself | Call the stage skill; you are the Director |
 | Edit another skill's file beyond `status: done` | Ask the stage skill to rerun |
 | Let architecture start before the PM gate | Ask the gate question; log the answer |
+| Treat a push into safety-critical territory as normal scope | Warn, ask D9, log the answer, carve out the safety function (RULES §12) |
+| Let a prompt-only constraint for a severe loss pass the PM gate unnamed | Name it; the sponsor accepts it with a rationale or asks for code, configuration or a test |
 | Run `git init` or any install | Record `git: no` and continue |
 | Commit interim work | Commit only on `done`, green slices, accepted concept versions, kept refactors (RULES §6) |
 | Re-ask what the brief answers | Pass Part 3 and `vcode/` to intake; it extracts and confirms |

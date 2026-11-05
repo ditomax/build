@@ -220,6 +220,10 @@ not relevant for this feature
 | Data volume (records, documents, GB) | ~40 reports/day, peak 60 → ~10,000 per year; audio transient; transcript + draft ~10 KB, PDF ~200 KB | ~11,000 per year | ~14,000 per year | [estimated] |
 | External limits (rate limits or quotas of services we call) | provider limits unknown; ERP interface limits unknown | — | — | [unknown] → OQ-10 |
 
+### Losses and hazards (I11)
+
+_Omitted in this example (section added in build 0.3.0) — see `10-intake.md` for a filled Losses and hazards section._
+
 ### New candidate requirements
 
 | Draft ID | Requirement | Type | Origin | Evidence |

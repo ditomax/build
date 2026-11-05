@@ -1,6 +1,6 @@
 ---
 name: build-intake
-version: "0.2"
+version: "0.3"
 description: >
   Stage 1 of the build skillset. Writes <FEAT>/10-intake.md — extracts what the
   maquette brief and its frozen prototype already answer (MANIFEST Path B), traces
@@ -70,7 +70,7 @@ Part 1 sections *Field of application*, *Purpose and the specific person* and *G
 
 ### 2. Path A — grill
 
-Build the agenda: open questions carried over (brief, register or shortlist entry — original numbers or wording kept; working them through is answering them, not re-asking) · every `partial`/`not shown` candidate · every applicable row of `checklists/requirements.md` for the field of application (cross-cutting standards first, then the field section, then technology rows that apply) · for later features every cross-feature row that names this feature · **operation** (I7, on every agenda whatever the path): who operates the product permanently — per role a name and a time share; unknown → `OQ-<n>`, "nobody" → tell the sponsor before concept · **running cost** (I8, on every agenda whatever the path): what makes it grow with use, who pays, the heaviest user, a monthly ceiling; "fixed running cost only" closes it, otherwise `checklists/requirements.md` § Operating Cost joins the agenda · **load and growth** (I9, on every agenda): users, concurrent users at peak, peak pattern, data volume and external rate limits — at launch, in one and in three years; "small and stable" with figures is a valid answer. With Path R or S, read the prefilled I7/I8/I9 values back first and ask only the gaps. Batch by theme, then ask **one question at a time**. Rules from MANIFEST Phase 1:
+Build the agenda: open questions carried over (brief, register or shortlist entry — original numbers or wording kept; working them through is answering them, not re-asking) · every `partial`/`not shown` candidate · every applicable row of `checklists/requirements.md` for the field of application (cross-cutting standards first, then the field section, then technology rows that apply) · for later features every cross-feature row that names this feature · **operation** (I7, on every agenda whatever the path): who operates the product permanently — per role a name and a time share; unknown → `OQ-<n>`, "nobody" → tell the sponsor before concept · **running cost** (I8, on every agenda whatever the path): what makes it grow with use, who pays, the heaviest user, a monthly ceiling; "fixed running cost only" closes it, otherwise `checklists/requirements.md` § Operating Cost joins the agenda · **load and growth** (I9, on every agenda): users, concurrent users at peak, peak pattern, data volume and external rate limits — at launch, in one and in three years; "small and stable" with figures is a valid answer. · **losses and hazards** (I11, on every agenda, never skipped): read back the prefilled system card and losses first (brief guardrails, register K.o. conditions and V6 note, the entry's *Personal data* and *Data situation*, field-standard concerns already answered), then ask which losses of `checklists/losses-hazards.md` matter and what would be worst for this sponsor — pick, never invent; "not relevant — reason" per loss is a valid answer; draft hazards as `h-n`; L0 or a RULES §12 trigger → hand to the Director for D9 before going on; an AI component in the system card brings `checklists/ai-threats.md` onto the concept's agenda (note it in Part 3). With Path R or S, read the prefilled I7/I8/I9/I11 values back first and ask only the gaps. Batch by theme, then ask **one question at a time**. Rules from MANIFEST Phase 1:
 
 - Requirements first, solutions later — if the user drifts to code, park it under "Still open" as a design note.
 - Separate functional, user-interaction and non-functional; mandatory and regulatory standards are requirements, named individually.
@@ -84,7 +84,7 @@ Fill Part 3: path (A / B / mixed / R / S, or combined like `mixed+R`, with reaso
 
 ### 4. Write
 
-`<FEAT>/10-intake.md`, revision 1, inputs cited with revisions. Hand back per RULES §7 with the count of open questions — and with Path R the trace count line (MUST mapped · other feature · deferred). A MUST without a verdict means no hand-back with `done` proposed: hand back `in_progress` and name it.
+`<FEAT>/10-intake.md`, revision 1, inputs cited with revisions. Hand back per RULES §7 with the count of open questions, the selected losses and draft hazards (and whether D9 was asked) — and with Path R the trace count line (MUST mapped · other feature · deferred). A MUST without a verdict means no hand-back with `done` proposed: hand back `in_progress` and name it.
 
 ## Anti-patterns
 
@@ -93,6 +93,7 @@ Fill Part 3: path (A / B / mixed / R / S, or combined like `mixed+R`, with reaso
 | Ask what the brief or `vcode/` already answers | Extract, show, confirm once |
 | Trust "Prototype facts" without opening `vcode/` | Read the code; the code is the evidence |
 | Number requirements | Draft IDs `d-n`; the concept stage numbers |
+| Invent a loss, or skip I11 because the product looks harmless | Pick from the catalogue; "not relevant — reason" per loss is an answer |
 | Skip a checklist row silently | Every applicable row is a candidate or an explicit deferral with rationale |
 | Stack questions | One at a time, batched by theme |
 | Fill `[unknown]` with a plausible value | Open question with a name and a date |

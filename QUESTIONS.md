@@ -1,20 +1,21 @@
 # build — Every question the skillset asks a human
 
-**Version 4 (build 0.2.0).** One row per question, in the order it is asked. **The IDs are stable identifiers** — `profile/questions.md` (setup skill) refers to them; renumbering is a breaking change. With a brief (contract H2) the Path B rows are extracted from `60-brief.md` and `vcode/` and confirmed in one block, never re-asked; the same holds for a register (Path R, I0R) and a shortlist entry (Path S, I0S). Grilling questions are agenda-driven — the list names the sources of the agenda, not every item, since those depend on the field of application. Three gate questions go to the sponsor.
+**Version 6 (build 0.3.0).** One row per question, in the order it is asked. **The IDs are stable identifiers** — `profile/questions.md` (setup skill) refers to them; renumbering is a breaking change. With a brief (contract H2) the Path B rows are extracted from `60-brief.md` and `vcode/` and confirmed in one block, never re-asked; the same holds for a register (Path R, I0R) and a shortlist entry (Path S, I0S). Grilling questions are agenda-driven — the list names the sources of the agenda, not every item, since those depend on the field of application. Three gate questions go to the sponsor.
 
 ## Director (`build`) — first call only
 
 | # | Question | Prefilled from | Note |
 | --- | --- | --- | --- |
 | D1 | (several briefs) Which one do we build? — listed as code · title · recommendation | `planning/maquette/*/60-brief.md` Part 4 | exactly one |
-| D1R | (register, no brief) Contract check silent; outcome and next stage said. Only if `next: maquette` or `outcome: stop`: build directly anyway? | `10-register.md` Project check, Handover | register/2 or later → named, Director stops |
-| D1S | (shortlist, no brief or register) The committee chose <ID — title> — build it directly? / Which entry do we build? — rank · ID · title · tendency | `10-shortlist.md` `next_maquette`, Ranking | exactly one; consumed cards never offered |
+| D1R | (register, no brief) Contract check silent; outcome and next stage said. Only if `next: maquette` or `outcome: stop`: build directly anyway? | `10-register.md` Project check, Handover | register/2 or later → named, Director stops; a gate failed on privacy, data-protection, legal or safety grounds without documented resolution → named, Director stops (RULES §9) |
+| D1S | (shortlist, no brief or register) The committee chose <ID — title> — build it directly? / Which entry do we build? — rank · ID · title · tendency | `10-shortlist.md` `next_maquette`, Ranking | exactly one; consumed cards never offered; entries parked on a privacy / legal / safety K.o. only with documented resolution |
 | D1' | (cold start) What are we building — the problem in two sentences, and for whom? Or, if you come from maquette or idea, the path to the maquette folder, the register or the shortlist | — | path A; if the first message mentions maquette / brief / prototype / register / shortlist, the path is asked first |
 | D2 | Feature code (2–5 letters) and title — proposed, user corrects | maquette code (not the org code); register project title; entry title | |
 | D3 | Path: mixed (B on what the maquette showed, A on the rest) — or A or B? | proposed | cold start: A; register: R (H2/3 with register: mixed+R); shortlist: S — not asked |
 | D4 | Field of application — <inferred>? | brief Part 3 (with brief: not asked); register frame / V4; entry V4, Process & systems | |
+| D9 | (only on a RULES §12 trigger) build does not produce safety-critical software — continue as simulation / teaching, with the non-safety part only (which safety function is carved out?), or stop? | trigger from D4, the input or I11 | never skippable; logged in `00-build.md` *Scope boundary*; repeated at every PM gate of the feature |
 | D5 | Code root: the project folder outside `planning/` — right? (standalone: where?) | project layout default | never inside `<work>` |
-| D6 | Git: is the folder a repository? | checked silently, result told | never `git init`; a clone of the public repo counts as no |
+| D6 | Git: is the folder a repository? — and if yes: do I commit, or do you? | repository checked silently, result told | never `git init`; a clone of the public repo counts as no; when unsure the user commits (RULES §6) |
 | D7 | Language of the result files? (requirements, IDs, code, commits stay English) | profile → chat language → explicit statement | |
 | D8 | A newer register exists — delta: new · priority · statement · out of scope · outcome. Take it over? | `10-register.vN.md` vs. `register:` in 00-build.md | any later call; yes → intake (and concept) stale, trace redo |
 
@@ -36,6 +37,7 @@ Later calls: "Good as it is — next, or redo?" after a stage; the gate question
 | I7 | Operation: who operates the product permanently — per role (content / data upkeep, technology / hosting, user support) a name and a time share? | always, every path | R / S: V6 note, read back first (idea only settled a plausible operating model) | Part 2 Operation |
 | I8 | Running cost: what makes it grow with use (AI calls, documents, compute, metered services), who pays (price, fixed budget, nobody yet), what does the heaviest user do — and is there a monthly ceiling? "Fixed running cost only" is a valid answer | always, every path | R / S: V6 note (does running cost grow with use), read back first | Part 2 Running cost |
 | I9 | Load and growth: how many users (internal or external), how many at the same time at peak, when are the peaks, how much data — at launch, in one year, in three? Which services we call have rate limits? "Small and stable" with figures is a valid answer | always, every path | R: frame *Users and scale* · S: card *Users & scale* — read back first | Part 2 Load and growth |
+| I11 | Losses and hazards: here is the system card (autonomy · exposure · learning loop · actions) and the losses already named — which of L1–L11 matter, and what would be worst for you? | always, every path; never skippable | brief guardrails, register K.o. and V6 note, entry *Personal data* / *Data situation* — read back first | Part 2 Losses and hazards |
 | I10 | Register item R-<n> (MUST) has no verdict yet — map it to this feature, another feature, or defer it with a reason? | R, last question of Part 2 | intake trace | Part 1 Register trace |
 | I6 | Part 3 in five lines (path, vocabulary seeds, out of scope, integration points, riskiest assumption, first slice) — anything missing? | | — | Part 3 |
 
@@ -49,7 +51,9 @@ Cold start: I0 is replaced by D1' and the grilling runs on the full Phase 1 agen
 | C2 | Open question OQ-<n> (batched by theme, one at a time): decision in one line? | resolve | §8, ADR |
 | C3 | I need to research <dependency / existing code> for this — go ahead? | resolve, when needed | §8 |
 | C4 | Per existing component or feature we touch: how do we use it, what could we break, what must change, backward-compatible? (derived from the checklist for the field) | interactions | §9–§10 |
-| **Gate PM** | Requirements, decisions, interactions and schema are ready (§0–§10) — approved, changes requested, or back to intake? (Path R: trace count, and the proposed priorities of the maquette's `R-M` items — confirm or change) | after §10, asked by the Director to the sponsor | Gates table |
+| C6 | Control structure: is this everyone who acts on the product — users, operators, components, error handlers, AI components, jobs? | after §9 interactions | §9 Control structure |
+| C7 | Unsafe control actions (batch shown): anything here that cannot happen — or something missing? | per batch, after C6 | §9 Unsafe control actions, §5 |
+| **Gate PM** | Requirements, decisions, interactions and schema are ready (§0–§10) — approved, changes requested, or back to intake? (Path R: trace count, and the proposed priorities of the maquette's `R-M` items — confirm or change; always: losses, SC count, every SC for a severe loss enforced only by prompt, human or organisation — accept with a rationale or ask for more, UCA count, scope boundary) | after §10, asked by the Director to the sponsor | Gates table |
 | C5 | Path B module: rebuild from concept or adapt from `vcode/` — and why? | architecture, per module | §11 |
 | **Gate 6** | Consistency matrix: <n> MISMATCH / DANGLING — accept (with rationale), fix, or defer? | after §12, Director → sponsor | Gates table |
 
@@ -68,6 +72,7 @@ Cold start: I0 is replaced by D1' and the grilling runs on the full Phase 1 agen
 
 | # | Question | When |
 | --- | --- | --- |
+| R0 | Since the last concept version: AI model, data source, tool or permission, exposure, learning loop changed — or an incident? | start of a rescue round and of a second or later feature (Director) |
 | R1 | Ranked opportunities (table shown) — which ones, in this order? | once per round |
 | R2 | Kept refactors change concept sections <…> — schedule the concept redo now? | reconcile |
 

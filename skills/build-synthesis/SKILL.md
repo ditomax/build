@@ -1,6 +1,6 @@
 ---
 name: build-synthesis
-version: "0.1"
+version: "0.3"
 description: >
   Stage 3 of the build skillset. Writes <FEAT>/30-synthesis.md (MANIFEST Sections
   13–16) and the product code under code_root — test concept first, then a strict
@@ -26,7 +26,7 @@ Two sentences: the test plan, then the code slice by slice with tests green afte
 
 ### 1. Test concept (Phase 7, §13) — before any product code
 
-Unit test tables per module (input → expected → requirement), integration scenarios along the slices, synthetic data strategy (templates + variations, golden outputs, versioned in the repo), CI constraints (no LLM, no network, mocks named), coverage matrix — every requirement → at least one test; justify every exception. Fill the "Test" column of the concept's traceability matrix by reference (you do not edit `20-concept.md`; list requirement → test here, the Director checks both agree). Read `test_tooling.md`; if the project has no test runner yet, plan it as the first tool and register it. Write `30-synthesis.md` revision 1 with §13 filled and hand back briefly — "test plan ready, starting S1?" — then continue on the user's word.
+Unit test tables per module (input → expected → requirement), integration scenarios along the slices, synthetic data strategy (templates + variations, golden outputs, versioned in the repo), CI constraints (no LLM, no network, mocks named), coverage matrix — every requirement → at least one test; justify every exception. *Constraint and UCA tests*: one test per UCA and per SC of concept §5 / §9 — negative (the unsafe action is refused), fault injection (the dependency fails, the feedback is missing) or adversarial (the injection set: manipulated documents, tool results, prompts — `checklists/ai-threats.md`); an SC enforced by *prompt + test* gets its test here. Fill the "Test" column of the concept's traceability matrix by reference (you do not edit `20-concept.md`; list requirement → test here, the Director checks both agree). Read `test_tooling.md`; if the project has no test runner yet, plan it as the first tool and register it. Write `30-synthesis.md` revision 1 with §13 filled and hand back briefly — "test plan ready, starting S1?" — then continue on the user's word.
 
 ### 2. Slices (Phase 8) — repeat per slice, in the concept's order
 
@@ -35,14 +35,14 @@ For each slice: say which slice and which requirements; **red** — write the fa
 - Any script created for setup, seed, deploy, rollback or smoke check → `deployment.md` in the same step; any test, fixture, debug or diagnostic tool → `test_tooling.md` in the same step. Unregistered = not done.
 - A requirement discovered while coding: do not implement it silently. Record it under "Requirements discovered" in the slice log and tell the Director a concept redo is needed; continue only with what the current concept covers.
 - Drift you notice (code needs something the concept does not say) is handled the same way — document first, code follows.
-- With `git: yes`: commit the slice (RULES §6) with `Traces to:` in the body. Say so in half a sentence.
+- With `git: yes (agent commits)`: commit the slice (RULES §6) with `Traces to:` in the body and say so in half a sentence; with `git: yes (user commits)`: write the exact commands into the slice log instead.
 - Append the slice block to the slice log (revision + 1), then ask: "next slice, or stop here?"
 
 Stack and dependency choices follow the concept and the profile; a dependency the concept does not name is a question for the user, not a decision. No network, no installs, without saying so first.
 
 ### 3. Gap analysis (Phase 9, §14) — once, after the last slice
 
-Walk the traceability matrix requirement by requirement and **open the real implementation**: not a stub, `pass`, `NotImplementedError`, TODO, hard-coded return or mock so heavy the test cannot fail. Walk every module in §11 and every test in §13 the same way. Walk `test_tooling.md` in both directions (orphans, ghosts) and prune obsolete rows. Produce the gap matrix — always, even when clean. Hand back with the count of PARTIAL / MOCKED / MISSING rows. The Director asks the gate question; "back to synthesis" means more slices in this file; "accepted" means the human's rationale goes into §14.
+Walk the traceability matrix requirement by requirement and **open the real implementation**: not a stub, `pass`, `NotImplementedError`, TODO, hard-coded return or mock so heavy the test cannot fail. Walk every module in §11 and every test in §13 the same way. Walk every SC of concept §5 as kind *constraint*: IMPLEMENTED only when its requirement is in the code and its test passes. Walk `test_tooling.md` in both directions (orphans, ghosts) and prune obsolete rows. Produce the gap matrix — always, even when clean. Hand back with the count of PARTIAL / MOCKED / MISSING rows. The Director asks the gate question; "back to synthesis" means more slices in this file; "accepted" means the human's rationale goes into §14.
 
 ### 4. Release point
 
@@ -58,5 +58,6 @@ When the gate is clean or every item is decided, propose the release: the Direct
 | Leave a script or tool unregistered | Same step, same commit |
 | Infer a requirement is met from a passing test | Phase 9 opens the implementation |
 | Mock so much the test cannot fail | A test that cannot fail is worse than none |
+| Skip an adversarial test because "the model won't do that" | For a prompt + test constraint, the test is the enforcement |
 | Add "flexibility", abstractions, error handling for impossible cases | Minimum code; RULES §10 |
 | Touch `vcode/` or the brief | Read for inspiration, never write |

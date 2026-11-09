@@ -1,6 +1,6 @@
 # build — Every question the skillset asks a human
 
-**Version 6 (build 0.3.0).** One row per question, in the order it is asked. **The IDs are stable identifiers** — `profile/questions.md` (setup skill) refers to them; renumbering is a breaking change. With a brief (contract H2) the Path B rows are extracted from `60-brief.md` and `vcode/` and confirmed in one block, never re-asked; the same holds for a register (Path R, I0R) and a shortlist entry (Path S, I0S). Grilling questions are agenda-driven — the list names the sources of the agenda, not every item, since those depend on the field of application. Three gate questions go to the sponsor.
+**Version 7 (build 0.3.1).** One row per question, in the order it is asked. **The IDs are stable identifiers** — `profile/questions.md` (setup skill) refers to them; renumbering is a breaking change. With a brief (contract H2) the Path B rows are extracted from `60-brief.md` and `vcode/` and confirmed in one block, never re-asked; the same holds for a register (Path R, I0R) and a shortlist entry (Path S, I0S). Grilling questions are agenda-driven — the list names the sources of the agenda, not every item, since those depend on the field of application. Three gate questions go to the sponsor.
 
 ## Director (`build`) — first call only
 
@@ -62,6 +62,8 @@ Cold start: I0 is replaced by D1' and the grilling runs on the full Phase 1 agen
 | # | Question | When |
 | --- | --- | --- |
 | Y1 | Test plan ready (§13) — start slice S1? | before any code |
+| Y0 | Slice 0 — repository hygiene: these files are added or merged in the code root (list) — go, and may I install pre-commit and gitleaks? | after Y1, before S1; never skippable (the install part may be declined) |
+| Y0G | Is secret scanning with push protection enabled for this repository (GitHub: Settings → Code security)? | slice 0 when a remote exists; again at the release point if none did |
 | Y2 | The concept does not name this dependency / stack choice: <options> — which? | when it arises |
 | Y3 | Slice S<n> is green (<n/m tests>, committed) — next slice, or stop here? | after every slice |
 | Y4 | Coding found a requirement the concept lacks: <…> — I have logged it; concept redo now or after this slice? | on discovery |
@@ -73,6 +75,7 @@ Cold start: I0 is replaced by D1' and the grilling runs on the full Phase 1 agen
 | # | Question | When |
 | --- | --- | --- |
 | R0 | Since the last concept version: AI model, data source, tool or permission, exposure, learning loop changed — or an incident? | start of a rescue round and of a second or later feature (Director) |
+| RA | Secret audit: read-only scan of the full history, the allow lists and the controls — may I install and run gitleaks? | start of an audit round (Director word "audit") |
 | R1 | Ranked opportunities (table shown) — which ones, in this order? | once per round |
 | R2 | Kept refactors change concept sections <…> — schedule the concept redo now? | reconcile |
 

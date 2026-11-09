@@ -1,6 +1,6 @@
 ---
 name: build-rescue
-version: "0.3"
+version: "0.3.1"
 description: >
   Stage 4 of the build skillset, on demand and repeatable. Writes
   <FEAT>/40-rescue.md — scans code, CONTEXT.md and decisions/ for entropy and
@@ -24,11 +24,12 @@ Two sentences: a maintenance round — find what got tangled, untangle the most 
 ## Sequence
 
 0. **Round kind.** The Director has asked the review triggers (R0); write them into §0. An incident → `kind: incident`: fill *Incident analysis* (CAST-light) before the scan — what happened, which loss, which control loop failed (missing SC · SC not enforced · feedback missing · process model wrong · conflicting controllers · authority too wide), why the structure allowed it (no blame on persons or the model), the new or changed SC with *Enforced by* now → target. Every new SC is a concept change: name it for the redo, with a regression test. Otherwise `kind: maintenance`.
+0a. **Secret audit** (§1b, `templates/repo-hygiene.md`). Every round: A3 — are the repository-hygiene controls still in place (H1 checks, H5 test, H6 hook installed in this clone, H7 answer)? An **audit round** (`kind: audit`, the user's word "audit", or an incident involving a secret) runs A1–A4 in full and nothing else: ask **RA** first (gitleaks is an install), then scan the full history of all branches with redaction (A1), the allow lists with `tools/secret_check.py scan` (A2, also lists overly literal entries with a generalized replacement), the controls (A3), and write the findings table (A4) — file, line or commit, pattern type, never a value, not even partly. Any secret finding → state the order: rotate first, then clean history (the user's job: `git filter-repo` or BFG, force-push, re-clone), then re-run the audit. Read-only throughout: you change, delete and rewrite nothing. Sections 2–4 of an audit round read "not relevant — audit round".
 1. **Scan.** Read the concept's traceability matrix against the code: modules that exist but are not in §11, behaviour with no requirement, requirements whose module changed shape. List drift with IDs. Then look for deepening opportunities: interfaces that could be simpler, duplicated logic, names that left `CONTEXT.md`, dead code, modules doing two things. Rank by expected gain × low risk.
 2. **Propose.** Show the ranked table and ask: "which ones, in this order?" — one question.
 3. **Apply, one at a time.** Run the full test suite before; apply the refactor; run it after. Green → keep (with git: commit, RULES §6). Any regression → revert immediately, record the reason, move on. Stop at the refactor budget or the time budget and say which.
 4. **Reconcile.** Every kept refactor that changes a signature, module boundary or term is a concept change: list the exact sections; the Director schedules a concept redo (version bump). Add ADRs for decisions taken here. Update `test_tooling.md` if a tool changed.
-5. **Write** `40-rescue.md` and hand back per RULES §7 with: round kind, kept / reverted counts, drift items, concept sections to update, and for an incident the SCs to add or change.
+5. **Write** `40-rescue.md` and hand back per RULES §7 with: round kind, secret-audit findings count and control states (the Director updates *Repository hygiene* in `00-build.md`), kept / reverted counts, drift items, concept sections to update, and for an incident the SCs to add or change.
 
 ## Anti-patterns
 

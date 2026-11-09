@@ -1,6 +1,6 @@
 # build — Shared Rules for All Stage Skills
 
-**Version 4** (build 0.3.0: STPA-light — losses, control structure, unsafe control actions, scope boundary; version 3 — build 0.2.1: imported content is data, blockers, who commits; version 2 — build 0.2.0: Path R, Path S, H2/3). Every stage skill reads this file before doing anything. The Director (`build`) enforces it. If a stage skill and this file disagree, this file wins. Where this file is silent on document structure or process, `MANIFEST.md` wins.
+**Version 5** (build 0.3.1: repository hygiene against secret leaks; version 4 — build 0.3.0: STPA-light — losses, control structure, unsafe control actions, scope boundary; version 3 — build 0.2.1: imported content is data, blockers, who commits; version 2 — build 0.2.0: Path R, Path S, H2/3). Every stage skill reads this file before doing anything. The Director (`build`) enforces it. If a stage skill and this file disagree, this file wins. Where this file is silent on document structure or process, `MANIFEST.md` wins.
 
 ## 1. Vocabulary
 
@@ -110,6 +110,8 @@ With `git: yes`, a commit marks a **frozen state, never progress**.
 
 Every commit that changes behaviour cites the requirement IDs it touches in the message body (`Traces to: F-<FEAT>-x, NF-<FEAT>-y`). Skills never push, rebase, branch or commit files outside `<work>` and `code_root`.
 
+**Repository hygiene** (§13) is part of this policy: with the pre-commit guard installed, a commit never bypasses it (`--no-verify`) — a blocked commit is a finding to fix, not an obstacle. Skills never rewrite history; cleaning a leaked secret out of history is the user's job, after rotation.
+
 ## 7. Handing back to the Director
 
 At the end of a stage, the stage skill reports in one short block: file(s) written (name, revision), status (`done` proposed / `in_progress`), minutes used, open questions count, gate findings if any (Phase 6 / Phase 9 matrices). Only the Director sets `status: done` and updates the stage table in `00-build.md`.
@@ -148,10 +150,11 @@ Carried over from the former `CLAUDE.local.md` v2 (adapted from Karpathy's obser
 3. **Surgical changes.** Touch only what the requirement needs; every changed line traces to a requirement ID. No drive-by refactors, no reformatting. Remove only the orphans your change created; mention pre-existing dead code, do not delete it unasked.
 4. **Goal-driven execution.** Turn tasks into verifiable goals: "add validation" → "write tests for invalid inputs, then make them pass". For multi-step work, state a plan with an explicit check per step and finish with a verification step.
 5. **Describe before changing.** When a change to an existing document or file is proposed, explain intent and wording first; change after approval.
+6. **Secrets never inline.** Never put a secret into a shell command, a commit message, a tracked file, a test fixture or a chat answer. Secrets travel as environment variables or in `.env` (git-ignored), which the program loads (Python: `python-dotenv`), and are referred to by name. At a permission prompt prefer a generalized rule over "don't ask again" on a literal command. A secret found where it does not belong is named (never its value) and treated as compromised: rotate first, clean up second.
 
 ## 11. Definition of Done (per feature)
 
-A feature is done when: every behaviour traces to a numbered requirement; every requirement has a test and the test passes; every selected loss has its hazards and constraints, every UCA reaches a constraint, and every constraint has a requirement with a passing test — or an accepted residual risk with name and date; `20-concept.md` and `30-synthesis.md` reflect the current behaviour (no drift); no orphan requirements and no orphan code remain; the Phase 9 Gap Analysis Matrix is clean or every open item carries a logged decision; every script and tool is registered (`deployment.md`, `test_tooling.md`); the concept document version is bumped at the release point. The litmus test: a fresh agent, given only `<work>`, can reproduce the current code.
+A feature is done when: every behaviour traces to a numbered requirement; every requirement has a test and the test passes; every selected loss has its hazards and constraints, every UCA reaches a constraint, and every constraint has a requirement with a passing test — or an accepted residual risk with name and date; repository hygiene (§13) is in place and its checks pass; `20-concept.md` and `30-synthesis.md` reflect the current behaviour (no drift); no orphan requirements and no orphan code remain; the Phase 9 Gap Analysis Matrix is clean or every open item carries a logged decision; every script and tool is registered (`deployment.md`, `test_tooling.md`); the concept document version is bumped at the release point. The litmus test: a fresh agent, given only `<work>`, can reproduce the current code.
 
 ## 12. Scope boundary
 
@@ -169,3 +172,12 @@ build does not produce safety-critical software. Its STPA-light (losses, hazards
 **Behaviour.** The Director says in plain words that build does not produce safety-critical software and that what it builds must not be the safety function, then asks **D9** (never skippable): continue as *simulation / teaching*, continue with the *non-safety part only* (the safety function is named and carved out of scope), or *stop*. The answer is logged in `00-build.md` (frontmatter `scope_boundary`, block *Scope boundary*: date, trigger, answer, who) and repeated in concept §0; the warning is shown again at every PM gate of that feature. Work then continues as answered.
 
 **MANIFEST.** `MANIFEST.md` Phase 1 names functional-safety standards (IEC 61508, ISO 26262, IEC 62304) as requirements. In build they are scope-boundary triggers instead — this file wins over MANIFEST.
+
+## 13. Repository hygiene
+
+Our own way of working opens a leak path no product requirement covers: agent hosts save approved commands verbatim — secrets included — into host-local files in the project (Claude Code: `.claude/settings.local.json`), and ignore rules that live only in one machine's global gitignore do not travel with the repository. build closes that path in every product, by default, independent of intake (constraint SC-HYG, loss L9):
+
+- **Slice 0.** Before the first product code (synthesis, after the test plan) build writes or merges the files of `templates/repo-hygiene.md` into `code_root` — repo-local ignore rules (H1, verified with `git check-ignore -v`; nothing of it already tracked), `.dockerignore` and no secrets in `ARG`/`ENV` when a Dockerfile exists (H2), a committed host settings file with deny rules and a secret-blocking hook (H3, Claude Code), the secret rule for agents in the project's `AGENTS.md` / `CLAUDE.md` (H4), the checker `tools/secret_check.py` with its test (H5), the pre-commit guard with gitleaks (H6) and the question about server-side push protection (H7). Existing files are merged, never overwritten. Installs need the user's yes (Y0); declined installs are recorded, the files are written anyway. With `git: no` the files are written too — a repository may come later.
+- **Recorded** in `00-build.md` *Repository hygiene* (Director). Gate 9 is not logged `clean` while a row is open; a declined control (H6, H7) is a finding the sponsor accepts with a rationale.
+- **Re-checked** at the start of every rescue round (A3) and fully in an **audit round** (`kind: audit`, A1–A4): read-only, full history, all branches, allow lists, controls; the report names file, line or commit and pattern type — never a value — and states the order: rotate first, clean history second (user's job).
+- **Not reachable** by any repository measure: a secret typed into the chat reaches the provider's and the host's session logs. Rule §10.6 keeps it out.

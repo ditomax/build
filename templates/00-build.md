@@ -37,6 +37,21 @@ register: —                  # Path R only: the register version every R-ID is
 | --- | --- | --- | --- | --- | --- |
 | — | — | not relevant | — | — | — |
 
+## Repository hygiene
+
+<!-- RULES §13, templates/repo-hygiene.md. Written by the Director from the synthesis S0 and rescue hand-backs. Gate 9 is not "clean" while a row is open. Values: done · merged · n.a. (reason) · declined (finding, accepted by …) · open. -->
+
+| Control | State | Checked | Note |
+| --- | --- | --- | --- |
+| H1 repo-local ignore rules (`check-ignore -v` → this repo's `.gitignore`; nothing tracked) | open | — | |
+| H2 `.dockerignore`, no secrets in `ARG`/`ENV` | open | — | n.a. without Dockerfile |
+| H3 host settings: deny rules + secret hook | open | — | Claude Code only; other hosts: n.a. (host) |
+| H4 secret rule in `AGENTS.md` / `CLAUDE.md` | open | — | |
+| H5 `tools/secret_check.py` + test green | open | — | |
+| H6 pre-commit guard (gitleaks + host-local files) installed in this clone | open | — | |
+| H7 secret scanning + push protection on the remote | open | — | asked again at release if no remote yet |
+| Last secret audit | — | — | date, findings count |
+
 ## Features
 
 | Code | Title | Path | Field of application | Concept version | Status |
@@ -76,7 +91,7 @@ register: —                  # Path R only: the register version every R-ID is
 | --- | --- | --- | --- | --- |
 | <hh:mm> | <FEAT> | — | start | path <B>, git <no>, code root <…> |
 
-<!-- Allowed decisions: start · next · redo · stop · skip · gate:<name>:<result> · budget_exceeded (with the user's answer) · new_feature · scope_boundary:<answer> · review_trigger:<what changed> -->
+<!-- Allowed decisions: start · next · redo · stop · skip · gate:<name>:<result> · budget_exceeded (with the user's answer) · new_feature · scope_boundary:<answer> · review_trigger:<what changed> · hygiene:<control>:<state> · audit:<findings count> -->
 
 ## Open items for the Director
 

@@ -1,6 +1,6 @@
 # Requirement Checklists
 
-**Version 3**
+**Version 4**
 
 _No exact field for your product? Take the closest one (an internal document-generation tool → Web application), add the cross-cutting and technology sections, and name the sections you used in `10-intake.md`._
 
@@ -139,14 +139,15 @@ _Valid for distributed real-time systems — several nodes that together close a
 | Trigger | Required | Verified by |
 | --- | --- | --- |
 | Docker build | Smoke tests on each target architecture (arm64, amd64, ...) | Multi-arch CI matrix |
-| Container image | Minimal base, non-root user, image vulnerability scan | Trivy/Grype scan in CI |
+| Container image | Minimal base, non-root user, image vulnerability scan; `.dockerignore` excludes `.git`, `.claude/`, `.env*`, `secrets/`; no secrets in `ARG`/`ENV` (BuildKit secrets) | Trivy/Grype scan in CI; `docker history` shows no secret |
 | Any software change | Mandatory code review before merge | PR approval gate |
 | Any repository | CI pipeline: build, lint, test, security scan on every PR | Green pipeline required to merge |
 | Any codebase | Static analysis + formatter + linter enforced | CI check |
 | Dependencies | SBOM, license check, dependency vulnerability scan | SCA report (e.g. Dependabot) |
 | Release | Semantic versioning, changelog, signed artifacts | Release checklist |
 | Infrastructure | IaC (reviewed, versioned), reproducible environments | Plan/apply review |
-| Secrets | No secrets in repo; use a secret manager | Secret-scanning in CI |
+| Secrets | No secrets in repo, image, command line or allow list; secret manager or git-ignored `.env`; repository hygiene in place (RULES §13, `templates/repo-hygiene.md`) | Pre-commit gitleaks; secret audit (rescue `kind: audit`) with zero findings |
+| Repository on a hosting service | Secret scanning and push protection enabled (GitHub, GitLab or equivalent) | Setting confirmed, answer logged in `00-build.md` *Repository hygiene* |
 | Database | Migration scripts, reversible, tested on prod-like data | Migration dry-run |
 | Concurrency present | Race/deadlock analysis, stress test | Thread sanitizer / stress run |
 | Public-facing endpoint | Load/performance test against defined SLOs | Load-test report |

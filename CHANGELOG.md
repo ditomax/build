@@ -1,5 +1,11 @@
 # Changelog — build
 
+## 0.3.1 — 2026-11-09
+**Repository hygiene** — secrets never reach git, images or permission allow lists:
+- Slice 0 before the first product code: repo-local ignore rules (checked), `.dockerignore`, Claude Code settings with deny rules and a hook that blocks secrets in commands, a secret rule for agents in `AGENTS.md`, a small checker with its test, a pre-commit guard with gitleaks, and the question about push protection.
+- New `audit` round: read-only scan of history, allow lists and controls; the report never shows a value and says rotate first, clean second.
+- Gate 9 needs the hygiene controls in place or the gaps accepted. RULES v5 (§10.6, §13), QUESTIONS v7 (Y0, Y0G, RA), new `templates/repo-hygiene.md`.
+
 ## 0.3.0 — 2026-11-05
 **STPA-light** — reliability, security and robustness built into the concept, inspired by the work of Nancy Leveson:
 - Intake asks which losses matter (I11, never skipped) from a fixed catalogue L0–L11 and records a system card.

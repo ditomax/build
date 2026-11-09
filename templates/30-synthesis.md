@@ -58,6 +58,15 @@ _Sections 13–16 of the MANIFEST document structure plus the slice log. Written
 
 <!-- One block per slice, in order. Written after the slice, never before. -->
 
+### S0 — repository hygiene
+
+- **Traces to:** SC-HYG (RULES §13), L9
+- **Files written or merged:** <.gitignore (H1) · .dockerignore (H2 | n.a.) · .claude/settings.json (H3 | n.a. — host) · AGENTS.md / CLAUDE.md (H4) · tools/secret_check.py + tests/test_secret_check.py (H5) · .pre-commit-config.yaml (H6)>
+- **Checks:** <check-ignore -v → this repo's .gitignore: yes | no> · <tracked host-local files: none | list> · <H5 test: n passed>
+- **Installs (Y0):** <pre-commit + gitleaks installed, `pre-commit install` run | declined>
+- **Push protection (Y0G):** <on | off — finding | no remote yet | not GitHub: …>
+- **Commit:** <hash and message — or commands for the user — or "— (no git)">
+
 ### S1 — <name>
 
 - **Traces to:** <…>

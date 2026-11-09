@@ -1,6 +1,6 @@
 ---
 name: build-synthesis
-version: "0.3"
+version: "0.3.1"
 description: >
   Stage 3 of the build skillset. Writes <FEAT>/30-synthesis.md (MANIFEST Sections
   13–16) and the product code under code_root — test concept first, then a strict
@@ -27,6 +27,10 @@ Two sentences: the test plan, then the code slice by slice with tests green afte
 ### 1. Test concept (Phase 7, §13) — before any product code
 
 Unit test tables per module (input → expected → requirement), integration scenarios along the slices, synthetic data strategy (templates + variations, golden outputs, versioned in the repo), CI constraints (no LLM, no network, mocks named), coverage matrix — every requirement → at least one test; justify every exception. *Constraint and UCA tests*: one test per UCA and per SC of concept §5 / §9 — negative (the unsafe action is refused), fault injection (the dependency fails, the feedback is missing) or adversarial (the injection set: manipulated documents, tool results, prompts — `checklists/ai-threats.md`); an SC enforced by *prompt + test* gets its test here. Fill the "Test" column of the concept's traceability matrix by reference (you do not edit `20-concept.md`; list requirement → test here, the Director checks both agree). Read `test_tooling.md`; if the project has no test runner yet, plan it as the first tool and register it. Write `30-synthesis.md` revision 1 with §13 filled and hand back briefly — "test plan ready, starting S1?" — then continue on the user's word.
+
+### 1a. Slice 0 — repository hygiene (RULES §13), before S1
+
+Read `templates/repo-hygiene.md` and copy its blocks verbatim — never retype them from memory. First feature: all of H1–H7; later features: re-check H1 and H5 only, unless a row of `00-build.md` *Repository hygiene* is open. Say in one block which files you add or merge in `code_root` and which installs you need, then ask **Y0** once: "go — and may I install pre-commit and gitleaks?" Write the files either way (merge, never overwrite; skip H3 on a host other than Claude Code and say so); install only on a yes. Run the H1 checks (`git check-ignore -v`, `git ls-files` — read-only) and the H5 test; a tracked host-local file is reported to the user with the `git rm --cached` command, never removed by you. If `git remote -v` names GitHub (or another host with push protection), ask **Y0G**. Write the S0 block of the slice log, commit per RULES §6 (`build(<FEAT>): S0 repository hygiene`), and hand back to the Director with the state per control (H1–H7) before S1.
 
 ### 2. Slices (Phase 8) — repeat per slice, in the concept's order
 
@@ -58,6 +62,8 @@ When the gate is clean or every item is decided, propose the release: the Direct
 | Leave a script or tool unregistered | Same step, same commit |
 | Infer a requirement is met from a passing test | Phase 9 opens the implementation |
 | Mock so much the test cannot fail | A test that cannot fail is worse than none |
+| Put a secret into code, a fixture, a command or a commit message | Environment variable or `.env`, referred to by name; fake secrets in tests are assembled at runtime (RULES §10.6) |
+| Commit with `--no-verify` when the guard blocks | Fix the finding; a blocked commit is the guard working |
 | Skip an adversarial test because "the model won't do that" | For a prompt + test constraint, the test is the enforcement |
 | Add "flexibility", abstractions, error handling for impossible cases | Minimum code; RULES §10 |
 | Touch `vcode/` or the brief | Read for inspiration, never write |

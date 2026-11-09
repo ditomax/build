@@ -8,7 +8,7 @@ updated: <YYYY-MM-DDThh:mm>
 input: <FEAT>/20-concept.md@<rev>, <FEAT>/30-synthesis.md@<rev>, ../CONTEXT.md@<rev>, ../decisions/
 feature: <FEAT>
 git: no
-kind: maintenance             # maintenance | incident (CAST-light)
+kind: maintenance             # maintenance | incident (CAST-light) | audit (secret audit, read-only)
 budget_refactors: <n>
 ---
 
@@ -42,6 +42,19 @@ _MANIFEST Phase 10. A periodic maintenance round against software entropy: find 
 | What happened | Loss | Failed control loop | Why the structure allowed it | Fix | Enforced by | Remaining gap |
 | --- | --- | --- | --- | --- | --- | --- |
 | <…> | <L…> | <missing SC | SC not enforced | feedback missing | process model wrong | conflicting controllers | authority too wide> | <…> | <new or changed SC-<FEAT>-n → concept redo, regression test> | <now → target> | <…> |
+
+## 1b. Secret audit
+
+<!-- RULES §13, templates/repo-hygiene.md A1–A4. Every round: A3 (controls in place). Audit rounds: A1–A4 in full, and sections 2–4 read "not relevant — audit round". Never a secret value, not even partly. -->
+
+- **Scope:** <A3 only (maintenance / incident round) | A1–A4 (audit round): branches <n>, commits <n>, tools gitleaks <version> | not run — declined>
+
+| # | Where (file · line or commit) | Pattern type | Source (A1 history · A2 allow list · A3 control) | Status |
+| --- | --- | --- | --- | --- |
+| <1> | <…> | <…> | <…> | <open | rotated | removed from tracking | accepted (by, date)> |
+
+- **Order of action** (with any secret finding): 1. rotate every secret listed — it is compromised; 2. then clean history (`git filter-repo` or BFG, force-push, every clone re-cloned) — the user's job; 3. re-run the audit.
+- **Allow-list hygiene (R8):** <overly literal entries and the generalized rule proposed for each | none>
 
 ## 2. Opportunities
 

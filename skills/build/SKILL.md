@@ -41,6 +41,7 @@ Say which layout you found only if the user asks.
    - **stop** — write nothing new; summarise the state in three lines; end.
    - **skip** — allowed only for rescue; log it.
    - **new feature** — add a feature block (below) without touching existing ones; ask the review triggers **R0** first (below).
+   - **audit** — a read-only secret audit (rescue `kind: audit`, RULES §13) at any time — also before S1 and on a code root build did not start; ask RA first.
    - **rescue** — start a rescue round on the current feature at any time after synthesis S1; ask the review triggers **R0** first (below).
    - no word — treat as **next** after confirming.
 
@@ -98,7 +99,7 @@ Then create `00-build.md` from `templates/00-build.md` (revision 1, one feature 
 2. Mark the row `in_progress` with the start time in `00-build.md` (revision + 1).
 3. Read and follow `<suite>/skills/build-<stage>/SKILL.md` in full, passing: work root, feature code, current input files and revisions, path, field, `git`, `language`, `code_root`, minutes, and the profile constraints that concern this stage.
 4. When the stage skill hands back (RULES §7): verify the result file exists, has valid frontmatter, cites the right `input@revision`, keeps every template heading, and that every requirement ID carries the feature code. If a check fails, name it and ask the stage skill to fix — do not fix content yourself.
-5. **Gates.** Concept hands back twice: once after §3–§10 (PM review, MANIFEST Phase 4) and once after §11–§12 (consistency review, Phase 6). Synthesis hands back after the gap analysis (Phase 9). At each gate you ask the sponsor's decision, one question, and log it in the Gates table with rationale. PM review is a hard gate: no architecture without approval. At the PM gate also show: the selected losses, the SC count, every SC for L1, L2, L3, L9, L10 or L11 enforced only by prompt, human or organisation (a finding — the sponsor accepts it with a rationale or asks for code, configuration or a test), the UCA count, and any scope-boundary warning again. Phase 6 and 9 are advisory: findings are shown prominently, the human accepts (logged), requests a fix (loop back), or defers (tracked in "Open items").
+5. **Gates.** Concept hands back twice: once after §3–§10 (PM review, MANIFEST Phase 4) and once after §11–§12 (consistency review, Phase 6). Synthesis hands back after slice 0 (repository hygiene — write its result into `00-build.md` *Repository hygiene*, log `hygiene:<control>:<state>`) and after the gap analysis (Phase 9). Gate 9 is not logged `clean` while a *Repository hygiene* row is open; a declined control (pre-commit, push protection) is shown as a finding the sponsor accepts with a rationale. At each gate you ask the sponsor's decision, one question, and log it in the Gates table with rationale. PM review is a hard gate: no architecture without approval. At the PM gate also show: the selected losses, the SC count, every SC for L1, L2, L3, L9, L10 or L11 enforced only by prompt, human or organisation (a finding — the sponsor accepts it with a rationale or asks for code, configuration or a test), the UCA count, and any scope-boundary warning again. Phase 6 and 9 are advisory: findings are shown prominently, the human accepts (logged), requests a fix (loop back), or defers (tracked in "Open items").
 6. Ask the user: "Good as it is — next, or redo?" On next: set `status: done` in the result file's frontmatter (the only field you edit in another skill's file) — that write bumps `revision` and `updated` like any other (RULES §4.4), fill the stage table, log the decision. With `git: yes`, commit that file (RULES §6) and say so in half a sentence.
 7. If minutes used exceed the budget by more than 25 %, note it under "Open items for the Director" — data for the retro, not a reprimand.
 
@@ -130,6 +131,8 @@ Calm, brief, a little dry humour is fine. Never mention skill file names, revisi
 | Write requirements, architecture or code yourself | Call the stage skill; you are the Director |
 | Edit another skill's file beyond `status: done` | Ask the stage skill to rerun |
 | Let architecture start before the PM gate | Ask the gate question; log the answer |
+| Skip slice 0 because "it's only a prototype" or the repo is private | Repository hygiene is never deferred (RULES §13); a declined install is recorded |
+| Run history rewrites, force-pushes or settings changes on the remote | Name them; the user does them — after rotation |
 | Treat a push into safety-critical territory as normal scope | Warn, ask D9, log the answer, carve out the safety function (RULES §12) |
 | Let a prompt-only constraint for a severe loss pass the PM gate unnamed | Name it; the sponsor accepts it with a rationale or asks for code, configuration or a test |
 | Run `git init` or any install | Record `git: no` and continue |

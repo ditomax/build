@@ -55,13 +55,13 @@ One project folder for all three tools — `planning/` with the skillsets, a pro
 
 ## Where is what?
 
-Inside a project everything lives in `planning/build/`: one subfolder per feature (`PRC/10-intake.md`, `20-concept.md`, `30-synthesis.md`), the shared dictionary `CONTEXT.md`, the decisions in `decisions/`, and two registers (`deployment.md`, `test_tooling.md`). The product code lives outside `planning/`. Standalone, the same lives in `builds/<project>/`. At the end of every file there is a section **Notes (human)**: leave your own remarks there, the AI never touches it.
+Everything lives in your product's folder, in `planning/build/`: one subfolder per feature (`PRC/10-intake.md`, `20-concept.md`, `30-synthesis.md`), the shared dictionary `CONTEXT.md`, the decisions in `decisions/`, the test manuals (`agent-testing.md`, `manual-tests.md`), the reference of the development command line (`cli.md`), the settings (`configuration.md`) and the deployment register (`deployment.md`). The product code sits next to `planning/`, in a folder structure chosen once for your kind of product (Python, web, C/C++, Rust, iOS, Android …). Everything is committed together with the code. Work started with build 0.3 or earlier stays in `builds/<project>/` and keeps working. At the end of every file there is a section **Notes (human)**: leave your own remarks there, the AI never touches it.
 
 ## If something does not work
 
 - The AI does not react to "start"? Type: "Read AGENTS.md in the folder that contains START.md and begin."
 - You want to add a second feature? Type: "New feature." The first one is kept.
-- New version of build? Download the latest ZIP from https://github.com/ditomax/build/releases, unzip it next to the old folder, and move your work folder (`builds/` and `profile/` if you have one) across. Work started under an older version is fine — the AI notices what changed and offers to redo a step where needed; it never fails on it. Ask us before editing a profile, so your changes survive the next version.
-- Uninstall? Delete the folder. Your work is in the work folder — take it with you first.
+- New version of build? Download the latest ZIP from https://github.com/ditomax/build/releases, unzip it next to the old folder, and move `profile/` across if you have one (your work is in your product's `planning/build/` and stays where it is; older work in `builds/` is moved across too). Work started under an older version is fine — the AI notices what changed and offers to redo a step where needed; it never fails on it. Ask us before editing a profile, so your changes survive the next version.
+- Uninstall? Delete the folder. Your work is in your product's `planning/build/` (older versions: in `builds/` — take it with you first).
 
 Version: see file `VERSION`. Questions and feedback: dietmar@millinger.at

@@ -1,6 +1,6 @@
 # build — Every question the skillset asks a human
 
-**Version 7 (build 0.3.1).** One row per question, in the order it is asked. **The IDs are stable identifiers** — `profile/questions.md` (setup skill) refers to them; renumbering is a breaking change. With a brief (contract H2) the Path B rows are extracted from `60-brief.md` and `vcode/` and confirmed in one block, never re-asked; the same holds for a register (Path R, I0R) and a shortlist entry (Path S, I0S). Grilling questions are agenda-driven — the list names the sources of the agenda, not every item, since those depend on the field of application. Three gate questions go to the sponsor.
+**Version 8 (build 0.4.0).** One row per question, in the order it is asked. **The IDs are stable identifiers** — `profile/questions.md` (setup skill) refers to them; renumbering is a breaking change. With a brief (contract H2) the Path B rows are extracted from `60-brief.md` and `vcode/` and confirmed in one block, never re-asked; the same holds for a register (Path R, I0R) and a shortlist entry (Path S, I0S). Grilling questions are agenda-driven — the list names the sources of the agenda, not every item, since those depend on the field of application. Three gate questions go to the sponsor.
 
 ## Director (`build`) — first call only
 
@@ -14,9 +14,10 @@
 | D3 | Path: mixed (B on what the maquette showed, A on the rest) — or A or B? | proposed | cold start: A; register: R (H2/3 with register: mixed+R); shortlist: S — not asked |
 | D4 | Field of application — <inferred>? | brief Part 3 (with brief: not asked); register frame / V4; entry V4, Process & systems | |
 | D9 | (only on a RULES §12 trigger) build does not produce safety-critical software — continue as simulation / teaching, with the non-safety part only (which safety function is carved out?), or stop? | trigger from D4, the input or I11 | never skippable; logged in `00-build.md` *Scope boundary*; repeated at every PM gate of the feature |
-| D5 | Code root: the project folder outside `planning/` — right? (standalone: where?) | project layout default | never inside `<work>` |
-| D6 | Git: is the folder a repository? — and if yes: do I commit, or do you? | repository checked silently, result told | never `git init`; a clone of the public repo counts as no; when unsure the user commits (RULES §6) |
+| D5 | Code root: the root of the product repository — `<project>/` (suite installed elsewhere: which folder?); the work goes to its `planning/build/` — right? | suite in the project: `<project>/`; elsewhere: the current working folder | existing code there → I12, layout adopted |
+| D6 | Git: is the folder a repository? — and if yes: do I commit, or do you? | repository checked silently, result told | never `git init`; an ignore rule hiding `planning/build/` is named and fixed first; a legacy build in a clone counts as no; when unsure the user commits (RULES §6) |
 | D7 | Language of the result files? (requirements, IDs, code, commits stay English) | profile → chat language → explicit statement | |
+| D10 | (legacy build under `<suite>/builds/`, once) This build still lives in the suite folder — keep it as it is, or move it into the product repository (`<code_root>/planning/build/`)? | `00-build.md` without `layout` or with `legacy-standalone` | keep is fine forever; move = copy commands for the user, never done by the skill, never required (RULES §2) |
 | D8 | A newer register exists — delta: new · priority · statement · out of scope · outcome. Take it over? | `10-register.vN.md` vs. `register:` in 00-build.md | any later call; yes → intake (and concept) stale, trace redo |
 
 
@@ -38,6 +39,7 @@ Later calls: "Good as it is — next, or redo?" after a stage; the gate question
 | I8 | Running cost: what makes it grow with use (AI calls, documents, compute, metered services), who pays (price, fixed budget, nobody yet), what does the heaviest user do — and is there a monthly ceiling? "Fixed running cost only" is a valid answer | always, every path | R / S: V6 note (does running cost grow with use), read back first | Part 2 Running cost |
 | I9 | Load and growth: how many users (internal or external), how many at the same time at peak, when are the peaks, how much data — at launch, in one year, in three? Which services we call have rate limits? "Small and stable" with figures is a valid answer | always, every path | R: frame *Users and scale* · S: card *Users & scale* — read back first | Part 2 Load and growth |
 | I11 | Losses and hazards: here is the system card (autonomy · exposure · learning loop · actions) and the losses already named — which of L1–L11 matter, and what would be worst for you? | always, every path; never skippable | brief guardrails, register K.o. and V6 note, entry *Personal data* / *Data situation* — read back first | Part 2 Losses and hazards |
+| I12 | Stack and existing code: does the code root already hold code — and is there a stack, platform or house layout the product must use? | always, every path | profile `conventions.md`, brief Part 3 prototype facts (stack), D5 | Part 3 Stack and existing code |
 | I10 | Register item R-<n> (MUST) has no verdict yet — map it to this feature, another feature, or defer it with a reason? | R, last question of Part 2 | intake trace | Part 1 Register trace |
 | I6 | Part 3 in five lines (path, vocabulary seeds, out of scope, integration points, riskiest assumption, first slice) — anything missing? | | — | Part 3 |
 
@@ -54,7 +56,9 @@ Cold start: I0 is replaced by D1' and the grilling runs on the full Phase 1 agen
 | C6 | Control structure: is this everyone who acts on the product — users, operators, components, error handlers, AI components, jobs? | after §9 interactions | §9 Control structure |
 | C7 | Unsafe control actions (batch shown): anything here that cannot happen — or something missing? | per batch, after C6 | §9 Unsafe control actions, §5 |
 | **Gate PM** | Requirements, decisions, interactions and schema are ready (§0–§10) — approved, changes requested, or back to intake? (Path R: trace count, and the proposed priorities of the maquette's `R-M` items — confirm or change; always: losses, SC count, every SC for a severe loss enforced only by prompt, human or organisation — accept with a rationale or ask for more, UCA count, scope boundary) | after §10, asked by the Director to the sponsor | Gates table |
-| C5 | Path B module: rebuild from concept or adapt from `vcode/` — and why? | architecture, per module | §11 |
+| C8 | Layout: profile <proposed from intake I12 and the field> and package name <…> — right? (no catalogue match: the ecosystem's canonical layout, marked unreviewed; existing code: adopted) | architecture, first feature only | §11 Layout, layout ADR, `layout` in 00-build.md |
+| C9 | (a U-requirement names a CLI, or the CLI is the key interface) User CLI and dev CLI — separate (recommended), or one tool with the dev commands switched off in release builds? | architecture, when it arises | §11 Layout, ADR |
+| C5 | Path B module: rebuilt from the concept, or adapted from `vcode/<file>` (which part) — and why? Placed where the layout says | architecture, per module | §11 |
 | **Gate 6** | Consistency matrix: <n> MISMATCH / DANGLING — accept (with rationale), fix, or defer? | after §12, Director → sponsor | Gates table |
 
 ## Stage 3 — synthesis
@@ -62,7 +66,7 @@ Cold start: I0 is replaced by D1' and the grilling runs on the full Phase 1 agen
 | # | Question | When |
 | --- | --- | --- |
 | Y1 | Test plan ready (§13) — start slice S1? | before any code |
-| Y0 | Slice 0 — repository hygiene: these files are added or merged in the code root (list) — go, and may I install pre-commit and gitleaks? | after Y1, before S1; never skippable (the install part may be declined) |
+| Y0 | Slice 0 — foundation: these files are added or merged in the code root (layout skeleton, dev CLI, layout check, test docs, repository hygiene — list) — go, and may I install <the profile's environment>, pre-commit and gitleaks? | after Y1, before S1; never skippable (the install part may be declined) |
 | Y0G | Is secret scanning with push protection enabled for this repository (GitHub: Settings → Code security)? | slice 0 when a remote exists; again at the release point if none did |
 | Y2 | The concept does not name this dependency / stack choice: <options> — which? | when it arises |
 | Y3 | Slice S<n> is green (<n/m tests>, committed) — next slice, or stop here? | after every slice |

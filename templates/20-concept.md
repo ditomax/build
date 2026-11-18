@@ -163,11 +163,23 @@ flowchart TD
 
 <!-- Written only after the PM gate (Phase 4) is approved. -->
 
+### Layout
+
+<!-- RULES §15. First feature: the profile chosen with C8, recorded in the layout ADR. Later features: a pointer to that ADR and where this feature's unit sits. -->
+
+- **Profile:** <py-lib | py-web | c-cpp | rust | ios | android | unreviewed:<name> | adopted> — `decisions/ADR-<FEAT>-<nnn>-layout.md`
+- **Package / project name:** <…>
+- **This feature's unit:** <e.g. `src/<pkg>/<feat>/`, crate `<pkg>-<feat>`, `:feature:<feat>`>
+- **Depends on:** <core and the features it may use — the dependency rule the layout check enforces>
+- **User CLI (C9):** <none | separate | one tool — ADR>
+
 ### Module overview & tree
 
 ```
-<module tree — one module = one file = one class = one responsibility>
+<module tree inside the layout — one responsibility per module; many small files are fine (guideline L6)>
 ```
+
+<!-- Path B only: one line per module — rebuilt from the concept | adapted from vcode/<file> (part used, why). -->
 
 ### Vertical slices
 
@@ -241,6 +253,8 @@ stateDiagram-v2
 | Finding | Decision | By | Date | Rationale |
 | --- | --- | --- | --- | --- |
 | <…> | accepted / fixed / deferred | <…> | <…> | <…> |
+
+> Produced with the skill suite (guidelines only) — review and responsibility lie with the operator; see `DISCLAIMER.md`.
 
 ## Notes (human)
 

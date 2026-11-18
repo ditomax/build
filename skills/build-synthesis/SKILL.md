@@ -1,11 +1,13 @@
 ---
 name: build-synthesis
-version: "0.3.1"
+version: "0.4"
 description: >
   Stage 3 of the build skillset. Writes <FEAT>/30-synthesis.md (MANIFEST Sections
   13–16) and the product code under code_root — test concept first, then a strict
-  red-green-refactor loop one vertical slice at a time, registering every script
-  and tool in deployment.md / test_tooling.md, and closing with the synthesis gap
+  red-green-refactor loop one vertical slice at a time, after a slice 0 that lays
+  the foundation (layout, test documentation, dev CLI, repository hygiene),
+  registering every script and tool in deployment.md / agent-testing.md, and
+  closing with the synthesis gap
   analysis for the human gate. Called by the build Director; the only stage besides
   rescue that writes code.
 ---
@@ -14,7 +16,7 @@ description: >
 
 You are the **build team**: you write tests, then the minimum code that passes them, slice by slice, and you never let the concept and the code drift apart. Read `../../RULES.md` first — §10 (working principles) binds every line you write; the process is `../../MANIFEST.md` Phases 7–9.
 
-**Input:** `<FEAT>/20-concept.md` (current version), `CONTEXT.md`, `decisions/`, `test_tooling.md`, `deployment.md`, `code_root`, profile (stack and IT constraints). **Output:** `<FEAT>/30-synthesis.md` from `templates/30-synthesis.md`; code and tests under `code_root`; register updates. **Budget:** `budget_min.synthesis_per_slice` per slice.
+**Input:** `<FEAT>/20-concept.md` (current version), `CONTEXT.md`, `decisions/` (the layout ADR first), `layouts/<profile>.md`, `agent-testing.md` (or a legacy `test_tooling.md`), `manual-tests.md`, `deployment.md`, `code_root`, profile (stack and IT constraints). **Output:** `<FEAT>/30-synthesis.md` from `templates/30-synthesis.md`; code and tests under `code_root`; register updates. **Budget:** `budget_min.synthesis_per_slice` per slice.
 
 Lineage: MANIFEST Phases 7–9; the Definition of Done (RULES §11); maquette-build's slice discipline and maquette-harden's one-commit-per-fix.
 
@@ -26,17 +28,21 @@ Two sentences: the test plan, then the code slice by slice with tests green afte
 
 ### 1. Test concept (Phase 7, §13) — before any product code
 
-Unit test tables per module (input → expected → requirement), integration scenarios along the slices, synthetic data strategy (templates + variations, golden outputs, versioned in the repo), CI constraints (no LLM, no network, mocks named), coverage matrix — every requirement → at least one test; justify every exception. *Constraint and UCA tests*: one test per UCA and per SC of concept §5 / §9 — negative (the unsafe action is refused), fault injection (the dependency fails, the feedback is missing) or adversarial (the injection set: manipulated documents, tool results, prompts — `checklists/ai-threats.md`); an SC enforced by *prompt + test* gets its test here. Fill the "Test" column of the concept's traceability matrix by reference (you do not edit `20-concept.md`; list requirement → test here, the Director checks both agree). Read `test_tooling.md`; if the project has no test runner yet, plan it as the first tool and register it. Write `30-synthesis.md` revision 1 with §13 filled and hand back briefly — "test plan ready, starting S1?" — then continue on the user's word.
+Unit test tables per module (input → expected → requirement), integration scenarios along the slices, synthetic data strategy (templates + variations, golden outputs, versioned in the repo), CI constraints (no LLM, no network, mocks named), coverage matrix — every requirement → at least one test; justify every exception. *Constraint and UCA tests*: one test per UCA and per SC of concept §5 / §9 — negative (the unsafe action is refused), fault injection (the dependency fails, the feedback is missing) or adversarial (the injection set: manipulated documents, tool results, prompts — `checklists/ai-threats.md`); an SC enforced by *prompt + test* gets its test here. Fill the "Test" column of the concept's traceability matrix by reference (you do not edit `20-concept.md`; list requirement → test here, the Director checks both agree). *Manual tests*: what cannot or should not be automated (UI on a real device, hardware, look and feel, sponsor acceptance) becomes an `MT-<FEAT>-n` case in `manual-tests.md` with its traces, and appears in the coverage matrix as `manual`. Read `agent-testing.md` first — tools, fixtures and the fix journal — and reuse what exists; the test runner comes from the layout profile. Write `30-synthesis.md` revision 1 with §13 filled and hand back briefly — "test plan ready, starting S1?" — then continue on the user's word.
 
-### 1a. Slice 0 — repository hygiene (RULES §13), before S1
+### 1a. Slice 0 — foundation (RULES §15, §13), before S1
 
-Read `templates/repo-hygiene.md` and copy its blocks verbatim — never retype them from memory. First feature: all of H1–H7; later features: re-check H1 and H5 only, unless a row of `00-build.md` *Repository hygiene* is open. Say in one block which files you add or merge in `code_root` and which installs you need, then ask **Y0** once: "go — and may I install pre-commit and gitleaks?" Write the files either way (merge, never overwrite; skip H3 on a host other than Claude Code and say so); install only on a yes. Run the H1 checks (`git check-ignore -v`, `git ls-files` — read-only) and the H5 test; a tracked host-local file is reported to the user with the `git rm --cached` command, never removed by you. If `git remote -v` names GitHub (or another host with push protection), ask **Y0G**. Write the S0 block of the slice log, commit per RULES §6 (`build(<FEAT>): S0 repository hygiene`), and hand back to the Director with the state per control (H1–H7) before S1.
+**Layout and tools** (RULES §15). First feature: read the layout ADR and `layouts/<profile>.md`; write the profile's skeleton for this feature (manifest, core unit, the feature's unit, entry point, test folders), the shared tools from `layouts/_tools.md` verbatim (`tools/dev.py` with the profile's PROFILE block, the layout check, the settings source), the profile's ignore lines, and — if absent — `agent-testing.md`, `manual-tests.md`, `cli.md`, `configuration.md` in `<work>` from the templates (an existing manual test document is adopted; a legacy `test_tooling.md` has its rows moved into `agent-testing.md` section 1 and becomes a one-line pointer). Run `python tools/dev.py docs`, then `check`. Check that `planning/build/` is not git-ignored (`git check-ignore -v planning/build/00-build.md` must print nothing); an ignore rule that catches it is fixed by anchoring (`/build/`). Existing files are merged, never overwritten; existing code keeps its layout (L7). Later features: add only the feature's unit, its test folder and its rows; re-run `check`.
+
+**Repository hygiene** (RULES §13). Read `templates/repo-hygiene.md` and copy its blocks verbatim — never retype them from memory. First feature: all of H1–H7; later features: re-check H1 and H5 only, unless a row of `00-build.md` *Repository hygiene* is open. Say in one block which files you add or merge in `code_root` (layout, tools, docs, hygiene) and which installs you need, then ask **Y0** once: "go — and may I install <the profile's environment, pre-commit, gitleaks>?" Write the files either way (merge, never overwrite; skip H3 on a host other than Claude Code and say so); install only on a yes. Run the H1 checks (`git check-ignore -v`, `git ls-files` — read-only) and the H5 test; a tracked host-local file is reported to the user with the `git rm --cached` command, never removed by you. If `git remote -v` names GitHub (or another host with push protection), ask **Y0G**. Write the S0 block of the slice log, commit per RULES §6 (`build(<FEAT>): S0 foundation — layout <profile>, test docs, dev CLI, repository hygiene`), and hand back to the Director with the layout check result and the state per control (H1–H7) before S1.
 
 ### 2. Slices (Phase 8) — repeat per slice, in the concept's order
 
-For each slice: say which slice and which requirements; **red** — write the failing tests from §13; **green** — the minimum code that passes, in the modules the concept names, using `CONTEXT.md` terms for identifiers; **refactor** — simplify without changing behaviour, tests stay green; run the whole suite, report `n passed / m total` with the command. Then:
+For each slice: say which slice and which requirements; **red** — write the failing tests from §13; **green** — the minimum code that passes, in the modules the concept names, using `CONTEXT.md` terms for identifiers; **refactor** — simplify without changing behaviour, tests stay green; run the whole suite and `python tools/dev.py check`, report `n passed / m total` with the command. Where the profile's toolchain is missing here (its *Agent limits*), say so before the slice, write the code and tests anyway, and record "not verified here — run `<command>` on <platform>": the slice is green only after the user reports the result (RULES §15). Then:
 
-- Any script created for setup, seed, deploy, rollback or smoke check → `deployment.md` in the same step; any test, fixture, debug or diagnostic tool → `test_tooling.md` in the same step. Unregistered = not done.
+- Any script created for setup, seed, deploy, rollback or smoke check → `deployment.md` in the same step; any test, fixture, debug or diagnostic tool → `agent-testing.md` section 1 (fixtures: section 3) in the same step; a new dev CLI command or setting → code, then `python tools/dev.py docs`, same commit. Unregistered = not done.
+- A test failure that needed more than one attempt or a non-obvious fix → a **fix journal** entry in `agent-testing.md` section 4 (symptom → cause → fix → test / commit) in the same commit; a standing trap → section 5.
+- New code goes where the layout ADR says; a new top-level folder or a dependency the layout check refuses is a concept question (L5), never a workaround.
 - A requirement discovered while coding: do not implement it silently. Record it under "Requirements discovered" in the slice log and tell the Director a concept redo is needed; continue only with what the current concept covers.
 - Drift you notice (code needs something the concept does not say) is handled the same way — document first, code follows.
 - With `git: yes (agent commits)`: commit the slice (RULES §6) with `Traces to:` in the body and say so in half a sentence; with `git: yes (user commits)`: write the exact commands into the slice log instead.
@@ -46,7 +52,7 @@ Stack and dependency choices follow the concept and the profile; a dependency th
 
 ### 3. Gap analysis (Phase 9, §14) — once, after the last slice
 
-Walk the traceability matrix requirement by requirement and **open the real implementation**: not a stub, `pass`, `NotImplementedError`, TODO, hard-coded return or mock so heavy the test cannot fail. Walk every module in §11 and every test in §13 the same way. Walk every SC of concept §5 as kind *constraint*: IMPLEMENTED only when its requirement is in the code and its test passes. Walk `test_tooling.md` in both directions (orphans, ghosts) and prune obsolete rows. Produce the gap matrix — always, even when clean. Hand back with the count of PARTIAL / MOCKED / MISSING rows. The Director asks the gate question; "back to synthesis" means more slices in this file; "accepted" means the human's rationale goes into §14.
+Walk the traceability matrix requirement by requirement and **open the real implementation**: not a stub, `pass`, `NotImplementedError`, TODO, hard-coded return or mock so heavy the test cannot fail. Walk every module in §11 and every test in §13 the same way. Walk every SC of concept §5 as kind *constraint*: IMPLEMENTED only when its requirement is in the code and its test passes. Walk `agent-testing.md` section 1 in both directions (orphans, ghosts), compare its CLI quick reference with `python tools/dev.py --help`, and prune obsolete rows. Walk `manual-tests.md`: a requirement covered only by an `MT` case is IMPLEMENTED only with a passing execution on the current release candidate — otherwise PARTIAL, and the case is handed to the user to run. Run `python tools/dev.py check` (layout, docs in sync) and record its result as kind *layout*. Produce the gap matrix — always, even when clean. Hand back with the count of PARTIAL / MOCKED / MISSING rows. The Director asks the gate question; "back to synthesis" means more slices in this file; "accepted" means the human's rationale goes into §14.
 
 ### 4. Release point
 
@@ -67,3 +73,7 @@ When the gate is clean or every item is decided, propose the release: the Direct
 | Skip an adversarial test because "the model won't do that" | For a prompt + test constraint, the test is the enforcement |
 | Add "flexibility", abstractions, error handling for impossible cases | Minimum code; RULES §10 |
 | Touch `vcode/` or the brief | Read for inspiration, never write |
+| Invent folders, or put code where the layout check refuses it | The layout ADR decides; a new top-level folder is a concept question (RULES §15 L5) |
+| Report a slice green that you could not build or run here | "Not verified here — run `<command>` on <platform>"; green after the user's result |
+| Fix a stubborn test and move on silently | Fix journal entry in `agent-testing.md`, same commit |
+| Call a requirement done because its manual case exists | Only a logged passing execution on the release candidate counts |

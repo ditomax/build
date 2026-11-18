@@ -87,7 +87,7 @@ Append to the project's `AGENTS.md` (and `CLAUDE.md`, if present) — never over
 
 ## H5 — `tools/secret_check.py` and its test (R9, R6)
 
-The PreToolUse hook (H3) and the audit (A2) use the same script. Register both in `test_tooling.md` in the same step.
+The PreToolUse hook (H3) and the audit (A2) use the same script. Register both in `agent-testing.md` (section 1) in the same step.
 
 `tools/secret_check.py`:
 

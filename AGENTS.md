@@ -24,16 +24,16 @@ checklists/             requirement, architecture-consistency and STPA-light che
 templates/              one template per result file and register — the binding content definition
 skills/                 the Director and the four stage skills
 profile/                optional customer constraints (empty = core defaults)
-builds/                 the user's work in the standalone form: one subfolder per project
+layouts/                the layout catalogue: one profile per stack (py-lib, py-web, c-cpp, rust, ios, android) + shared tools
 ```
 
-Stage skills live at `skills/build-<stage>/SKILL.md`; the Director calls them by reading those files. The workspace root is `<suite>` in the skills' wording.
+Stage skills live at `skills/build-<stage>/SKILL.md`; the Director calls them by reading those files. This folder is `<suite>` in the skills' wording — read-only.
 
-Inside a project the same suite sits at `<project>/planning/suite/build/`; then the work lives in `<project>/planning/build/`, the profile in `<project>/planning/profile/`, briefs in `<project>/planning/maquette/<x>/60-brief.md`, register and shortlist in `<project>/planning/idea/`, and the product code in `<project>/` outside `planning/` (RULES §2, §9). The Director tells the two layouts apart by itself.
+The work never lives here: it lives in the product repository, at `<project>/planning/build/`, next to the product code (RULES §2). When this suite is installed elsewhere, the Director asks for the project folder; inside a project the suite sits at `<project>/planning/suite/build/`, the profile in `<project>/planning/profile/`, briefs in `<project>/planning/maquette/<x>/60-brief.md`, register and shortlist in `<project>/planning/idea/` (RULES §2, §9). The code follows the layout profile chosen in concept (RULES §15). Builds of version 0.3 and earlier under `builds/<project>/` keep working where they are.
 
 ## Hard limits in this workspace
 
-- Write planning files only inside the work root (`builds/<project>/` or `planning/build/`) and code only under the `code_root` recorded in `00-build.md` — never modify `templates/`, `skills/`, `checklists/`, `profile/`, `RULES.md`, `MANIFEST.md` or this file. If you think a template is wrong, tell the user; they report it upstream.
+- Write planning files only inside the work root (`<project>/planning/build/`; legacy: `builds/<project>/`) and code only under the `code_root` recorded in `00-build.md`, where the layout ADR puts it — never modify `templates/`, `layouts/`, `skills/`, `checklists/`, `profile/`, `RULES.md`, `MANIFEST.md` or this file. If you think a template is wrong, tell the user; they report it upstream.
 - Never write into a maquette or idea folder: `60-brief.md`, `vcode/`, `10-register.md` and `10-shortlist.md` are read-only.
 - Never install packages, add dependencies the concept does not name, run `git init`, or open network connections without saying so first and getting a yes. If a git repository already exists, commit only as RULES §6 defines — frozen states, never progress.
 - No telemetry, no hidden files, no state outside the work root.

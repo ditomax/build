@@ -8,11 +8,13 @@ updated: <YYYY-MM-DDThh:mm>
 input: —
 # --- only in 00-build.md ---
 title: <working title of the product>
-code_root: <path to the product code, relative to <work> or absolute — never inside <work>>
+code_root: ../..               # the product repository root — <work> is its planning/build/ (RULES §2); legacy builds: the recorded path
+layout: open                 # open | py-lib | py-web | c-cpp | rust | ios | android | unreviewed:<name> | adopted | legacy-standalone — RULES §15, set after C8
 git: no                      # yes (user commits) | yes (agent commits) | no — checked by the Director at start (RULES §6)
 language: en                 # language of the result files' content (requirements and code stay English)
 budget_min: {intake: 60, concept: 180, synthesis_per_slice: 45, rescue: 60}
 profile: none                # none | profile/
+disclaimer: —                # accepted <YYYY-MM-DD> — set by the Director after the user's ok (RULES §14)
 contract_in: none            # none | H2/3 | H2/2 | H2/1 (maquette brief, the version it declares) | register/1 (idea register, Path R) | H1/2 | H1/1 (shortlist entry, Path S)
 scope_boundary: not relevant # not relevant | simulation / teaching | non-safety part only | stop — RULES §12, per feature in the block below
 register: —                  # Path R only: the register version every R-ID is traced against, relative to <work>, e.g. ../idea/10-register.md@3

@@ -1,5 +1,19 @@
 # Changelog — build
 
+## 0.4.0 — 2026-11-14
+**Code layout and test documentation** — the product gets a stable structure from the first slice on:
+- One layout: the work always lives in the product repository at `planning/build/`, next to the code, and is committed with it. Builds from 0.3 and earlier keep working where they are; a move is offered once, never required.
+- New layout catalogue `layouts/` with profiles for Python (library/service and backend with web page), C/C++, Rust, iOS and Android, a template for other stacks, and checks that keep the structure in shape.
+- Slice 0 now lays the foundation: folder skeleton, a small development command line (`tools/dev.py`: test, check, configuration, environment), the layout check and the test documentation.
+- New `agent-testing.md` (tools, fixtures, fix journal, pitfalls — replaces `test_tooling.md`) and `manual-tests.md` (manual test cases with execution log); `cli.md` and `configuration.md` are generated from the code.
+- A prototype from maquette is a quarry, not a foundation: modules are rebuilt or adapted into the chosen layout.
+
+## 0.3.2 — 2026-11-10
+**Disclaimer** — the suite is a set of guidelines; whoever runs it is responsible for the results:
+- New `DISCLAIMER.md`, linked from the README.
+- The Director shows a short notice once per `00-build.md` and records the ok; a profile cannot skip it (RULES §14).
+- One-line footer in the handover templates.
+
 ## 0.3.1 — 2026-11-09
 **Repository hygiene** — secrets never reach git, images or permission allow lists:
 - Slice 0 before the first product code: repo-local ignore rules (checked), `.dockerignore`, Claude Code settings with deny rules and a hook that blocks secrets in commands, a secret rule for agents in `AGENTS.md`, a small checker with its test, a pre-commit guard with gitleaks, and the question about push protection.

@@ -238,21 +238,36 @@ Config        crm_export_dir, register_path, template_path, terms_path: Path · 
 
 Python 3.12 web service, server-rendered HTML, on the internal Linux VM (OQ-6). Every module is rebuilt; from the maquette only the 19-field mapping (now §10) is carried over, as specification.
 
+### Layout
+
+- **Profile:** py-web, variant W1 (server-rendered) — `decisions/ADR-OFA-004-layout.md`
+- **Package / project name:** `exg_offers`
+- **This feature's unit:** `src/exg_offers/ofa/`
+- **Depends on:** `src/exg_offers/core/` (configuration, single sign-on gate) — no other feature yet
+- **User CLI (C9):** none
+
 ### Module overview & tree
 
 ```
-ofa/
-  config.py             Config
-  auth.py               SsoGate
-  crm_export_reader.py  CrmExportReader
-  field_mapper.py       FieldMapper
-  offer_register.py     OfferRegister
-  block_extractor.py    BlockExtractor
-  unit_normalizer.py    UnitNormalizer
-  draft_store.py        DraftStore
-  docx_exporter.py      DocxExporter
-  web_app.py            WebApp
+src/exg_offers/
+  app.py                  WebApp — composition root, mounts the routers
+  core/
+    config.py             Config
+    auth.py               SsoGate
+  ofa/
+    __init__.py           public interface: router
+    routes.py             HTTP layer of the offer assistant
+    crm_export_reader.py  CrmExportReader
+    field_mapper.py       FieldMapper
+    offer_register.py     OfferRegister
+    block_extractor.py    BlockExtractor
+    unit_normalizer.py    UnitNormalizer
+    draft_store.py        DraftStore
+    docx_exporter.py      DocxExporter
+    templates/ofa/        page templates
 ```
+
+Path B placement: `field_mapper.py` adapted from `vcode/` (field mapping with origin tags, slice S1); `docx_exporter.py` and `routes.py` rebuilt — the prototype's export and page handling were throwaway; all other modules rebuilt from the concept.
 
 ### Vertical slices
 
@@ -376,6 +391,8 @@ _Omitted in this example (section added in build 0.1.10)._
 | Units in block text not normalised | fixed | Head of Sales | 2026-09-29 | UnitNormalizer now runs on every block |
 | Heading rule unconfirmed | deferred | Sales ops | 2026-09-29 | Sample of 20 offers due 2026-09-30 (OQ-13); S2 starts after it |
 | Retention period undefined | deferred | Data protection officer | 2026-09-29 | Due 2026-10-02 (OQ-14); S4 not released before |
+
+> Produced with the skill suite (guidelines only) — review and responsibility lie with the operator; see `DISCLAIMER.md`.
 
 ## Notes (human)
 

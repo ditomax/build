@@ -1,6 +1,6 @@
 ---
 name: build-concept
-version: "0.3"
+version: "0.4"
 description: >
   Stage 2 of the build skillset. Writes <FEAT>/20-concept.md (MANIFEST Sections
   0–12), CONTEXT.md and decisions/ — numbers and freezes requirements, resolves
@@ -51,7 +51,9 @@ Write `20-concept.md` with §0–§10 filled and §11–§12 marked "open — af
 
 ### 6. Architecture and vertical slices (Phase 5, §11)
 
-One module = one file = one class = one responsibility. Fill every mandatory artifact — every module that is a controller gets its **Regulation** line (enforces SC-…, watches <feedback>, on violation refuse · degrade · contain · alert, refreshes its process model by …): module tree, slices table (each slice delivers named requirements, has an acceptance, the first proves the core end to end), module specifications with signatures in pseudocode and `Traces to:`, mermaid flowchart, interface table, state machine (or "not relevant"), design for testability, scaling strategy (capacity budget, first bottleneck, its lever and trigger — also for a single instance), traceability matrix with every requirement → module → slice. No orphan requirements, no orphan modules. Path B features: state per module whether it is rebuilt from concept or adapted from `vcode/` (and why); `vcode/` itself is never the code root.
+**Layout first** (RULES §15). First feature: propose the layout profile from intake's *Stack and existing code* line, the field and the profile's `conventions.md` — one sentence why — and ask **C8** (profile and package name). Read `layouts/<profile>.md` and fill §11 *Layout* from it. No catalogue match → copy `layouts/_template.md`, fill it from the ecosystem's own conventions and mark it `unreviewed:<name>`; existing code → `adopted`, documented as it is. Write `decisions/ADR-<FEAT>-<nnn>-layout.md` (profile, package name, deviations from the profile, the dependency rule) and name `layout:` for the Director to record. Later features: read the layout ADR and place the feature's unit in it; a deviation is a new ADR, never a silent change. **User CLI:** when a U-requirement names a CLI, or the CLI is the product's key interface, ask **C9** — *separate* from the dev CLI (recommended) or *one tool* with the dev commands switched off in release builds and a test proving it — and write the ADR.
+
+Modules: one responsibility each; prefer many small files (guideline L6). Fill every mandatory artifact — every module that is a controller gets its **Regulation** line (enforces SC-…, watches <feedback>, on violation refuse · degrade · contain · alert, refreshes its process model by …): module tree, slices table (each slice delivers named requirements, has an acceptance, the first proves the core end to end), module specifications with signatures in pseudocode and `Traces to:`, mermaid flowchart, interface table, state machine (or "not relevant"), design for testability, scaling strategy (capacity budget, first bottleneck, its lever and trigger — also for a single instance), traceability matrix with every requirement → module → slice. No orphan requirements, no orphan modules. Path B features: the prototype is a quarry, not a foundation — state per module of the target layout whether it is *rebuilt from the concept* or *adapted from `vcode/<file>`* (which part, and why); `vcode/` is never copied as a whole and never the code root.
 
 ### 7. Consistency review (Phase 6, §12)
 
@@ -80,3 +82,6 @@ A `redo` of this stage is a concept version bump: new file `20-concept.vN.md`, `
 | Reference "the code" or "vcode/" for a detail | Embed it; the document is self-contained |
 | Skip the consistency matrix because it looks fine | Always produce it; the human decides |
 | Let the user's jargon drift | `CONTEXT.md` is the dictionary; one term per thing |
+| Invent a folder structure per feature | One layout ADR per product (C8); later features place their unit in it |
+| Copy `vcode/` into the product and build on it | Rebuilt or adapted per module, placed in the target layout |
+| Restructure existing code in the concept | Adopt its layout (L7); restructuring is a rescue round with an ADR |

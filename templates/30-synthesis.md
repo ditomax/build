@@ -44,23 +44,33 @@ _Sections 13–16 of the MANIFEST document structure plus the slice log. Written
 
 <no LLM calls, no network, all external dependencies mocked; how the suite is run; time limit>
 
+### Manual tests
+
+<!-- What cannot or should not be automated: UI on real devices, hardware, look and feel, sponsor acceptance. The cases themselves live in ../manual-tests.md (MT-<FEAT>-n with steps and execution log); list them here with their requirements. -->
+
+| Case | Requirement(s) | Why manual |
+| --- | --- | --- |
+| <MT-<FEAT>-n | none> | <…> | <…> |
+
 ### Test coverage matrix
 
-| Requirement | Test(s) | Untested — justification |
+| Requirement | Test(s) — automated or `MT-<FEAT>-n` | Untested — justification |
 | --- | --- | --- |
 | F-<FEAT>-1 | <…> | — |
 
 ### Test & debug tooling
 
-→ project-wide register `../test_tooling.md` (read before writing any tool; register in the same commit)
+→ project-wide agent test manual `../agent-testing.md` (read before writing any tool; register tools, fixtures and fixes in the same commit)
 
 ## Slice log
 
 <!-- One block per slice, in order. Written after the slice, never before. -->
 
-### S0 — repository hygiene
+### S0 — foundation
 
-- **Traces to:** SC-HYG (RULES §13), L9
+- **Layout (RULES §15):** <profile> per `decisions/ADR-<FEAT>-<nnn>-layout.md` · skeleton written: <files and folders> · tools: `tools/dev.py`, <layout check> · docs: agent-testing.md · manual-tests.md · cli.md · configuration.md <created | adopted | already present>
+- **Layout checks:** <`python tools/dev.py check`: clean | findings> · <planning/build/ git-ignored: no | fixed (rule …)> · <not verified here — run … on … | n.a.>
+- **Repository hygiene — traces to:** SC-HYG (RULES §13), L9
 - **Files written or merged:** <.gitignore (H1) · .dockerignore (H2 | n.a.) · .claude/settings.json (H3 | n.a. — host) · AGENTS.md / CLAUDE.md (H4) · tools/secret_check.py + tests/test_secret_check.py (H5) · .pre-commit-config.yaml (H6)>
 - **Checks:** <check-ignore -v → this repo's .gitignore: yes | no> · <tracked host-local files: none | list> · <H5 test: n passed>
 - **Installs (Y0):** <pre-commit + gitleaks installed, `pre-commit install` run | declined>
@@ -75,7 +85,9 @@ _Sections 13–16 of the MANIFEST document structure plus the slice log. Written
 - **Refactor:** <what was simplified, or "none">
 - **Tests:** <n passed / m total, command>
 - **Requirements discovered:** <none | list → concept redo requested>
-- **Scripts / tools added:** <registered in deployment.md / test_tooling.md, or "none">
+- **Scripts / tools added:** <registered in deployment.md / agent-testing.md, or "none">
+- **Fix journal:** <entries added to agent-testing.md §4, or "none">
+- **Verified here:** <yes | not verified here — run `<command>` on <platform>; green after the user's result>
 - **Commit:** <hash and message — or "— (no git)">
 - **Minutes:** <…>
 
@@ -87,7 +99,9 @@ _Sections 13–16 of the MANIFEST document structure plus the slice log. Written
 
 | Item | Kind | Traces to | Verdict | What is missing |
 | --- | --- | --- | --- | --- |
-| <requirement / module / test / constraint> | requirement / module / test / tool / constraint | <…> | IMPLEMENTED / PARTIAL / MOCKED / MISSING | <…> |
+| <requirement / module / test / constraint / manual case / layout> | requirement / module / test / tool / constraint / manual / layout | <…> | IMPLEMENTED / PARTIAL / MOCKED / MISSING | <…> |
+
+<!-- Kind "manual": IMPLEMENTED only with a passing execution of the MT case on the current release candidate (../manual-tests.md). Kind "layout": the result of `python tools/dev.py check` — layout rules and generated docs in sync. -->
 
 <!-- Kind "constraint": one row per SC — IMPLEMENTED only when its requirement exists in code and its test passes. An SC left PARTIAL or MISSING is accepted only as a residual risk with name and date below. -->
 
@@ -108,7 +122,9 @@ _Sections 13–16 of the MANIFEST document structure plus the slice log. Written
 
 ## 16. Test & Debug Tooling Register
 
-→ project-wide register `../test_tooling.md`
+→ project-wide agent test manual `../agent-testing.md` (tool register, CLI quick reference, fixtures, fix journal, pitfalls) · manual cases `../manual-tests.md` · dev CLI `../cli.md`
+
+> Produced with the skill suite (guidelines only) — review and responsibility lie with the operator; see `DISCLAIMER.md`.
 
 ## Notes (human)
 

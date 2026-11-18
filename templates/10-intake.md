@@ -184,6 +184,7 @@ _Result of the intake stage. Part 1 is what the prototype, the brief, the regist
 - **Ubiquitous language seeds:** <terms from the brief's shared vocabulary plus new ones — goes to CONTEXT.md>
 - **Out of scope (for now):** <…>
 - **Integration points known:** <…>
+- **Stack and existing code (I12):** <none yet | language, build tool, folder structure of the existing code — adopted (RULES §15 L7) | required stack or platform and why> → layout profile candidate: <py-lib | py-web | c-cpp | rust | ios | android | other: …>
 - **Riskiest assumption after intake:** <from the brief, updated>
 - **Recommended first vertical slice:** <one sentence — the smallest end-to-end path that proves the core>
 

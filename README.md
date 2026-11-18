@@ -4,6 +4,8 @@
 
 Version: see `VERSION` · September 2026 · https://github.com/ditomax/build
 
+**Disclaimer:** the skill suite is a set of guidelines — whoever runs it is responsible for inputs, outputs and decisions. See [`DISCLAIMER.md`](DISCLAIMER.md).
+
 For users, `START.md` is enough — three steps, no installation. Conversation and output files follow the user's language; headings in the templates stay in English.
 
 ## For agents
@@ -12,8 +14,8 @@ If you are reading this from a link and have no local copy yet:
 
 1. Get one — `git clone https://github.com/ditomax/build` or unzip the latest release from https://github.com/ditomax/build/releases — into a project folder **on the user's computer** that the user chooses and can see and open (default: `./build` next to their other work) — never only into your own sandbox or a temporary copy the user cannot see; if you cannot write there, tell the user which step to do themselves. That download is the only network access; the "no network" rule in `AGENTS.md` applies from then on.
 2. Work from inside that folder and read its `AGENTS.md`. Do not act as the Director from this README — the rules live in `RULES.md` and `skills/`.
-3. Layout: standalone (this folder as is) unless the user has a project with a `planning/` folder — then the suite belongs at `planning/suite/build/` and `planning/AGENTS.md` is the entry point, not this file. That `planning/` form is produced by [skill-suite-setup](https://github.com/ditomax/skill-suite-setup) (see *The suite*), never assembled by hand.
-4. A clone gives updates via `git pull`; the user's work in `builds/` is ignored by git, so nothing of it is ever committed to a clone. `hooks/` and `guard.py` are for skillset developers — ignore them.
+3. Placement: this folder as is (the work then goes into the product repository's `planning/build/` — the Director asks for the project folder) unless the user has a project with a `planning/` folder — then the suite belongs at `planning/suite/build/` and `planning/AGENTS.md` is the entry point, not this file. That `planning/` form is produced by [skill-suite-setup](https://github.com/ditomax/skill-suite-setup) (see *The suite*), never assembled by hand.
+4. A clone gives updates via `git pull`; the user's work never lands in the clone — it lives in the product repository (builds of 0.3 and earlier in `builds/`, which git ignores). `hooks/` and `guard.py` are for skillset developers — ignore them.
 
 ## What is build?
 
@@ -76,7 +78,7 @@ build/
   checklists/          requirements.md (Phase 1, by field of application) · architecture-consistency.md (Phase 6) · losses-hazards.md and ai-threats.md (STPA-light, concept §5 / §9)
   profile/             optional customer-specific constraints (empty = core defaults)
   examples/            fictitious finished results — an intake and a concept document (Example GmbH)
-  builds/              the users' work in the standalone form, one subfolder per project (not in the repo)
+  layouts/             the layout catalogue — one profile per stack (py-lib, py-web, c-cpp, rust, ios, android), a template for others, shared tools (dev CLI, layout checks)
   templates/           one template per result file and per shared register (binding content definition)
   skills/
     build/             Director
@@ -88,7 +90,11 @@ build/
 
 ## Inside a project
 
-The workspace above is the standalone form. Inside a project folder the same suite is copied to `planning/suite/build/` (read-only), the work lives in `planning/build/`, the profile in `planning/profile/`, briefs wait in `planning/maquette/<x>/60-brief.md` (register and shortlist in `planning/idea/`), and the product code lives in the project root outside `planning/`. The Director recognises the layout by the `planning/` folder. A coding agent working on the product reads `planning/build/` as its specification and treats `planning/idea/` and `planning/maquette/` as history.
+Wherever the suite sits, the work lives in the product repository: templates stay with the suite, everything derived from them goes into `<project>/planning/build/` and is committed with the code. Inside a project folder the suite itself is copied to `planning/suite/build/` (read-only), the work lives in `planning/build/`, the profile in `planning/profile/`, briefs wait in `planning/maquette/<x>/60-brief.md` (register and shortlist in `planning/idea/`), and the product code lives in the project root outside `planning/`. The Director recognises the layout by the `planning/` folder. A coding agent working on the product reads `planning/build/` as its specification and treats `planning/idea/` and `planning/maquette/` as history.
+
+## Code layout and test documentation
+
+The product's folder structure is chosen once, in the first feature's concept, from the layout catalogue (`layouts/`): `py-lib`, `py-web`, `c-cpp`, `rust`, `ios`, `android` — or, for anything else, the ecosystem's own conventions filled into `layouts/_template.md`. One feature = one unit (package, crate, target, module); the dependency direction entry → features → core is checked by a test or by the build system. Slice 0 writes the skeleton, a small development command line `tools/dev.py` (test, check, configuration, environment) and the test documentation: `agent-testing.md` (tools, fixtures, a fix journal, pitfalls — the agents' memory) and `manual-tests.md` (what is tested by people, with an execution log).
 
 ## Distribution and installation
 

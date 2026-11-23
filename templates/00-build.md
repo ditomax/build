@@ -75,7 +75,7 @@ register: —                  # Path R only: the register version every R-ID is
 
 | Gate | MANIFEST | When | Decision | By | Date | Rationale / accepted items |
 | --- | --- | --- | --- | --- | --- | --- |
-| PM review | Phase 4 | after concept §3–§10, before architecture | <pending | approved | changes requested> | | | <Path R: trace count — MUST → requirement · other feature · deferred; R-M priorities confirmed> · <losses, SC count, UCA count; SCs for L1/L2/L3/L9/L10/L11 enforced only by prompt, human or organisation> · <scope boundary repeated, if any> |
+| PM review | Phase 4 | after concept §3–§10, before architecture | <pending | approved | changes requested> | | | <Path R: trace count — MUST → requirement · other feature · deferred; R-M priorities confirmed> · <losses, SC count, UCA count; SCs for a gate loss (L1–L3, L9–L12, the sponsor's worst) enforced only by prompt, human or organisation; loss trade-offs decided> · <scope boundary repeated, if any> |
 | Consistency review | Phase 6 | after architecture, before synthesis | <pending | clean | accepted with findings | fix requested> | | | |
 | Gap analysis | Phase 9 | after the last slice | <pending | clean | accepted with gaps | back to synthesis> | | | |
 

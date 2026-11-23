@@ -1,5 +1,14 @@
 # Changelog — build
 
+## 0.5.0 — 2026-11-22
+**Error handling strategy** — designed with the requirements, placed below STPA-light:
+- Every safety constraint now says what is detected, the immediate action, the remedy and its time bound.
+- Actions with an effect outside the product are described in the control structure (commit boundary, counterparty, repeaters, sponsor decisions).
+- After the architecture: reaction matrix error → immediate action → remedy, with standing rows for unexpected errors; depth set per outside action.
+- New checklist `error-handling.md`, new loss L12 (financial loss), error convention in every layout profile; new questions I13 and C15–C18.
+- Synthesis and rescue test and read the code against the reaction matrix.
+- Fix: `tools/dev.py check` no longer fails once the secret checker is installed.
+
 ## 0.4.0 — 2026-11-14
 **Code layout and test documentation** — the product gets a stable structure from the first slice on:
 - One layout: the work always lives in the product repository at `planning/build/`, next to the code, and is committed with it. Builds from 0.3 and earlier keep working where they are; a move is offered once, never required.

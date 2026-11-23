@@ -36,6 +36,14 @@ _Sections 13–16 of the MANIFEST document structure plus the slice log. Written
 | --- | --- | --- | --- | --- |
 | <UCA-<FEAT>-n / SC-<FEAT>-n> | <test name> | <negative | fault injection | adversarial> | <NF-<FEAT>-n> | <planned | green | red> |
 
+### Error matrix tests
+
+<!-- One row per E row of 20-concept.md §11 Error handling (RULES §16), the harmless row and outcome-rate bands included, and per outside action: unexpected exception before · during · after the commit boundary → its standing row; killed process → external remedy acts; kill + restart and each repeater of the action's row (environment, own re-poll, restore, person) → the declared guarantee (exactly once · compensated · at most once with the unknown outcome at the person) and its reconciliation path (E-ID column: the action name). A minimum, not a proof. The test injects the error at its detector, asserts the row's action and log entry, then passes the bound (clock seam, run_once(now) — no real waiting) and asserts the escalation — one test per branch where a row has sub-cases or several reactions; safe states and 'n in a row' counters are also checked across a restart. A UCA from the row's cell goes into the second column only if this test asserts its context; otherwise it gets its own test outside the product or "not testable in-product" in the coverage matrix. -->
+
+| E-ID | Branch | Also covers | Test | Entry point | Injects | Asserts (recipient · persistent effect · recovery state · escalation after the bound) | Counter-probe (fails a test?) | Status |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| <E-<FEAT>-n> | <branch> | <UCA-<FEAT>-k | —> | <test name> | <CLI command | job | route | webhook | unit only> | <…> | <…> | <destination disabled / recovery write failed → <test> fails | no test fails → missing test> | <planned | green | red> |
+
 ### Synthetic test data strategy
 
 <templates + variations, golden outputs, the injection set for adversarial tests (manipulated documents, tool results, prompts), where they live in the repo, how they are versioned>
@@ -99,11 +107,13 @@ _Sections 13–16 of the MANIFEST document structure plus the slice log. Written
 
 | Item | Kind | Traces to | Verdict | What is missing |
 | --- | --- | --- | --- | --- |
-| <requirement / module / test / constraint / manual case / layout> | requirement / module / test / tool / constraint / manual / layout | <…> | IMPLEMENTED / PARTIAL / MOCKED / MISSING | <…> |
+| <requirement / module / test / constraint / error row / manual case / layout> | requirement / module / test / tool / constraint / error / manual / layout | <…> | IMPLEMENTED / PARTIAL / MOCKED / MISSING | <…> |
 
 <!-- Kind "manual": IMPLEMENTED only with a passing execution of the MT case on the current release candidate (../manual-tests.md). Kind "layout": the result of `python tools/dev.py check` — layout rules and generated docs in sync. -->
 
-<!-- Kind "constraint": one row per SC — IMPLEMENTED only when its requirement exists in code and its test passes. An SC left PARTIAL or MISSING is accepted only as a residual risk with name and date below. -->
+<!-- Kind "error": one row per E row of concept §11 — IMPLEMENTED only when detector, action, bound with escalation and log are in the code and the row's test passes, the escalation included. -->
+
+<!-- Kind "constraint": one row per SC — IMPLEMENTED only when the SC (or what carries it out: E rows, requirements) is in the code and its test passes. An SC left PARTIAL or MISSING is accepted only as a residual risk with name and date below. -->
 
 ### Tooling register check
 

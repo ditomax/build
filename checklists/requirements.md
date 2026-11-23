@@ -1,6 +1,6 @@
 # Requirement Checklists
 
-**Version 4**
+**Version 5**
 
 _No exact field for your product? Take the closest one (an internal document-generation tool → Web application), add the cross-cutting and technology sections, and name the sections you used in `10-intake.md`._
 
@@ -16,7 +16,8 @@ Each entry is: **trigger → required check/standard → how it is verified.** A
 
 | Trigger | Required | Verified by |
 | --- | --- | --- |
-| Any product | Losses L1–L11 checked; hazards, constraints and unsafe control actions in concept §5 / §9 (`checklists/losses-hazards.md`) | Every SC has a requirement and a passing test (synthesis §14) |
+| Any product | Losses L1–L12 checked; hazards, constraints and unsafe control actions in concept §5 / §9 (`checklists/losses-hazards.md`) | Every SC has a passing test — its own or through the E rows and requirements that carry it out (synthesis §14) |
+| Any product | Error handling strategy (`checklists/error-handling.md`): before the PM gate, each constraint's response (what must be detectable, immediate action, remedy, time) and the outside actions (§5, §9); after the architecture, scenarios in design order and the four steps — actions, errors with root causes, reaction matrix, indication and storage — depth per outside action (§11) | One test per E row, escalation included; per outside action: unexpected exception before · during · after, kill, kill + restart and repeaters against the declared guarantee (synthesis §13) |
 | AI component in the product (system card, concept §0) | AI threats T01–T22 checked as causes (`checklists/ai-threats.md`) | Adversarial and negative tests in synthesis §13 |
 | Product could harm people or property, controls a safety function, or directly controls, switches or protects electrical power | **Scope-boundary trigger (RULES §12)** — build does not produce safety-critical software: warning D9, then *simulation / teaching*, *non-safety part only* or *stop*; a diagnostic or advisory component is not a trigger (its output is advisory, a qualified person decides) | Warning and answer logged in `00-build.md` *Scope boundary* and concept §0 |
 | Processing personal data of EU subjects | DSGVO/GDPR compliance (lawful basis, data minimization, deletion, DSAR) | Data-flow map, privacy review, deletion test |
@@ -159,7 +160,7 @@ _Valid for distributed real-time systems — several nodes that together close a
 | Area | Required | Verified by |
 | --- | --- | --- |
 | Testing | Unit + integration + end-to-end; coverage target agreed | Coverage report |
-| Failure handling | Defined behavior for every error path; no silent failures | Negative tests |
+| Failure handling | Every scenario answered by *detect and control* has a row in the reaction matrix (concept §11, `checklists/error-handling.md`): detector with reference, immediate action, bound → then, remedy, log, source; every outside action has its standing row for unexpected errors; no silent failures | One test per E row, escalation included; per outside action: unexpected exception → its standing row, killed process → external remedy acts |
 | Boundaries | Input validation and boundary/fuzz testing | Fuzz run |
 | Resource use | No leaks (memory, handles, connections); pool limits | Soak test |
 | Observability | Structured logs, metrics, tracing, actionable alerts | Alert fire drill |
@@ -167,6 +168,25 @@ _Valid for distributed real-time systems — several nodes that together close a
 | Config | Externalized, validated, environment-specific, documented | Config schema test |
 | Documentation | README, ADRs, runbooks, API docs kept current | Doc review in PR |
 | Reproducibility | Deterministic builds, pinned dependencies | Clean-room build |
+
+---
+
+## External Services and Side Effects (Software)
+
+_Applies to every call to a system the product does not own — exchanges, payment providers, partner APIs, AI providers, mail and messaging. Each row usually yields an E row in the error handling strategy._
+
+| Trigger | Required | Verified by |
+| --- | --- | --- |
+| Any external API | Every response validated before use — status, schema, plausibility | Test with malformed and implausible responses |
+| Any external call | A bounded timeout; the timeout is an E row with its action | Test against a hanging stub |
+| Write with side effects (order, payment, message, booking) | An idempotency key (client id) on every write | Repeated send → one effect |
+| Write with side effects | Defined handling of "unknown state after a write": query the other system by client id before any resend; never resend blind | Fault injection: response lost after the write |
+| Any failed call | Never fall back to an earlier answer or an earlier list; the reaction is the action of the E row | Error after a successful call → the old data is not reused |
+| State owned by another system (exchange, bank, CRM, stock) | State over events: reconcile the own belief against the authoritative state every cycle, not only on events | Missed event → corrected within one cycle |
+| Warning and critical events | Durable storage with retention, a fallback while that storage is down; container or console logs do not count | Store down → events in the fallback, flushed later |
+| Safe state | Persistent across a restart; left only on purpose | Restart in safe state → still in safe state |
+| Any side-effecting action — state or information effect | Invariant checks right before it; nothing half-done committed; an unexpected error takes the action's standing row before, during and after its commit boundary (hold only where the outcome is known and the bridge test passes; an unknown outcome is reconciled or goes to a person); no restart or repeater repeats it — idempotent, resumable, compensable, or at most once then a person | Break one invariant per guarded action; inject an unexpected error → declared behaviour, context stored, alarm sent; kill + restart mid-action and each repeater → the action's declared guarantee (exactly once · compensated · at most once with the unknown outcome at a person) and its reconciliation path |
+| Shared limit (per customer, per account, budget, token cap) | Reservation against the shared limit before the effect, pending intents included; defined outcome at exhaustion | Two intents allowed alone, run concurrently against one limit → only what the limit allows |
 
 ---
 
@@ -220,4 +240,4 @@ _Sized by concept §5 *Load and growth model*. Rows marked (scale-out) apply onl
 
 ## Learning Rule
 
-Whenever a project surfaces a reusable, field- or technology-specific requirement that is not yet captured here, add a row before closing the work. This file is how the team's hard-won knowledge compounds across projects.
+Whenever a project surfaces a reusable, field- or technology-specific requirement that is not yet captured here, tell the user before closing the work, with the row it would need; they report it upstream (this file is read-only in a workspace — AGENTS.md). This file is how the team's hard-won knowledge compounds across projects.

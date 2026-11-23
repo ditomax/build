@@ -1,6 +1,6 @@
 # Layout catalogue
 
-How the product repository is organised — one profile per stack (RULES §15). The concept author picks the profile in the first feature (question C8) and records it in the layout ADR; synthesis slice 0 (foundation) writes the skeleton and the checks. Every profile has the same seven sections (`_template.md`); shared tools are in `_tools.md`.
+How the product repository is organised — one profile per stack (RULES §15). The concept author picks the profile in the first feature (question C8) and records it in the layout ADR; synthesis slice 0 (foundation) writes the skeleton and the checks. Every profile has the same eight sections (`_template.md`); shared tools are in `_tools.md`.
 
 | Profile | For | Feature = | Dependency rule enforced by | Status |
 | --- | --- | --- | --- | --- |
@@ -29,3 +29,4 @@ Good unreviewed layouts become catalogue entries after a field test — that is 
 - `planning/build/agent-testing.md` (T3) and `planning/build/manual-tests.md` (T1) exist from slice 0 on.
 - Repository hygiene (`templates/repo-hygiene.md`) plus the profile's ignore lines.
 - Guideline L6: many small files, one responsibility each.
+- §8 error convention: a failure is signalled so that the caller cannot mistake it for a result, the context travels with it, and it is caught only where its E row's action can be taken; invariant checks right before every side-effecting call (never a construct the build can strip); unexpected errors at a side-effecting call handled by one action-boundary helper that carries the action's standing row; a catch-all otherwise only at an entry point (RULES §16).

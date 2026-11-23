@@ -46,6 +46,10 @@ version = "0.1.0"
 
 [workspace.lints.rust]
 unsafe_code = "forbid"        # loosen only with an ADR
+
+[workspace.lints.clippy]
+unwrap_used = "warn"          # error convention §8 — denied by -D warnings in LINT
+expect_used = "warn"
 ```
 
 ## 2. Mapping
@@ -98,3 +102,14 @@ Secrets: environment variables read by the product's config loader, names from `
 ## 7. Agent limits
 
 None typical where rustup and cargo exist. Fetching crates is network access — say so first. Cross compilation and embedded targets: as `c-cpp`.
+
+## 8. Error convention
+
+How failures are signalled, propagated and caught (RULES §16). Every handling site carries out an E row of concept §11.
+
+- **`Result<T, E>` everywhere a call can fail.** One error enum per crate (`thiserror`), named in `CONTEXT.md` terms; `anyhow` only in the binary's entry point. `?` propagates; library errors are wrapped with `#[from]` or `map_err` at the crate boundary.
+- **No panics as error handling.** `unwrap()` and `expect()` only in tests and at proven invariants with a comment; a panic is a bug, not a reaction.
+- **Context travels.** Error variants carry what the detector knows (item, step, E-ID) as fields; the handler logs them.
+- **Caught where the action is.** A `match` on an error takes the row's action only where it can be taken; elsewhere the error propagates. The handling site names the row: `// E-<FEAT>-3`.
+- **Check:** clippy `unwrap_used` and `expect_used` in `[workspace.lints.clippy]` (skeleton above), denied by `-D warnings` in `LINT`; every crate inherits them with `[lints] workspace = true`. Tests may allow them with `#[allow(clippy::unwrap_used)]`.
+- **Invariant checks before every side effect** return `Err(Error::InvariantViolated { .. })` — never `debug_assert!`, which release builds strip; an invariant check is an ordinary detector with its own matrix row. Each side-effecting call goes through one action-boundary helper that maps any error (and a caught panic, `catch_unwind`) to the action's standing row (concept §11 reaction matrix); the entry point keeps a backstop for everything outside, and a panic hook there stores the context.

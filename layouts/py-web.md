@@ -156,3 +156,11 @@ Secrets: as `py-lib`. Never in templates, static files or the front-end bundle �
 ## 7. Agent limits
 
 Browser tests need Playwright with a browser; when it is missing, synthesis records "not verified here — run `python tools/dev.py test tests/e2e` locally". `npm install` and `playwright install` are installs (Y0).
+
+## 8. Error convention
+
+As `py-lib` §8 (exceptions, one hierarchy in `core/errors.py`, context travels, caught where the E row's action is, action-boundary helper, bounded retries, ruff `BLE` and `S110`), plus the web boundary:
+
+- **One mapping at the HTTP edge.** A single exception handler maps the product's exceptions to responses — status code plus a problem detail (RFC 9457) with a stable error code. No stack trace, SQL or internal name reaches the client; the E-ID and a correlation id go into the log and the response header.
+- **Background work.** A job that fails records its state (failed, retried n of m) where the user can see it; it never disappears from the queue silently.
+- **Front end (W2).** Errors from the API are shown with the problem detail's message; a network failure is its own state in the UI, not an empty list.

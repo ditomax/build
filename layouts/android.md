@@ -110,3 +110,14 @@ Secrets: never in `build.gradle.kts`, `gradle.properties` committed to the repo,
 ## 7. Agent limits
 
 JVM unit tests run where a JDK and the Android SDK are present — often not in a sandbox (`doctor` shows it). Emulators and devices are rarely available: instrumented tests and on-device checks are recorded as "not verified here — run `<command>` on a machine with the SDK and an emulator", and the slice is green only after the user reports the result. Play Store signing and release are always the user's.
+
+## 8. Error convention
+
+How failures are signalled, propagated and caught (RULES §16). Every handling site carries out an E row of concept §11.
+
+- **Exceptions inside a layer, a sealed result at the boundary.** Data and domain code throw the product's own exceptions (one hierarchy in `:core:model`); the boundary to the view model returns a sealed type (`sealed interface Outcome<out T>` with `Success` and `Failure`) that the UI must handle. `null` means "not found", never "failed".
+- **Coroutines.** `CancellationException` is always rethrown, never caught as an error; `runCatching` only where the result is inspected.
+- **Context travels.** Exceptions and `Failure` carry what the detector knows (item, step, E-ID); the handler logs them.
+- **Caught where the action is.** No `catch (e: Exception) {}`; an error is caught only where its row's action can be taken. The catch site names the row: `// E-<FEAT>-3`.
+- **Check:** Android lint and ktlint run by `LINT`; detekt `TooGenericExceptionCaught` and `SwallowedException` when the layout ADR adopts detekt.
+- **Invariant checks before every side effect** use `require()`/`check()` or throw the product's exception — they are not stripped; an invariant check is an ordinary detector with its own matrix row. Each side-effecting call goes through one action-boundary helper that maps an unexpected exception to the action's standing row (concept §11 reaction matrix); besides it, the only catch-all is at an entry point, plus an uncaught-exception handler that stores the context.

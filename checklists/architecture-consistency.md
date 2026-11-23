@@ -1,6 +1,6 @@
 # Architecture Consistency Checklist
 
-**Version 3**
+**Version 4**
 
 **A checklist for validating cross-module consistency of an architecture — used by Phase 6 of the [MANIFEST.md](../MANIFEST.md).**
 
@@ -28,7 +28,7 @@ Each row is: **element type → the full chain to trace → the cross-module agr
 | **Concurrency / synchronization** | shared state → protecting primitive → all accessors | every accessor honors the primitive; lock ordering; reentrancy |
 | **Timing / real-time budgets** | deadline owner → contributing chain → each contributor's budget | periods/phases align producer ↔ consumer; end-to-end ≤ deadline |
 | **Configuration / parameters** | definition/default → setter → readers | single source of truth; units/range; cross-module consistency |
-| **Error / fault handling** | raise site → propagation path → handler/recovery | every error path ends in a handler; fault → safe-state mapping |
+| **Error / fault handling** | raise site → propagation path → handler/recovery | every error path ends in a handler that carries out an E row of concept §11 or in the outside action's standing row (the action-boundary helper) — outside any outside action in the entry-point backstop; fault → safe-state mapping; every side-effecting call is preceded by its invariant checks; the context of the error travels with it (profile error convention, `layouts/<profile>.md` §8) |
 | **End-to-end mechanisms** | system-boundary entry → each intermediate step/module → system-boundary exit | the complete path exists and is unbroken; every hop preserves semantics and data; no gap, dead-end, or silent drop; boundary in/out contracts honored |
 | **Component life cycle** | creation/init → configured → started/active → suspended/resumed → stopped/destroyed | who owns each transition; init/shutdown ordering & dependencies; acquire/release paired; no use-before-init or use-after-destroy; restart/re-init is safe |
 | **Capacity budget** (connections, workers, external rate limits) | load model peak → every consumer's demand (instances × pool, workers, calls per minute) → the shared limit it draws on | the sum of all consumers stays below the shared limit with headroom; the first bottleneck is named in §11 *Scaling strategy* |
@@ -37,7 +37,9 @@ Each row is: **element type → the full chain to trace → the cross-module agr
 | **Cost drivers** (metered calls, tokens, compute) | user action → every metered call it triggers → guard (cache, quota, budget cap, token budget) → cost metric | every metered call passes a guard and is counted; no path bypasses cache or quota; cost per action matches concept §5 *Operating cost model* |
 | **Control loop** | controller → control action → controlled process → feedback → process model | every control action has feedback that confirms the **effect**, not the command (concept §9) |
 | **Process model / cached belief** | belief → source → refresh | staleness bound defined; acting on a stale belief is a defined case, never silent |
-| **Error handling as controller** | error → handler → response → user / operator | every response classified (retry · fall back · degrade · stop · alert); no silent fallback that hides a degraded state |
+| **Error handling as controller** | error → handler → response → user / operator | every response is the action of its E row (retry · fall back · degrade · stop · alert), bounded, with the escalation reachable and the event kept where the strategy says; no silent fallback that hides a degraded state |
+| **Outside action** | control action with an outside effect (state or information) → commit boundary → standing row for unexpected errors before · during · after → external remedy if the process dies → restart and repeaters | immediate action from the response of every hazard it touches, conflicts decided by the sponsor and recorded; hold only where the outcome is known and the bridge test passes; an unknown outcome reconciled or handed to a person; a dead or hanging process leaves the action safe through something outside it (watchdog, redundant component with fencing, voter, receiver default); no repeater (environment of intake I13, own re-poll, restore, people) repeats the effect (idempotent, resumable, compensable, at most once then a person) |
+| **Scenario trace** | scenario → answer in design order (eliminate · prevent · detect and control · limit · accept) → requirement or E row → UCA/SC → hazard | every scenario answered, the strongest feasible answer first; every answer with reason, owner and verification; every E row with its source — a constraint, a scenario, an operational requirement, or *unexpected at <action>* (the harmless row to the ignore test); every response's detection carried out by a detector; every detection requirement carried out by a detector; every detector on a gate-loss side effect compares against a reference the fault cannot reach, with keys not taken from the state under test |
 | **Untrusted content path** | content from outside the trust boundary (uploads, retrieved documents, tool results, AI output) → every place it is used | never reaches a control channel (prompt instructions, tool choice, command, query) without a constraint |
 | **Authority** | controller → permissions → what its control actions need | permissions ≤ need; write actions of AI components need a confirmation or a hard limit |
 | **Override** | AI or automated controller → human override / kill switch | exists, is reachable by an operator, and is tested |
@@ -79,4 +81,4 @@ Every accepted finding is logged so the decision is traceable, mirroring the ADR
 
 ## Learning Rule
 
-When a project reveals a new class of cross-module inconsistency that these rows don't cover, add it here before closing the work, so future architecture reviews inherit it.
+When a project reveals a new class of cross-module inconsistency that these rows don't cover, tell the user before closing the work, with the row it would need; they report it upstream (this file is read-only in a workspace — AGENTS.md), so future architecture reviews inherit it.

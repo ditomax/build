@@ -1,4 +1,4 @@
-<!-- build layout catalogue — profile template (RULES §15). For a stack the catalogue does not cover: copy this file into the layout ADR, fill every section from the ecosystem's own conventions (official guide, standard build tool), mark it "unreviewed layout". Keep all seven headings; a section that does not apply says why. -->
+<!-- build layout catalogue — profile template (RULES §15). For a stack the catalogue does not cover: copy this file into the layout ADR, fill every section from the ecosystem's own conventions (official guide, standard build tool), mark it "unreviewed layout". Keep all eight headings; a section that does not apply says why. -->
 
 # Layout profile `<name>` — <stack>
 
@@ -64,3 +64,7 @@ Secrets: <where the stack reads them at runtime — environment, platform keysto
 ## 7. Agent limits
 
 <what cannot run in a typical Linux agent sandbox (toolchain, emulator, signing, hardware) and the command the user runs instead — synthesis records "not verified here — run `<command>` on <platform>">
+
+## 8. Error convention
+
+<How a failure is signalled in this stack (exception, result type, status code) so that the caller cannot mistake it for a result; where the product's error types live; how the context of the error travels (item, step, E-ID); that an error is caught only where its E row's action can be taken and the catch site names the row; bounded retries in one helper; invariant checks right before every side-effecting call, in a form the build cannot strip; one action-boundary helper that maps unexpected errors at an outside action to its standing row to its declared failure behaviour; a catch-all otherwise only at an entry point; the lint rule or compiler setting that enforces it — RULES §16>

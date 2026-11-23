@@ -75,7 +75,9 @@ def cmd_check(args) -> int:
     """Layout, secret check, linters (when installed) and docs in sync. Exit 0 = clean."""
     rc = _run(LAYOUT)
     if (ROOT / "tools" / "secret_check.py").is_file():
-        rc |= _run([sys.executable, "tools/secret_check.py"])
+        settings = [p for p in (".claude/settings.json", ".claude/settings.local.json") if (ROOT / p).is_file()]
+        if settings:   # the checker's own tests run with `test`
+            rc |= _run([sys.executable, "tools/secret_check.py", "scan", *settings])
     for cmd in LINT:
         if shutil.which(cmd[0]):
             rc |= _run(cmd)

@@ -157,7 +157,7 @@ _Result of the intake stage. Part 1 is what the prototype, the brief, the regist
 
 | Loss | Relevant | What exactly would be lost, for whom | Prefilled from | Evidence |
 | --- | --- | --- | --- | --- |
-| L1 … L11 | <yes | not relevant — reason> | <…> | <GR-n | R-n | entry field | grilling> | <[evidenced] | [estimated]> |
+| L1 … L12 | <yes | not relevant — reason> | <…> | <GR-n | R-n | entry field | grilling> | <[evidenced] | [estimated]> |
 
 - **Worst for this sponsor:** <one loss and one sentence>
 - **Scope boundary:** <not relevant | trigger: … → D9 answer: …>
@@ -185,6 +185,12 @@ _Result of the intake stage. Part 1 is what the prototype, the brief, the regist
 - **Out of scope (for now):** <…>
 - **Integration points known:** <…>
 - **Stack and existing code (I12):** <none yet | language, build tool, folder structure of the existing code — adopted (RULES §15 L7) | required stack or platform and why> → layout profile candidate: <py-lib | py-web | c-cpp | rust | ios | android | other: …>
+- **Automatic repeats (I13):** <what retries or restarts things outside the product's code — confirmed by <technology / hosting role>; an entry IT cannot answer counts as on, plus OQ-n; later features: unchanged since <date> | changed: …>
+
+| Layer | Mechanism | Trigger | Repeats what | How often · delay | On by default |
+| --- | --- | --- | --- | --- | --- |
+| <scheduler · container / platform · planned restart / patch reboot · library (author prefill) · messaging · inbound · operations> | <cron wrapper · restart policy · HTTP client retry · queue redelivery · webhook retry · failover · restore> | <non-zero exit · crash · timeout · 5xx · no ack> | <whole job · one request · one message> | <…> | <yes | no> |
+
 - **Riskiest assumption after intake:** <from the brief, updated>
 - **Recommended first vertical slice:** <one sentence — the smallest end-to-end path that proves the core>
 

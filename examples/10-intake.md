@@ -177,6 +177,7 @@ _Omitted in this example — see `10-intake-path-r.md`._
 | L9 | yes | the single-sign-on client secret | checklist | [evidenced] |
 | L10 | not relevant — no outbound calls (#11) | — | [evidenced] |
 | L11 | yes | a faulty release IT cannot roll back | checklist | [evidenced] |
+| L12 | not relevant — OFA orders and sends nothing; the engineer sends the offer (wrong values in it are L4) | — | [evidenced] |
 
 - **Worst for this sponsor:** L8 — an offer that shows a customer what we quoted to a competitor of theirs.
 - **Scope boundary:** not relevant — pumps are offered, not controlled.
@@ -221,6 +222,13 @@ _Omitted in this example — see `10-intake-path-r.md`._
 - **Ubiquitous language seeds:** the brief's nine terms (opportunity … origin count) unchanged; new: offer register, terms file, price placeholder.
 - **Out of scope (for now):** prices (GR-2); sending, CRM write-back (GR-4); similarity search; search and filter; inside-sales access; printing from the tool.
 - **Integration points known:** nightly CRM CSV export; offer register and offer archive; current Word offer template; terms file; company single sign-on.
+- **Automatic repeats (I13):** confirmed by the IT operator, 2026-09-22.
+
+| Layer | Mechanism | Trigger | Repeats what | How often · delay | On by default |
+| --- | --- | --- | --- | --- | --- |
+| container / platform | Docker `restart: unless-stopped` | crash, VM reboot | the whole service | at once, unlimited | yes |
+| library | none — OFA makes no outbound HTTP calls | — | — | — | — |
+
 - **Riskiest assumption after intake:** "the CRM export contains every field an offer needs" — holds for 14 of 19 fields; 2 are sometimes empty (handled as missing), 3 have no column (typed). New riskiest: old offers can be cut into blocks by heading (OQ-13).
 - **Recommended first vertical slice:** one real opportunity from the nightly export → workbench with origin tags and missing flags → preview with origin count.
 

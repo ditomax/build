@@ -61,7 +61,7 @@ line-length = 110
 target-version = "py311"
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "I", "B", "UP"]
+select = ["E", "F", "W", "I", "B", "UP", "BLE", "S110"]   # BLE, S110: error convention §8
 ```
 
 ## 2. Mapping
@@ -127,3 +127,16 @@ Secrets: environment variables, loaded from a git-ignored `.env` by `core/config
 ## 7. Agent limits
 
 None typical — Python, pytest and ruff run in any sandbox. Installs (uv, dependencies) need the user's yes.
+
+## 8. Error convention
+
+How failures are signalled, propagated and caught (RULES §16). Every catch site carries out an E row of concept §11.
+
+- **Signal by exception, never by value.** A function that fails raises; it never returns `False`, `None` or `-1` to mean "failed" where the caller can take that for a result — a function that returns a tuple raises on failure instead of returning `False`. An expected outcome that is not a failure (not found, nothing to do) is a typed result in the signature (`X | None`, a small dataclass).
+- **One hierarchy.** `core/errors.py` holds the product's base exception and one subclass per kind the matrix needs (`ExternalServiceError`, `StaleStateError`, `UnknownWriteStateError` …), named in `CONTEXT.md` terms. Library exceptions are caught at the boundary module and re-raised as the product's own with `raise … from exc`.
+- **Context travels.** The exception carries what the detector knows — item, step, input id, E-ID — as attributes; the handler logs it. Never `except Exception: pass`, never a bare `except:`.
+- **Caught where the action is.** An error is caught only where its E row's action can be taken; everywhere else it propagates. The catch site names the row in a comment: `# E-<FEAT>-3`.
+- **Invariant checks before every side effect.** Right before each side-effecting call the code checks the assumptions it relies on and raises `InvariantViolated` (from `core/errors.py`) — never with `assert`, which `python -O` removes. An invariant check is an ordinary detector with its own matrix row.
+- **Outside actions.** Each outside action runs inside one helper in `core/` (`with action_boundary("<action>", behaviour=…):`) that turns an unexpected exception into the action's standing row (concept §11 reaction matrix: before · during · after the commit boundary), stores the context and reports — the only `except Exception` besides the entry point, marked `# noqa: BLE001`. The entry point keeps a catch-all as backstop for errors outside any action boundary.
+- **Bounded retries** in one helper in `core/` (count, backoff with jitter, retry only idempotent calls) — no hand-written retry loops.
+- **Check:** `pyproject.toml` selects ruff `BLE` (blind except) and `S110` (try-except-pass); `python tools/dev.py check` runs them.

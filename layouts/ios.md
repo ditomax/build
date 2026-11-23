@@ -99,3 +99,14 @@ Secrets: never in `Info.plist`, an `.xcconfig` that is committed, or the binary 
 ## 7. Agent limits
 
 **macOS only.** `xcodebuild`, the simulator and code signing do not exist in a Linux sandbox. There, synthesis writes package code and tests but records every slice as "not verified here — run `python tools/dev.py test` on a Mac"; the slice is green only after the user reports the result. Pure-logic packages without UIKit / SwiftUI may run with `swift test` on Linux where a Swift toolchain is installed. App Store submission and signing are always the user's.
+
+## 8. Error convention
+
+How failures are signalled, propagated and caught (RULES §16). Every handling site carries out an E row of concept §11.
+
+- **`throws` with typed errors.** One error enum per package conforming to `Error` (typed throws where the Swift version allows); `Result` only for completion handlers. An optional return means "not found", never "failed".
+- **No `try!` and no force unwrap** outside tests; `try?` only where the row's action is "skip" and the skip is logged.
+- **Context travels.** Associated values carry what the detector knows (item, step, E-ID); the handler logs them.
+- **Caught where the action is.** `do`/`catch` takes the row's action where it can be taken; the UI layer maps errors to user messages. The catch site names the row: `// E-<FEAT>-3`.
+- **Check:** SwiftLint `force_try` and `force_unwrapping` (opt-in rule) enabled, run by `LINT`.
+- **Invariant checks before every side effect** throw the product's error — never `assert()`, which optimised builds strip; an invariant check is an ordinary detector with its own matrix row. Each side-effecting call goes through one action-boundary helper that maps an unexpected error to the action's standing row (concept §11 reaction matrix); besides it, the only catch-all is at an entry point.

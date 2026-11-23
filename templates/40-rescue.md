@@ -28,6 +28,7 @@ _MANIFEST Phase 10. A periodic maintenance round against software entropy: find 
 | Exposure (internal → partner → public) | <yes | no> | <…> |
 | Learning loop | <yes | no> | <…> |
 | Incident | <yes | no> | <…> |
+| Errors caught by a default exception handler or the entry-point backstop in operation since the last round | <count> | <each classified here with the ignore test → missing scenario · missing hazard · harmless · bug fix> |
 
 ## 1. Scan
 
@@ -55,6 +56,16 @@ _MANIFEST Phase 10. A periodic maintenance round against software entropy: find 
 
 - **Order of action** (with any secret finding): 1. rotate every secret listed — it is compromised; 2. then clean history (`git filter-repo` or BFG, force-push, every clone re-cloned) — the user's job; 3. re-run the audit.
 - **Allow-list hygiene (R8):** <overly literal entries and the generalized rule proposed for each | none>
+
+## 1c. Error-handling audit
+
+<!-- RULES §16, every round, whatever its kind; read-only. Matrix → code: per E row of concept §11 — detector, action, bound and escalation, log level and storage. Code → matrix: every handling site maps to a reaction row, a scenario answer's requirement, an operational requirement or an outside action's standing row — in the code (try/except/catch, error returns, retries, fallbacks, defaults on failure, ignored results) and outside it (framework handlers, scheduler retries, library retry defaults, container restart policy, inbound webhook retries); a catch-all only in the action-boundary helper and at entry points; every outside action inside the action-boundary helper with its standing row; every E row with its source; configured repeaters against intake I13. Matrix → code is confirmed by the row's escalation test, not by its comment tag. Path walk from each supported entry point through setup, dispatch confirmation and recovery writes, with shared failure domains. Convention: layouts/<profile>.md §8. Findings change behaviour: concept redo, then a synthesis slice — never a refactor here. -->
+
+- **Scope:** <E rows checked n/m · handling sites found n · convention checked: <profile>>
+
+| # | Where (file · line) | E-ID | Direction | Finding | Status | Proposed fix |
+| --- | --- | --- | --- | --- | --- | --- |
+| <1> | <…> | <E-<FEAT>-n | none> | <matrix → code | code → matrix | convention> | <detector missing · other action than the row · bound not counted · counter reset by restart · escalation unreachable · log missing or ephemeral · handler that maps to nothing (code or platform) — ignore test: missing scenario | missing hazard | harmless · silent fallback · catch-all outside the action-boundary helper and entry points · outside action without the helper or invariant checks · handling ≠ the standing row · restart or a repeater repeats the effect · row without source · failure value mistaken for a result · context lost · channel depends on what failed> | <reachable | unwired | unverified — evidence> | <new or changed row (concept redo), then a slice> |
 
 ## 2. Opportunities
 

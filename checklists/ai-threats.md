@@ -31,7 +31,7 @@ Companion to `checklists/losses-hazards.md`. Built only from public sources (lis
 | T17 | Insecure inter-agent communication, cascading failures | uncoordinated controllers, wrong feedback | CS5, CS2 | L5, L4 | authenticated messages between agents; a failing agent degrades, never cascades | one agent down → defined degraded result |
 | T18 | Resource exhaustion, denial of wallet | UCA type D | CS2 | L6, L5 | token budget per call, quota per user, provider spending cap | budget exhaustion test |
 | T19 | Over-reliance, misinformation | process model flaw in the **human** controller | CS1 | L4 | uncertainty and sources visible; confirmation step for consequential actions | usability check: is "not sure" visible? |
-| T20 | Rogue agent, goal drift | missing higher-level control | CS6, CS2 | L3, L4, L11 | human override and kill switch; actions logged and reviewed | kill switch drill |
+| T20 | Rogue agent, goal drift | missing higher-level control | CS6, CS2 | L3, L4, L11, L12 | human override and kill switch; actions logged and reviewed | kill switch drill |
 | T21 | Unvalidated model update or retraining (silent behaviour change) | process model no longer matches the new model | CS1 | L4, L5, L11 | regression evaluation per model version; rollback to the previous model | evaluation set run on every model change |
 | T22 | Insecure retirement (data and model remnants, orphaned keys and endpoints) | control ends, assets remain | CS6 | L2, L3, L8, L9 | retirement checklist: delete data and models, revoke keys, close endpoints | — (checked at the retirement point) |
 
@@ -51,4 +51,4 @@ A model or provider change, a new data source, a new tool or permission, wider e
 
 ## Learning Rule
 
-When a project meets an AI threat that none of these rows describes, add it with its STPA reading, cause, losses, a constraint and a test before closing the work.
+When a project meets an AI threat that none of these rows describes, tell the user before closing the work, with its STPA reading, cause, losses, a constraint and a test; they report it upstream (this file is read-only in a workspace — AGENTS.md).

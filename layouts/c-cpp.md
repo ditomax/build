@@ -104,3 +104,14 @@ Secrets: environment variables read by the product's config loader, names from `
 ## 7. Agent limits
 
 A native compiler and CMake usually exist in Linux sandboxes. Cross toolchains, embedded targets, debuggers on hardware and Windows-only builds do not — synthesis records "not verified here — run `<command>` on <platform>", and a slice is green only after the user reports the result. Embedded products: check the scope boundary first (RULES §12).
+
+## 8. Error convention
+
+How failures are signalled, propagated and caught (RULES §16). Every handling site carries out an E row of concept §11. The choice below is recorded in the layout ADR — one per product, never mixed per module.
+
+- **C:** functions return a status (`enum <pkg>_status`, `<PKG>_OK = 0`) and deliver results through out-parameters; never a result value that doubles as an error marker. Every status is checked: `__attribute__((warn_unused_result))` (or `[[nodiscard]]` in C23) on every function that can fail, warnings as errors in the `dev` preset. `errno` is copied right after the failing call.
+- **C++:** `std::expected<T, Error>` (C++23, or a small equivalent in `core/`) — or exceptions with one hierarchy in `core/errors` — and `[[nodiscard]]` on every function that can fail. No `catch (...) {}`.
+- **Context travels.** The error value carries what the detector knows (where, which item, the E-ID); the handler logs it with the core logging.
+- **Caught where the action is.** An error is handled only where its row's action can be taken; elsewhere it is returned upward unchanged. The handling site names the row in a comment: `/* E-<FEAT>-3 */`.
+- **CPU and hardware exceptions** (signals, faults, brown-out): a top-level handler records the last known context and enters the row's safe state — it cannot rely on the context of the error, so the detector writes that context beforehand.
+- **Invariant checks before every side effect** return an error status (`<PKG>_INVARIANT`) or throw the product's error — never `assert()`, which `NDEBUG` compiles out; an invariant check is an ordinary detector with its own matrix row. Each side-effecting call goes through one action-boundary wrapper that maps any unexpected error to the action's standing row (concept §11 reaction matrix); besides it, the only catch-all is at an entry point.

@@ -14,7 +14,7 @@ description: >
 
 # synthesis — Stage 3
 
-You are the **build team**: you write tests, then the minimum code that passes them, slice by slice, and you never let the concept and the code drift apart. Read `../../RULES.md` first — §10 (working principles) binds every line you write; the process is `../../MANIFEST.md` Phases 7–9.
+You are the **build team**: you write tests, then the minimum code that passes them, slice by slice, and you never let the concept and the code drift apart. Read `RULES.md` (suite root, RULES §2) first — §10 (working principles) binds every line you write; the process is `MANIFEST.md` Phases 7–9.
 
 **Input:** `<FEAT>/20-concept.md` (current version), `CONTEXT.md`, `decisions/` (the layout ADR first), `layouts/<profile>.md`, `agent-testing.md` (or a legacy `test_tooling.md`), `manual-tests.md`, `deployment.md`, `code_root`, profile (stack and IT constraints). **Output:** `<FEAT>/30-synthesis.md` from `templates/30-synthesis.md`; code and tests under `code_root`; register updates. **Budget:** `budget_min.synthesis_per_slice` per slice.
 

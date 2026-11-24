@@ -33,7 +33,10 @@ There is no state outside the work root — no `~/.something`, no environment va
 | Suite installed | `<suite>` (read-only) | `<work>` | profile | brief (H2) · register · shortlist |
 | --- | --- | --- | --- | --- |
 | inside the project | `<project>/planning/suite/build/` | `<project>/planning/build/` | `<project>/planning/profile/` | `<project>/planning/maquette/<x>/60-brief.md` · `<project>/planning/idea/10-register.md` (highest `.vN`) · `<project>/planning/idea/10-shortlist.md` |
-| elsewhere (a clone or an unzipped release) | the folder holding `AGENTS.md`, `VERSION` | `<project>/planning/build/` — the Director asks for `<project>` | `<suite>/profile/` | a file the user names, or none |
+| elsewhere (a clone, an unzipped release, an installed skill or plugin folder) | the folder holding `skills/`, `VERSION` | `<project>/planning/build/` — the Director asks for `<project>` | `<suite>/profile/` | a file the user names, or none |
+| delivered, without a folder (a marketplace or MCP server, a repository link) | the package as delivered — files read by their suite-relative names through that channel | `<project>/planning/build/` — the Director asks for `<project>` | `<project>/planning/profile/` if it exists, else none (core defaults) | a file the user names, or none |
+
+**Suite-relative names.** Every suite file is named relative to the suite root: `RULES.md`, `MANIFEST.md`, `templates/00-build.md`, `skills/build-intake/SKILL.md`. With a folder they resolve against `<suite>`; without one they are read through the channel that delivered the skill — that read is the only network access the suite itself needs (§5). The suite is never cloned, downloaded or copied into the project to make a folder; only files derived from templates and layouts land in `<work>` or under `code_root`.
 
 **Legacy.** A `00-build.md` under `<suite>/builds/<project>/` (build 0.3.x and earlier) keeps working as it is: there `<work>` is that folder and `code_root` is the value recorded in `00-build.md`; frontmatter `layout: legacy-standalone`. The Director offers a move once (D10), never moves anything itself.
 
@@ -103,7 +106,7 @@ feature: <FEAT>
 - **Time budget.** `budget_min` in `00-build.md` gives your minutes per stage; synthesis budgets are per slice. When you reach it, say so and offer to close with the current state. Do not silently run over.
 - **Inline first, file last.** Show interim results as formatted text in the chat. Write the result file once at the end of the stage (or on stop) — not continuously. Exception: synthesis writes code and the slice log after every slice.
 - **No confidentiality promises.** Never claim the platform keeps no logs.
-- **No hidden actions.** Say what you are about to write or run before you do it. No commits, installs, network calls or file writes the user did not hear about.
+- **No hidden actions.** Say what you are about to write or run before you do it. No commits, installs, network calls or file writes the user did not hear about. Reading suite files through the channel that delivered them (§2) is not such a call.
 
 ## 6. Git
 

@@ -2,7 +2,7 @@
 
 You are working inside a **build workspace**. build turns a maquette brief, an idea register or shortlist entry, or a problem statement into a product through concept documents that the code is synthesized from, in four stages per feature with three human gates. The person you are talking to may be a product owner, not a developer. They do not need to know stage names, files or commands — you do.
 
-**Before anything else.** If this file is not in your working directory but in a subfolder, that subfolder is the workspace — work from there and never write outside it. If you are reading this without a local copy (on GitHub), get one first: `README.md` § For agents. Inside a project folder (`planning/suite/build/`) this file is not the entry point — `planning/AGENTS.md` is.
+**Before anything else.** If this file is not in your working directory but in a subfolder, that subfolder is the workspace — work from there and never write outside it. If you are reading this without a local copy (on GitHub, or delivered by a marketplace or MCP server), you do not need one — `README.md` § For agents. Inside a project folder (`planning/suite/build/`) this file is not the entry point — `planning/AGENTS.md` is.
 
 ## On every session start
 
@@ -35,6 +35,6 @@ The work never lives here: it lives in the product repository, at `<project>/pla
 
 - Write planning files only inside the work root (`<project>/planning/build/`; legacy: `builds/<project>/`) and code only under the `code_root` recorded in `00-build.md`, where the layout ADR puts it — never modify `templates/`, `layouts/`, `skills/`, `checklists/`, `profile/`, `RULES.md`, `MANIFEST.md` or this file. If you think a template is wrong, tell the user; they report it upstream.
 - Never write into a maquette or idea folder: `60-brief.md`, `vcode/`, `10-register.md` and `10-shortlist.md` are read-only.
-- Never install packages, add dependencies the concept does not name, run `git init`, or open network connections without saying so first and getting a yes. If a git repository already exists, commit only as RULES §6 defines — frozen states, never progress.
+- Never install packages, add dependencies the concept does not name, run `git init`, or open network connections without saying so first and getting a yes — reading suite files through the channel that delivered them (RULES §2) is the one exception. If a git repository already exists, commit only as RULES §6 defines — frozen states, never progress.
 - No telemetry, no hidden files, no state outside the work root.
 - Talk in the user's language (German → informal "du"). Write result files in the language set in `00-build.md`; keep template headings, requirement text, IDs, code and commit messages in English.

@@ -1,5 +1,11 @@
 # Changelog — build
 
+## 0.5.1 — 2026-11-24
+**Works without a local copy** — build also runs when it is delivered as skills (a marketplace or an MCP server) or reached only through a repository link:
+- Suite files are named relative to the suite root; with a folder they are read from it, without one through the channel that delivered the skill.
+- Nothing is cloned or copied into the project — only the work files and the product code are written there.
+- A delivered suite uses the project's own `planning/profile/` when there is one.
+
 ## 0.5.0 — 2026-11-22
 **Error handling strategy** — designed with the requirements, placed below STPA-light:
 - Every safety constraint now says what is detected, the immediate action, the remedy and its time bound.

@@ -11,7 +11,7 @@ description: >
 
 # rescue — Stage 4
 
-You are the **maintenance crew**: you make the codebase simpler without changing what it does, and you report where concept and code have drifted. Read `../../RULES.md` first (§10 binds you); the process is `../../MANIFEST.md` Phase 10 and "Concept ↔ Code Synchronization".
+You are the **maintenance crew**: you make the codebase simpler without changing what it does, and you report where concept and code have drifted. Read `RULES.md` (suite root, RULES §2) first (§10 binds you); the process is `MANIFEST.md` Phase 10 and "Concept ↔ Code Synchronization".
 
 **Input:** `<FEAT>/20-concept.md`, `<FEAT>/30-synthesis.md`, `CONTEXT.md`, `decisions/`, `agent-testing.md` (or a legacy `test_tooling.md`), the layout ADR, `code_root`. **Output:** `<FEAT>/40-rescue.md` (a new `.vN` per round) from `templates/40-rescue.md`; refactored code under `code_root`. **Budget:** `budget_min.rescue`; `budget_refactors` = 5 with git, 2 without.
 
